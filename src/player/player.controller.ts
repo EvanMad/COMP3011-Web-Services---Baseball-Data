@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Query } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { Get, Param } from '@nestjs/common';
 import { Player } from 'generated/prisma/client';
@@ -18,7 +18,12 @@ export class PlayerController {
   }
 
   @Get()
-  async getAllPlayers(): Promise<Player[]> {
-    return await this.playerService.getAllPlayers();
+  async getAllPlayers(@Query('name') name?: string): Promise<Player[]> {
+    if (name) {
+      return await this.playerService.getPlayerByName(name);
+    } else {
+      // If no name query parameter is provided, return all players
+      return await this.playerService.getAllPlayers();
+    }
   }
 }

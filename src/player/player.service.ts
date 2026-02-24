@@ -13,7 +13,10 @@ export class PlayerService {
   async getPlayerByName(name: string): Promise<Player[]> {
     const players = await this.prisma.player.findMany({
       where: {
-        nameFirst: name,
+      OR: [
+        { nameFirst: { contains: name, mode: 'insensitive' } },
+        { nameLast: { contains: name, mode: 'insensitive' } },
+      ],
       },
     });
     if (!players || players.length === 0) {
