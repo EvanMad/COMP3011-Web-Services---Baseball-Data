@@ -20,7 +20,7 @@ export class StatsService {
     const onbases = hits + walks + hitByPitch;
     const pa = atBats + walks + hitByPitch + sacrificeFlies;
     const onBasePercentage = pa > 0 ? parseFloat((onbases / pa).toFixed(3)) : 0;
-    return onBasePercentage;    
+    return onBasePercentage;
   }
 
   calculateTotalBases(
@@ -30,7 +30,13 @@ export class StatsService {
     homeRuns: number,
   ): number {
     const totalBases =
-      hits - doubles - triples - homeRuns + 2 * doubles + 3 * triples + 4 * homeRuns;
+      hits -
+      doubles -
+      triples -
+      homeRuns +
+      2 * doubles +
+      3 * triples +
+      4 * homeRuns;
     return totalBases;
   }
 

@@ -26,7 +26,7 @@ export class PlayerService {
     }
 
     // Map each player to the DTO format (assuming no stats for search list for brevity)
-    return players.map(player => this.mapToResponseDto(player, null, null, null));
+    return players.map((player) => this.mapToResponseDto(player, null, null));
   }
 
   async getPlayerById(id: string): Promise<PlayerResponseDto> {
@@ -42,22 +42,49 @@ export class PlayerService {
     const [stats, mostHR, mostHits] = await Promise.all([
       this.prisma.batting.aggregate({
         where: { playerID: id },
-        _sum: { H: true, AB: true, BB: true, HBP: true, SF: true, DOUBLE: true, TRIPLE: true, HR: true },
+        _sum: {
+          H: true,
+          AB: true,
+          BB: true,
+          HBP: true,
+          SF: true,
+          DOUBLE: true,
+          TRIPLE: true,
+          HR: true,
+        },
       }),
-      this.prisma.batting.findFirst({ where: { playerID: id }, orderBy: { HR: 'desc' } }),
-      this.prisma.batting.findFirst({ where: { playerID: id }, orderBy: { H: 'desc' } }),
+      this.prisma.batting.findFirst({
+        where: { playerID: id },
+        orderBy: { HR: 'desc' },
+      }),
+      this.prisma.batting.findFirst({
+        where: { playerID: id },
+        orderBy: { H: 'desc' },
+      }),
     ]);
 
     const s = stats._sum;
 
     // 2. Perform calculations via StatsService
     const career_batting = {
-      battingAverage: this.statsService.calculateBattingAverage(s.H, s.AB || 0),
+      battingAverage: this.statsService.calculateBattingAverage(
+        s.H || 0,
+        s.AB || 0,
+      ),
       onBasePercentage: this.statsService.calculateOnBasePercentage(
-        s.H || 0, s.BB || 0, s.HBP || 0, s.AB || 0, s.SF || 0,
+        s.H || 0,
+        s.BB || 0,
+        s.HBP || 0,
+        s.AB || 0,
+        s.SF || 0,
       ),
       sluggingPercentage: this.statsService.calculateSluggingPercentage(
-        this.statsService.calculateTotalBases(s.H || 0, s.DOUBLE || 0, s.TRIPLE || 0, s.HR || 0),
+        this.statsService.calculateTotalBases(
+          s.H || 0,
+          s.DOUBLE || 0,
+          s.TRIPLE || 0,
+          s.HR || 0,
+        ),
         s.AB || 0,
       ),
     };
@@ -72,7 +99,11 @@ export class PlayerService {
   }
 
   // Helper method to keep code DRY (Don't Repeat Yourself)
-  private mapToResponseDto(player: any, batting: any, highs: any): PlayerResponseDto {
+  private mapToResponseDto(
+    player: any,
+    batting: any,
+    highs: any,
+  ): PlayerResponseDto {
     return {
       playerID: player.playerID,
       nameFirst: player.nameFirst,
@@ -87,6 +118,6 @@ export class PlayerService {
 
   async getAllPlayers(): Promise<PlayerResponseDto[]> {
     const players = await this.prisma.player.findMany({ take: 50 });
-    return players.map(player => this.mapToResponseDto(player, null, null));
+    return players.map((player) => this.mapToResponseDto(player, null, null));
   }
 }
