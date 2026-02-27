@@ -25,9 +25,14 @@ export class TeamsController {
     return this.teamsService.findAll();
   }
 
+  @Get(':id/:year')
+  findOneTeam(@Param('id') id: string, @Param('year') year: number) {
+    return this.teamsService.findOne(id, year);
+  }
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.teamsService.findOne(+id);
+  findAllYears(@Param('id') id: string) {
+    return this.teamsService.findAllTeams(id);
   }
 
   @Patch(':id')

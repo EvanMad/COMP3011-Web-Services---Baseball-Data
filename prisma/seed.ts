@@ -43,6 +43,76 @@ async function seedPlayers() {
   return players.map(p => p.playerID); // Return IDs to filter stats later
 }
 
+async function seedTeams() {
+  console.log('⏳ Processing Teams...');
+  let fileContent = fs.readFileSync('data/Teams.csv', 'utf-8');
+  fileContent = fileContent.replace(/^\uFEFF/, ''); // strip BOM so first column is "yearID"
+  const records = parse(fileContent, { columns: true, skip_empty_lines: true });
+
+  const teams = records
+    .filter((r: any) => {
+      const y = r.yearID ?? r['\ufeffyearID'];
+      return y != null && y !== '' && !Number.isNaN(parseInt(String(y)));
+    })
+    .map((r: any) => {
+      const yearID = parseInt(String(r.yearID ?? r['\ufeffyearID']));
+      return {
+    yearID,
+    lgID: r.lgID,
+    teamID: r.teamID,
+    franchID: r.franchID,
+    divID: r.divID || null,
+    rank: zapNum(r.Rank),
+    G: zapNum(r.G),
+    Ghome: zapNum(r.Ghome),
+    W: zapNum(r.W),
+    L: zapNum(r.L),
+    divWin: r.DivWin || null,
+    WCWin: r.WCWin || null,
+    LgWin: r.LgWin || null,
+    WSWin: r.WSWin || null,
+    R: zapNum(r.R),
+    AB: zapNum(r.AB),
+    H: zapNum(r.H),
+    double: zapNum(r['2B']),
+    triple: zapNum(r['3B']),
+    HR: zapNum(r.HR),
+    BB: zapNum(r.BB),
+    SO: zapNum(r.SO),
+    SB: zapNum(r.SB),
+    CS: zapNum(r.CS),
+    HBP: zapNum(r.HBP),
+    SF: zapNum(r.SF),
+    RA: zapNum(r.RA),
+    ER: zapNum(r.ER),
+    ERA: zapFloat(r.ERA),
+    CG: zapNum(r.CG),
+    SHO: zapNum(r.SHO),
+    SV: zapNum(r.SV),
+    IPouts: zapNum(r.IPouts),
+    HA: zapNum(r.HA),
+    HRA: zapNum(r.HRA),
+    BBA: zapNum(r.BBA),
+    SOA: zapNum(r.SOA),
+    E: zapNum(r.E),
+    DP: zapNum(r.DP),
+    FP: zapFloat(r.FP),
+    name: r.name,
+    park: r.park || null,
+    attendance: zapNum(r.attendance),
+    BPF: zapNum(r.BPF),
+    PPF: zapNum(r.PPF),
+    teamIDBR: r.teamIDBR || null,
+    teamIDlahman45: r.teamIDlahman45 || null,
+    teamIDretro: r.teamIDretro || null,
+  };
+  });
+
+  await prisma.team.deleteMany();
+  await prisma.team.createMany({ data: teams });
+  console.log(`✅ Inserted ${teams.length} teams.`);
+}
+
 async function seedBattingStats(validPlayerIDs: Set<string>) {
   console.log('⏳ Processing Batting Stats...');
   const fileContent = fs.readFileSync('data/Batting.csv', 'utf-8');
@@ -104,9 +174,15 @@ function formatDateToISO(y: string, m: string, d: string): string | null {
 }
 
 async function main() {
+  // Delete in FK order: batting/pitching reference team and player
+  await prisma.batting.deleteMany();
+  await prisma.pitching.deleteMany();
+  await prisma.team.deleteMany();
+
   const playerIDs = await seedPlayers();
   const idSet = new Set(playerIDs);
-  
+
+  await seedTeams();
   await seedBattingStats(idSet);
   await seedPitchingStats(idSet);
 }
