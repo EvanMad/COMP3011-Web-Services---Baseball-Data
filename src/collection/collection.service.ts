@@ -7,9 +7,12 @@ import { PrismaService } from '../prisma.service';
 export class CollectionService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createCollectionDto: CreateCollectionDto) {
+  create(createCollectionDto: CreateCollectionDto, userID: string) {
     return this.prisma.collection.create({
-      data: createCollectionDto,
+      data: {
+        ...createCollectionDto,
+        userId: userID,
+      },
     });
   }
 

@@ -6,6 +6,8 @@ import { PrismaModule } from './prisma.module';
 import { StatsModule } from './stats/stats.module';
 import { TeamsModule } from './teams/teams.module';
 import { CollectionModule } from './collection/collection.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { CollectionModule } from './collection/collection.module';
     TeamsModule,
     StatsModule,
     CollectionModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

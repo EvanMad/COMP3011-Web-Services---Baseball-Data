@@ -136,4 +136,15 @@ model Collection {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   players     Player[]
+
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+}
+
+model User {
+  id          String   @id @default(cuid()) 
+  username    String   @unique
+  password    String
+
+  collections  Collection[]
 }
