@@ -12,7 +12,7 @@ export class TeamsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly statsService: StatsService,
-  ) { }
+  ) {}
 
   create(createTeamDto: CreateTeamDto) {
     return 'This action adds a new team';
@@ -55,7 +55,7 @@ export class TeamsService {
           TRIPLE: true,
           HR: true,
         },
-      })
+      }),
     ]);
     const s = stats._sum;
 
@@ -87,62 +87,63 @@ export class TeamsService {
     return this.mapToDto({ ...team, career_batting });
   }
 
-update(id: number, updateTeamDto: UpdateTeamDto) {
-  return `This action updates a #${id} team`;
-}
+  update(id: number, updateTeamDto: UpdateTeamDto) {
+    return `This action updates a #${id} team`;
+  }
 
-remove(id: number) {
-  return `This action removes a #${id} team`;
-}
+  remove(id: number) {
+    return `This action removes a #${id} team`;
+  }
 
   private mapToDto(team: any): TeamResponseDto {
-  return plainToInstance(TeamResponseDto, {
-    yearID: team.yearID,
-    teamID: team.teamID,
-    name: team.name,
-    league: team.lgID,
-    franchiseID: team.franchID,
-    divisionID: team.divID,
-    park: team.park,
-    attendance: team.attendance,
+    return plainToInstance(TeamResponseDto, {
+      yearID: team.yearID,
+      teamID: team.teamID,
+      name: team.name,
+      league: team.lgID,
+      franchiseID: team.franchID,
+      divisionID: team.divID,
+      park: team.park,
+      attendance: team.attendance,
 
-    results: {
-      games: team.G,
-      wins: team.W,
-      losses: team.L,
-      rank: team.rank,
-      divisionWin: team.divWin === 'Y',
-      wildCardWin: team.WCWin === 'Y',
-      leagueWin: team.LgWin === 'Y',
-      worldSeriesWin: team.WSWin === 'Y',
-    },
+      results: {
+        games: team.G,
+        wins: team.W,
+        losses: team.L,
+        rank: team.rank,
+        divisionWin: team.divWin === 'Y',
+        wildCardWin: team.WCWin === 'Y',
+        leagueWin: team.LgWin === 'Y',
+        worldSeriesWin: team.WSWin === 'Y',
+      },
 
-    batting: {
-      runs: team.R,
-      atBats: team.AB,
-      hits: team.H,
-      doubles: team.double,
-      triples: team.triple,
-      homeRuns: team.HR,
-      walks: team.BB,
-      strikeouts: team.SO,
-      stolenBases: team.SB,
-      caughtStealing: team.CS,
-      hitByPitch: team.HBP,
-      sacrificeFlies: team.SF,
-      battingAverage: team.career_batting?.battingAverage,
-      onBasePercentage: team.career_batting?.onBasePercentage,
-      sluggingPercentage: team.career_batting?.sluggingPercentage    },
+      batting: {
+        runs: team.R,
+        atBats: team.AB,
+        hits: team.H,
+        doubles: team.double,
+        triples: team.triple,
+        homeRuns: team.HR,
+        walks: team.BB,
+        strikeouts: team.SO,
+        stolenBases: team.SB,
+        caughtStealing: team.CS,
+        hitByPitch: team.HBP,
+        sacrificeFlies: team.SF,
+        battingAverage: team.career_batting?.battingAverage,
+        onBasePercentage: team.career_batting?.onBasePercentage,
+        sluggingPercentage: team.career_batting?.sluggingPercentage,
+      },
 
-    pitching: {
-      runsAllowed: team.RA,
-      earnedRuns: team.ER,
-      era: team.ERA,
-      saves: team.SV,
-      hrAllowed: team.HRA,
-      errors: team.E,
-      fieldingPercentage: team.FP,
-    },
-  });
-}
+      pitching: {
+        runsAllowed: team.RA,
+        earnedRuns: team.ER,
+        era: team.ERA,
+        saves: team.SV,
+        hrAllowed: team.HRA,
+        errors: team.E,
+        fieldingPercentage: team.FP,
+      },
+    });
+  }
 }

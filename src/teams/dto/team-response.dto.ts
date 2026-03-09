@@ -66,6 +66,6 @@ export class TeamResponseDto {
   pitching!: PitchingAllowedDto;
 
   // Optional relations (only if fetched)
-  battingStats?: any[]; 
+  battingStats?: any[];
   pitchingStats?: any[];
 }

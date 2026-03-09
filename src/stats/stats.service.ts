@@ -47,5 +47,4 @@ export class StatsService {
     const sluggingPercentage = parseFloat((totalBases / atBats).toFixed(3));
     return sluggingPercentage;
   }
-
 }
