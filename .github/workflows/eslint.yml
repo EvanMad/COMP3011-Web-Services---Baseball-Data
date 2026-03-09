@@ -11,11 +11,8 @@ name: ESLint
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "feat/setup-eslint" ]
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ "feat/setup-eslint" ]
+    branches: [ "main" ]
   schedule:
     - cron: '21 6 * * 1'
 
