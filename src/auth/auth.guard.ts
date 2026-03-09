@@ -6,17 +6,14 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-
-interface RequestWithUser extends Request {
-  user: Record<string, any>;
-}
+import { AuthorisedRequest } from './auth.types';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<RequestWithUser>();
+    const request = context.switchToHttp().getRequest<AuthorisedRequest>();
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {

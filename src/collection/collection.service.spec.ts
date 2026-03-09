@@ -21,9 +21,9 @@ describe('CollectionService', () => {
     const createDto: CreateCollectionDto = {
       name: 'My Collection',
       description: 'A collection of my favorite cards',
-      playerIDs: [],
+      playerIDs: ['player-1'],
     };
-    const collection = await service.create(createDto);
+    const collection = await service.create(createDto, 'test-user-id');
     expect(collection).toHaveProperty('id');
     expect(collection.name).toBe(createDto.name);
     expect(collection.description).toBe(createDto.description);

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { PrismaService } from '../prisma.service';
@@ -16,28 +16,46 @@ export class CollectionService {
     });
   }
 
-  findAll() {
-    return this.prisma.collection.findMany();
-  }
-
-  findOne(id: string) {
-    return this.prisma.collection.findUnique({
-      where: { id },
+  findAll(userId: string) {
+    return this.prisma.collection.findMany({
+      where: { userId },
     });
   }
 
-  async update(id: string, updateCollectionDto: UpdateCollectionDto) {
-    try {
-      return await this.prisma.collection.update({
-        where: { id },
-        data: updateCollectionDto,
-      });
-    } catch {
-      throw new Error(`Failed to update collection with id ${id}`);
+  async findOne(id: string, userId: string) {
+    const collection = await this.prisma.collection.findFirst({
+      where: { id, userId },
+    });
+    if (!collection) {
+      throw new NotFoundException('Collection not found');
     }
+    return collection;
   }
 
-  remove(id: string) {
+  async update(
+    id: string,
+    userId: string,
+    updateCollectionDto: UpdateCollectionDto,
+  ) {
+    const collection = await this.prisma.collection.findFirst({
+      where: { id, userId },
+    });
+    if (!collection) {
+      throw new NotFoundException('Collection not found');
+    }
+    return this.prisma.collection.update({
+      where: { id },
+      data: updateCollectionDto,
+    });
+  }
+
+  async remove(id: string, userId: string) {
+    const collection = await this.prisma.collection.findFirst({
+      where: { id, userId },
+    });
+    if (!collection) {
+      throw new NotFoundException('Collection not found');
+    }
     return this.prisma.collection.delete({
       where: { id },
     });

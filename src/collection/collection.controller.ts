@@ -12,10 +12,8 @@ import { CollectionService } from './collection.service';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthorisedRequest } from 'src/auth/auth.types';
 import { UseGuards } from '@nestjs/common';
-import { Request } from 'express';
-
-type AuthorisedRequest = Request & { user: { sub: string } };
 
 @Controller('collection')
 export class CollectionController {
@@ -31,26 +29,35 @@ export class CollectionController {
     return this.collectionService.create(createCollectionDto, userID);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.collectionService.findAll();
+  findAll(@Req() request: AuthorisedRequest) {
+    return this.collectionService.findAll(request.user.sub);
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.collectionService.findOne(id);
+  findOne(@Param('id') id: string, @Req() request: AuthorisedRequest) {
+    return this.collectionService.findOne(id, request.user.sub);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateCollectionDto: UpdateCollectionDto,
+    @Req() request: AuthorisedRequest,
   ) {
-    return this.collectionService.update(id, updateCollectionDto);
+    return this.collectionService.update(
+      id,
+      request.user.sub,
+      updateCollectionDto,
+    );
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.collectionService.remove(id);
+  remove(@Param('id') id: string, @Req() request: AuthorisedRequest) {
+    return this.collectionService.remove(id, request.user.sub);
   }
 }
