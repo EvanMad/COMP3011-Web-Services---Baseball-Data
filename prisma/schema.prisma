@@ -1,57 +1,52 @@
-datasource db {
-  provider = "postgresql"
-
-}
 generator client {
-  provider = "prisma-client"
+  provider     = "prisma-client"
   output       = "../generated/prisma"
   moduleFormat = "cjs"
 }
 
+datasource db {
+  provider = "postgresql"
+}
+
 model Player {
-  id           Int       @id @default(autoincrement())
-  playerID     String    @unique // The Lahman unique key (e.g., "troutan01")
-  nameFirst    String?
-  nameLast     String?
-  dateOfBirth  DateTime? @db.Date
-  dateOfDeath  DateTime? @db.Date
-  birthCountry String?
-  weight       Int?
-  height       Int?
-  bats         String?   @db.Char(1)
-  throws       String?   @db.Char(1)
-  
-  // Relations
-  battingStats Batting[]
+  id            Int        @id @default(autoincrement())
+  playerID      String     @unique
+  nameFirst     String
+  nameLast      String
+  dateOfBirth   DateTime?  @db.Date
+  dateOfDeath   DateTime?  @db.Date
+  birthCountry  String?
+  weight        Int
+  height        Int
+  bats          String?    @db.Char(1)
+  throws        String?    @db.Char(1)
+  battingStats  Batting[]
   pitchingStats Pitching[]
 
-  @@map("people") // Lahman's modern table name is often 'People'
+  @@map("people")
 }
 
 model Batting {
   id       Int    @id @default(autoincrement())
-  player   Player @relation(fields: [playerID], references: [playerID])
   playerID String
   yearID   Int
   stint    Int
   teamID   String
   lgID     String
-  
-  // Stats
-  G   Int?
-  AB  Int?
-  BB  Int?
-  R   Int?
-  H   Int?
-  HR  Int?
-  RBI Int?
-  HBP Int?
-  SF  Int?
-  SB  Int?
-  DOUBLE  Int?
-  TRIPLE  Int?
-
-  team       Team   @relation(fields: [yearID, teamID], references: [yearID, teamID])
+  G        Int?
+  AB       Int?
+  BB       Int?
+  R        Int?
+  H        Int?
+  HR       Int?
+  RBI      Int?
+  HBP      Int?
+  SF       Int?
+  SB       Int?
+  DOUBLE   Int?
+  TRIPLE   Int?
+  player   Player @relation(fields: [playerID], references: [playerID])
+  team     Team   @relation(fields: [yearID, teamID], references: [yearID, teamID])
 
   @@unique([playerID, yearID, stint])
   @@map("batting")
@@ -59,77 +54,73 @@ model Batting {
 
 model Pitching {
   id       Int    @id @default(autoincrement())
-  player   Player @relation(fields: [playerID], references: [playerID])
   playerID String
   yearID   Int
   stint    Int
   teamID   String
-  
-  W   Int?
-  L   Int?
-  ERA Float?
-  SO  Int?
-
-  team       Team   @relation(fields: [yearID, teamID], references: [yearID, teamID])
+  W        Int?
+  L        Int?
+  ERA      Float?
+  SO       Int?
+  player   Player @relation(fields: [playerID], references: [playerID])
+  team     Team   @relation(fields: [yearID, teamID], references: [yearID, teamID])
 
   @@unique([playerID, yearID, stint])
   @@map("pitching")
 }
 
 model Team {
-  id         Int     @id @default(autoincrement())
-  yearID     Int
-  lgID       String
-  teamID     String
-  franchID   String
-  divID      String?
-  rank       Int?    @map("Rank")
-  G          Int?
-  Ghome      Int?
-  W          Int?
-  L          Int?
-  divWin     String? @db.Char(1) @map("DivWin")
-  WCWin      String? @db.Char(1)
-  LgWin      String? @db.Char(1)
-  WSWin      String? @db.Char(1)
-  R          Int?
-  AB         Int?
-  H          Int?
-  double     Int?    @map("2B")
-  triple     Int?    @map("3B")
-  HR         Int?
-  BB         Int?
-  SO         Int?
-  SB         Int?
-  CS         Int?
-  HBP        Int?
-  SF         Int?
-  RA         Int?
-  ER         Int?
-  ERA        Float?
-  CG         Int?
-  SHO        Int?
-  SV         Int?
-  IPouts     Int?
-  HA         Int?
-  HRA        Int?
-  BBA        Int?
-  SOA        Int?
-  E          Int?
-  DP         Int?
-  FP         Float?
-  name       String
-  park       String?
-  attendance Int?
-  BPF        Int?
-  PPF        Int?
-  teamIDBR      String?
+  id             Int        @id @default(autoincrement())
+  yearID         Int
+  lgID           String
+  teamID         String
+  franchID       String
+  divID          String?
+  rank           Int?       @map("Rank")
+  G              Int?
+  Ghome          Int?
+  W              Int?
+  L              Int?
+  divWin         String?    @map("DivWin") @db.Char(1)
+  WCWin          String?    @db.Char(1)
+  LgWin          String?    @db.Char(1)
+  WSWin          String?    @db.Char(1)
+  R              Int?
+  AB             Int?
+  H              Int?
+  double         Int?       @map("2B")
+  triple         Int?       @map("3B")
+  HR             Int?
+  BB             Int?
+  SO             Int?
+  SB             Int?
+  CS             Int?
+  HBP            Int?
+  SF             Int?
+  RA             Int?
+  ER             Int?
+  ERA            Float?
+  CG             Int?
+  SHO            Int?
+  SV             Int?
+  IPouts         Int?
+  HA             Int?
+  HRA            Int?
+  BBA            Int?
+  SOA            Int?
+  E              Int?
+  DP             Int?
+  FP             Float?
+  name           String
+  park           String?
+  attendance     Int?
+  BPF            Int?
+  PPF            Int?
+  teamIDBR       String?
   teamIDlahman45 String?
   teamIDretro    String?
-
-  // Relations back to stats
-  battingStats  Batting[]
-  pitchingStats Pitching[]
+  battingStats   Batting[]
+  pitchingStats  Pitching[]
 
   @@unique([yearID, teamID])
   @@map("teams")

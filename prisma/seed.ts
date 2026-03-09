@@ -26,8 +26,8 @@ async function seedPlayers() {
     .filter((r: any) => r.debut && parseInt(r.debut.substring(0, 4)) >= 2000)
     .map((r: any) => ({
       playerID: r.playerID,
-      nameFirst: r.nameFirst || null,
-      nameLast: r.nameLast || null,
+      nameFirst: r.nameFirst,
+      nameLast: r.nameLast,
       dateOfBirth: formatDateToISO(r.birthYear, r.birthMonth, r.birthDay),
       dateOfDeath: formatDateToISO(r.deathYear, r.deathMonth, r.deathDay),
       birthCountry: r.birthCountry || null,

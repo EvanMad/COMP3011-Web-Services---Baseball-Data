@@ -1,7 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { StatsService } from '../stats/stats.service';
-import { PlayerResponseDto } from './dto/player-response/player-response';
+import {
+  CareerBattingDto,
+  PlayerResponseDto,
+} from './dto/player-response/player-response';
+import { Player } from '../../generated/prisma/client';
 
 @Injectable()
 export class PlayerService {
@@ -95,19 +99,19 @@ export class PlayerService {
 
   // Helper method to keep code DRY (Don't Repeat Yourself)
   private mapToResponseDto(
-    player: any,
-    batting: any,
-    highs: any,
+    player: Player,
+    batting: CareerBattingDto | null,
+    highs: { HR: number; H: number } | null,
   ): PlayerResponseDto {
     return {
       playerID: player.playerID,
       nameFirst: player.nameFirst,
       nameLast: player.nameLast,
-      birthCountry: player.birthCountry,
+      birthCountry: player.birthCountry ?? 'NaN',
       weight: player.weight,
       height: player.height,
-      career_batting: batting,
-      careerHighs: highs,
+      career_batting: batting ?? undefined,
+      careerHighs: highs ?? undefined,
     };
   }
 

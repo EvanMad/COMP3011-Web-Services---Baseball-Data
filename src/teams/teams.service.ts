@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTeamDto } from './dto/create-team.dto';
-import { UpdateTeamDto } from './dto/update-team.dto';
 import { PrismaService } from 'src/prisma.service';
 import { TeamResponseDto } from './dto/team-response.dto';
 import { plainToInstance } from 'class-transformer';
-import { Result } from 'pg';
 import { StatsService } from 'src/stats/stats.service';
+import { Team } from '../../generated/prisma/client';
+
+export interface BattingCalculations {
+  battingAverage: number;
+  onBasePercentage: number;
+  sluggingPercentage: number;
+}
 
 @Injectable()
 export class TeamsService {
@@ -14,12 +18,8 @@ export class TeamsService {
     private readonly statsService: StatsService,
   ) {}
 
-  create(createTeamDto: CreateTeamDto) {
-    return 'This action adds a new team';
-  }
-
   async findAll() {
-    const teams = await this.prisma.team.findMany();
+    const teams: Team[] = await this.prisma.team.findMany();
     return teams.map((team) => this.mapToDto(team));
   }
 
@@ -60,7 +60,7 @@ export class TeamsService {
     const s = stats._sum;
 
     // 2. Perform calculations via StatsService
-    const career_batting = {
+    const career_batting: BattingCalculations = {
       battingAverage: this.statsService.calculateBattingAverage(
         s.H || 0,
         s.AB || 0,
@@ -84,18 +84,17 @@ export class TeamsService {
     };
 
     // Merge stats into team object for DTO mapping
-    return this.mapToDto({ ...team, career_batting });
-  }
-
-  update(id: number, updateTeamDto: UpdateTeamDto) {
-    return `This action updates a #${id} team`;
+    return this.mapToDto(team!, career_batting);
   }
 
   remove(id: number) {
     return `This action removes a #${id} team`;
   }
 
-  private mapToDto(team: any): TeamResponseDto {
+  private mapToDto(
+    team: Team,
+    career_batting?: BattingCalculations,
+  ): TeamResponseDto {
     return plainToInstance(TeamResponseDto, {
       yearID: team.yearID,
       teamID: team.teamID,
@@ -130,9 +129,9 @@ export class TeamsService {
         caughtStealing: team.CS,
         hitByPitch: team.HBP,
         sacrificeFlies: team.SF,
-        battingAverage: team.career_batting?.battingAverage,
-        onBasePercentage: team.career_batting?.onBasePercentage,
-        sluggingPercentage: team.career_batting?.sluggingPercentage,
+        battingAverage: career_batting?.battingAverage,
+        onBasePercentage: career_batting?.onBasePercentage,
+        sluggingPercentage: career_batting?.sluggingPercentage,
       },
 
       pitching: {

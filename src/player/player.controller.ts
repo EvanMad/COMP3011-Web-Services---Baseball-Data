@@ -1,7 +1,6 @@
 import { Controller, Query } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { Get, Param } from '@nestjs/common';
-import { Player } from 'generated/prisma/client';
 import { PlayerResponseDto } from './dto/player-response/player-response';
 
 @Controller('player')
