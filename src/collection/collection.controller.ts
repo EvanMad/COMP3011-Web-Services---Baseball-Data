@@ -27,7 +27,7 @@ export class CollectionController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.collectionService.findOne(+id);
+    return this.collectionService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class CollectionController {
     @Param('id') id: string,
     @Body() updateCollectionDto: UpdateCollectionDto,
   ) {
-    return this.collectionService.update(+id, updateCollectionDto);
+    return this.collectionService.update(id, updateCollectionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.collectionService.remove(+id);
+    return this.collectionService.remove(id);
   }
 }

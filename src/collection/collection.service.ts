@@ -14,18 +14,29 @@ export class CollectionService {
   }
 
   findAll() {
-    return `This action returns all collection`;
+    return this.prisma.collection.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} collection`;
+  findOne(id: string) {
+    return this.prisma.collection.findUnique({
+      where: { id },
+    });
   }
 
-  update(id: number, updateCollectionDto: UpdateCollectionDto) {
-    return `This action updates a #${id} collection`;
+  async update(id: string, updateCollectionDto: UpdateCollectionDto) {
+    try {
+      return await this.prisma.collection.update({
+        where: { id },
+        data: updateCollectionDto,
+      });
+    } catch {
+      throw new Error(`Failed to update collection with id ${id}`);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} collection`;
+  remove(id: string) {
+    return this.prisma.collection.delete({
+      where: { id },
+    });
   }
 }
