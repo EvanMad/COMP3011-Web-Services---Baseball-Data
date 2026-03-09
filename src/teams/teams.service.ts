@@ -31,7 +31,6 @@ export class TeamsService {
   }
 
   async findOne(id: string, year: number): Promise<TeamResponseDto | null> {
-    console.log(`Fetching team with ID: ${id} for year: ${year}`);
     const team = await this.prisma.team.findUnique({
       where: {
         yearID_teamID: {

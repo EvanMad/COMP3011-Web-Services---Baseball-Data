@@ -27,7 +27,6 @@ export class CollectionController {
     @Body() createCollectionDto: CreateCollectionDto,
     @Req() request: AuthorisedRequest,
   ) {
-    console.log(request.user);
     const userID: string = request.user.sub;
     return this.collectionService.create(createCollectionDto, userID);
   }
