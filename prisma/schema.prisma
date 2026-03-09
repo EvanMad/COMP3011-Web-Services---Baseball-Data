@@ -9,19 +9,21 @@ datasource db {
 }
 
 model Player {
-  id            Int        @id @default(autoincrement())
-  playerID      String     @unique
+  id            Int         @id @default(autoincrement())
+  playerID      String      @unique
   nameFirst     String
   nameLast      String
-  dateOfBirth   DateTime?  @db.Date
-  dateOfDeath   DateTime?  @db.Date
+  dateOfBirth   DateTime?   @db.Date
+  dateOfDeath   DateTime?   @db.Date
   birthCountry  String?
   weight        Int
   height        Int
-  bats          String?    @db.Char(1)
-  throws        String?    @db.Char(1)
+  bats          String?     @db.Char(1)
+  throws        String?     @db.Char(1)
   battingStats  Batting[]
   pitchingStats Pitching[]
+  collection    Collection? @relation(fields: [collectionId], references: [id])
+  collectionId  String?
 
   @@map("people")
 }
@@ -124,4 +126,14 @@ model Team {
 
   @@unique([yearID, teamID])
   @@map("teams")
+}
+
+model Collection {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  playerIDs   String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  players     Player[]
 }
