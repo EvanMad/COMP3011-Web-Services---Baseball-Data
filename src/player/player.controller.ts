@@ -1,13 +1,26 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Query } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { Get, Param } from '@nestjs/common';
+import { PlayerResponseDto } from './dto/player-response/player-response';
 
 @Controller('player')
 export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
-  @Get(':name')
-  async getName(@Param('name') id: number): Promise<string> {
-    return await this.playerService.getName(id);
+  @Get(':id')
+  async getPlayerById(@Param('id') id: string): Promise<PlayerResponseDto> {
+    return await this.playerService.getPlayerById(id);
+  }
+
+  @Get()
+  async getAllPlayers(
+    @Query('name') name?: string,
+  ): Promise<PlayerResponseDto[]> {
+    if (name) {
+      return await this.playerService.getPlayerByName(name);
+    } else {
+      // If no name query parameter is provided, return all players
+      return await this.playerService.getAllPlayers();
+    }
   }
 }
