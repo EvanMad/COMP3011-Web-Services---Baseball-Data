@@ -24,8 +24,6 @@ export class PlayerService {
     if (!players || players.length === 0) {
       throw new NotFoundException(`Player with name ${name} not found`);
     }
-
-    // Map each player to the DTO format (assuming no stats for search list for brevity)
     return players.map((player) => this.mapToResponseDto(player, null, null));
   }
 
@@ -38,7 +36,6 @@ export class PlayerService {
       throw new NotFoundException(`Player with id ${id} not found`);
     }
 
-    // 1. Parallelize data fetching for performance
     const [stats, mostHR, mostHits] = await Promise.all([
       this.prisma.batting.aggregate({
         where: { playerID: id },
@@ -65,7 +62,6 @@ export class PlayerService {
 
     const s = stats._sum;
 
-    // 2. Perform calculations via StatsService
     const career_batting = {
       battingAverage: this.statsService.calculateBattingAverage(
         s.H || 0,
@@ -94,7 +90,6 @@ export class PlayerService {
       H: mostHits?.H || 0,
     };
 
-    // 3. Return the mapped DTO
     return this.mapToResponseDto(player, career_batting, careerHighs);
   }
 

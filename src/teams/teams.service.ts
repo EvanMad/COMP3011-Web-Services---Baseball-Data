@@ -25,7 +25,7 @@ export class TeamsService {
 
   async findAllTeams(id: string): Promise<TeamResponseDto[]> {
     const teams = await this.prisma.team.findMany({
-      where: { franchID: id },
+      where: { teamID: id },
     });
     return teams.map((team) => this.mapToDto(team));
   }
@@ -42,7 +42,7 @@ export class TeamsService {
     });
 
     // Calculate stats using stat service
-    const [stats, mostHR, mostHits] = await Promise.all([
+    const [stats] = await Promise.all([
       this.prisma.batting.aggregate({
         where: { teamID: id, yearID: year },
         _sum: {
@@ -55,15 +55,7 @@ export class TeamsService {
           TRIPLE: true,
           HR: true,
         },
-      }),
-      this.prisma.batting.findFirst({
-        where: { teamID: id, yearID: year },
-        orderBy: { HR: 'desc' },
-      }),
-      this.prisma.batting.findFirst({
-        where: { teamID: id, yearID: year },
-        orderBy: { H: 'desc' },
-      }),
+      })
     ]);
     const s = stats._sum;
 
@@ -150,7 +142,6 @@ remove(id: number) {
       hrAllowed: team.HRA,
       errors: team.E,
       fieldingPercentage: team.FP,
-      // ... add other pitching fields as needed
     },
   });
 }
