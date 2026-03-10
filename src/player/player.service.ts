@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { StatsService } from '../stats/stats.service';
 import {
@@ -124,20 +128,80 @@ export class PlayerService {
   async createPlayer(
     createPlayerDto: CreatePlayerDto,
   ): Promise<PlayerResponseDto> {
-    // Check for uniqueness
+    const { batting, pitching, ...playerData } = createPlayerDto;
+
+    // 1. Uniqueness check (Good as is)
     const existingPlayer = await this.prisma.player.findUnique({
-      where: { playerID: createPlayerDto.playerID },
+      where: { playerID: playerData.playerID },
     });
 
     if (existingPlayer) {
-      throw new NotFoundException(
-        `Player with id ${createPlayerDto.playerID} already exists`,
+      throw new ConflictException(
+        `Player with id ${playerData.playerID} already exists`,
       );
     }
 
+    // 2. Perform the Nested Create
     const player = await this.prisma.player.create({
-      data: createPlayerDto,
+      data: {
+        ...playerData,
+        // Create Batting entries and connect to Team
+        battingStats: batting
+          ? {
+              create: batting.map((b) => ({
+                stint: b.stint,
+                lgID: b.lgID,
+                G: b.G,
+                AB: b.AB,
+                BB: b.BB,
+                R: b.R,
+                H: b.H,
+                HR: b.HR,
+                RBI: b.RBI,
+                HBP: b.HBP,
+                SF: b.SF,
+                SB: b.SB,
+                DOUBLE: b.DOUBLE,
+                TRIPLE: b.TRIPLE,
+                team: {
+                  connect: {
+                    yearID_teamID: {
+                      yearID: b.yearID,
+                      teamID: b.teamID,
+                    },
+                  },
+                },
+              })),
+            }
+          : undefined,
+
+        // Create Pitching entries and connect to Team
+        pitchingStats: pitching
+          ? {
+              create: pitching.map((p) => ({
+                stint: p.stint,
+                W: p.W,
+                L: p.L,
+                ERA: p.ERA,
+                SO: p.SO,
+                team: {
+                  connect: {
+                    yearID_teamID: {
+                      yearID: p.yearID,
+                      teamID: p.teamID,
+                    },
+                  },
+                },
+              })),
+            }
+          : undefined,
+      },
+      include: {
+        battingStats: true,
+        pitchingStats: true,
+      },
     });
+
     return this.mapToResponseDto(player, null, null);
   }
 
