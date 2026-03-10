@@ -12,7 +12,7 @@ import { AdminGuard } from './admin.guard';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '120m' },
     }),
   ],
   providers: [AuthService, AdminGuard],
