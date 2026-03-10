@@ -58,6 +58,9 @@ export class TeamsService {
         },
       }),
     ]);
+    if (!stats) {
+      return this.mapToDto(team!);
+    }
     const s = stats._sum;
 
     // 2. Perform calculations via StatsService

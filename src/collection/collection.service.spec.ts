@@ -49,7 +49,7 @@ describe('CollectionService', () => {
       data: {
         name: 'Test Collection',
         userId: 'user123',
-        playerIDs: []
+        playerIDs: [],
       },
     });
   });
