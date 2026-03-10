@@ -13,7 +13,9 @@ export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<AuthorisedRequest>();
+    let request: AuthorisedRequest = context
+      .switchToHttp()
+      .getRequest<AuthorisedRequest>();
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
@@ -22,8 +24,8 @@ export class AuthGuard implements CanActivate {
 
     try {
       const payload =
-        await this.jwtService.verifyAsync<Record<string, any>>(token);
-      request.user = payload;
+        await this.jwtService.verifyAsync<AuthorisedRequest>(token);
+      request = payload;
     } catch {
       throw new UnauthorizedException();
     }

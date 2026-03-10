@@ -12,7 +12,7 @@ import { CollectionService } from './collection.service';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { AuthorisedRequest } from 'src/auth/auth.types';
+import type { AuthorisedRequest } from 'src/auth/auth.types';
 import { UseGuards } from '@nestjs/common';
 
 @Controller('collection')
