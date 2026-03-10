@@ -6,6 +6,8 @@ import {
   PlayerResponseDto,
 } from './dto/player-response/player-response';
 import { Player } from '../../generated/prisma/client';
+import { UpdatePlayerDto } from './dto/player-response/update-player.dto';
+import { CreatePlayerDto } from './dto/player-response/create-player.dto';
 
 @Injectable()
 export class PlayerService {
@@ -97,7 +99,62 @@ export class PlayerService {
     return this.mapToResponseDto(player, career_batting, careerHighs);
   }
 
-  // Helper method to keep code DRY (Don't Repeat Yourself)
+  async updatePlayer(
+    id: string,
+    updatePlayerDto: UpdatePlayerDto,
+  ): Promise<PlayerResponseDto> {
+    const player = await this.prisma.player.findUnique({
+      where: { playerID: id },
+    });
+
+    if (!player) {
+      throw new NotFoundException(`Player with id ${id} not found`);
+    }
+
+    return this.prisma.player
+      .update({
+        where: { playerID: id },
+        data: updatePlayerDto,
+      })
+      .then((updatedPlayer) =>
+        this.mapToResponseDto(updatedPlayer, null, null),
+      );
+  }
+
+  async createPlayer(
+    createPlayerDto: CreatePlayerDto,
+  ): Promise<PlayerResponseDto> {
+    // Check for uniqueness
+    const existingPlayer = await this.prisma.player.findUnique({
+      where: { playerID: createPlayerDto.playerID },
+    });
+
+    if (existingPlayer) {
+      throw new NotFoundException(
+        `Player with id ${createPlayerDto.playerID} already exists`,
+      );
+    }
+
+    const player = await this.prisma.player.create({
+      data: createPlayerDto,
+    });
+    return this.mapToResponseDto(player, null, null);
+  }
+
+  async deletePlayer(id: string): Promise<void> {
+    const player = await this.prisma.player.findUnique({
+      where: { playerID: id },
+    });
+
+    if (!player) {
+      throw new NotFoundException(`Player with id ${id} not found`);
+    }
+
+    await this.prisma.player.delete({
+      where: { playerID: id },
+    });
+  }
+
   private mapToResponseDto(
     player: Player,
     batting: CareerBattingDto | null,

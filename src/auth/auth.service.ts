@@ -18,7 +18,11 @@ export class AuthService {
     if (!user || !(await bcrypt.compare(pass, user.password))) {
       throw new UnauthorizedException();
     }
-    const payload = { sub: user.id, username: user.username };
+    const payload = {
+      sub: user.id,
+      username: user.username,
+      role: user.role,
+    };
     return {
       // 💡 Here the JWT secret key that's used for signing the payload
       // is the key that was passsed in the JwtModule
@@ -32,7 +36,11 @@ export class AuthService {
       throw new UnauthorizedException('Username already exists');
     }
     const newUser = await this.usersService.create(username, pass);
-    const payload = { sub: newUser.id, username: newUser.username };
+    const payload = {
+      sub: newUser.id,
+      username: newUser.username,
+      role: newUser.role,
+    };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

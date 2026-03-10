@@ -15,6 +15,12 @@ export class UsersService {
     });
   }
 
+  async findById(id: string): Promise<User | null> {
+    return await this.prisma.user.findUnique({
+      where: { id },
+    });
+  }
+
   async create(username: string, password: string): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     return await this.prisma.user.create({

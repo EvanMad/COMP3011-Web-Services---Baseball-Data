@@ -4,6 +4,8 @@ import { TeamResponseDto } from './dto/team-response.dto';
 import { plainToInstance } from 'class-transformer';
 import { StatsService } from 'src/stats/stats.service';
 import { Team } from '../../generated/prisma/client';
+import { CreateTeamDto } from './dto/create-team.dto';
+import { UpdateTeamDto } from './dto/update-team.dto';
 
 export interface BattingCalculations {
   battingAverage: number;
@@ -86,8 +88,23 @@ export class TeamsService {
     return this.mapToDto(team!, career_batting);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} team`;
+  async update(id: number, updateTeamDto: UpdateTeamDto) {
+    return await this.prisma.team.update({
+      where: { id },
+      data: updateTeamDto,
+    });
+  }
+
+  async create(createTeamDto: CreateTeamDto) {
+    return await this.prisma.team.create({
+      data: createTeamDto,
+    });
+  }
+
+  async remove(id: number) {
+    return await this.prisma.team.delete({
+      where: { id },
+    });
   }
 
   private mapToDto(
