@@ -33,7 +33,7 @@ describe('CollectionService', () => {
     const mockCollection = {
       id: '1',
       name: 'Test Collection',
-      userID: 'user123',
+      userId: 'user123',
     };
 
     // Setup the mock behavior
@@ -48,7 +48,7 @@ describe('CollectionService', () => {
     expect(prismaMock.collection.create).toHaveBeenCalledWith({
       data: {
         name: 'Test Collection',
-        userID: 'user123',
+        userId: 'user123',
         playerIDs: []
       },
     });
