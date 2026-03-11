@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CollectionController } from './collection.controller';
 import { CollectionService } from './collection.service';
 import { PrismaService } from '../prisma.service';
-import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
+import { mockDeep } from 'jest-mock-extended';
 import { PrismaClient } from '../../generated/prisma/client';
 
 describe('CollectionController', () => {
