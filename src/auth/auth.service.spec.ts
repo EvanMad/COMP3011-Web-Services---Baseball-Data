@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UnauthorizedException } from '@nestjs/common';
+import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
@@ -116,11 +116,11 @@ describe('AuthService', () => {
       expect(result).toEqual({ access_token: 'new-jwt' });
     });
 
-    it('should throw UnauthorizedException when username already exists', async () => {
+    it('should throw ConflictException when username already exists', async () => {
       mockUsersService.findOne.mockResolvedValue(newUser);
 
       await expect(service.signUp('newuser', 'password')).rejects.toThrow(
-        new UnauthorizedException('Username already exists'),
+        new ConflictException('Username already exists'),
       );
       expect(usersService.create).not.toHaveBeenCalled();
       expect(jwtService.signAsync).not.toHaveBeenCalled();
