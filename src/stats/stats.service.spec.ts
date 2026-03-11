@@ -32,19 +32,13 @@ describe('StatsService', () => {
 
   describe('calculateOnBasePercentage', () => {
     it('should return 0 when plate appearances is 0', () => {
-      expect(
-        service.calculateOnBasePercentage(0, 0, 0, 0, 0),
-      ).toBe(0);
+      expect(service.calculateOnBasePercentage(0, 0, 0, 0, 0)).toBe(0);
     });
 
     it('should compute (hits + walks + hbp) / (ab + walks + hbp + sf)', () => {
       // 1 hit, 1 walk, 2 AB, 0 HBP, 0 SF -> 2 on base, 3 PA
-      expect(
-        service.calculateOnBasePercentage(1, 1, 0, 2, 0),
-      ).toBe(0.667);
-      expect(
-        service.calculateOnBasePercentage(2, 1, 1, 5, 0),
-      ).toBe(0.571); // 4/7
+      expect(service.calculateOnBasePercentage(1, 1, 0, 2, 0)).toBe(0.667);
+      expect(service.calculateOnBasePercentage(2, 1, 1, 5, 0)).toBe(0.571); // 4/7
     });
   });
 

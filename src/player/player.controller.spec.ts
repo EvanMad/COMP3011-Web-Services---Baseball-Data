@@ -5,7 +5,7 @@ import { PlayerService } from './player.service';
 import { PrismaService } from '../prisma.service';
 import { StatsService } from '../stats/stats.service';
 import { UsersService } from '../users/users.service';
-import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
+import { mockDeep } from 'jest-mock-extended';
 import { PrismaClient } from '../../generated/prisma/client';
 
 describe('PlayerController', () => {

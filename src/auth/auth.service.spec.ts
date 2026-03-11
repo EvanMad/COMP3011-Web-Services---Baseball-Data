@@ -24,8 +24,9 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    (bcrypt.compare as jest.Mock).mockImplementation((pass: string, hash: string) =>
-      Promise.resolve(pass === 'correct'),
+    (bcrypt.compare as jest.Mock).mockImplementation(
+      (pass: string, storedHash: string) =>
+        Promise.resolve(pass === 'correct' && storedHash === 'hashed'),
     );
 
     const module: TestingModule = await Test.createTestingModule({
@@ -37,8 +38,8 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
-    usersService = module.get(UsersService) as jest.Mocked<UsersService>;
-    jwtService = module.get(JwtService) as jest.Mocked<JwtService>;
+    usersService = module.get(UsersService);
+    jwtService = module.get(JwtService);
   });
 
   it('should be defined', () => {

@@ -97,12 +97,14 @@ describe('UsersService', () => {
       const result = await service.create('charlie', 'plain');
 
       expect(bcrypt.hash).toHaveBeenCalledWith('plain', 10);
-      expect(prismaMock.user.create).toHaveBeenCalledWith({
-        data: {
-          username: 'charlie',
-          password: 'hashed-password',
+      expect(prismaMock.user.create).toHaveBeenCalledWith(
+        {
+          data: {
+            username: 'charlie',
+            password: 'hashed-password',
+          },
         },
-      });
+      );
       expect(result).toEqual(created);
     });
   });

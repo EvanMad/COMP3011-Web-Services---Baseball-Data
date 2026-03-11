@@ -20,6 +20,6 @@
     "noImplicitAny": true,
     "resolvePackageJsonExports": true
   },
-  "include": ["src/**/*", "generated/**/*"],
+  "include": ["src/**/*", "generated/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist"]
 }

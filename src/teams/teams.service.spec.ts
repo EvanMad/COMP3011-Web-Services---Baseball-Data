@@ -189,7 +189,9 @@ describe('TeamsService', () => {
       expect(result?.teamID).toBe('TBR');
       expect(result?.name).toBe('Tampa Bay Rays');
       expect(result?.batting).toBeDefined();
-      expect((result?.batting as { battingAverage?: number })?.battingAverage).toBeDefined();
+      expect(
+        (result?.batting as { battingAverage?: number })?.battingAverage,
+      ).toBeDefined();
       expect(prismaMock.batting.aggregate).toHaveBeenCalledWith({
         where: { teamID: 'TBR', yearID: 2020 },
         _sum: {
@@ -208,7 +210,16 @@ describe('TeamsService', () => {
     it('should throw when team not found (mapToDto receives null)', async () => {
       prismaMock.team.findUnique.mockResolvedValue(null);
       prismaMock.batting.aggregate.mockResolvedValue({
-        _sum: { H: 0, AB: 0, BB: 0, HBP: 0, SF: 0, DOUBLE: 0, TRIPLE: 0, HR: 0 },
+        _sum: {
+          H: 0,
+          AB: 0,
+          BB: 0,
+          HBP: 0,
+          SF: 0,
+          DOUBLE: 0,
+          TRIPLE: 0,
+          HR: 0,
+        },
         _avg: undefined,
         _count: undefined,
         _min: undefined,

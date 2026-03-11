@@ -49,7 +49,10 @@ describe('PlayerService', () => {
 
   describe('findAll', () => {
     it('should return paginated players with default page and limit', async () => {
-      const players = [mockPlayer({ playerID: 'p1' }), mockPlayer({ playerID: 'p2' })];
+      const players = [
+        mockPlayer({ playerID: 'p1' }),
+        mockPlayer({ playerID: 'p2' }),
+      ];
       prismaMock.player.findMany.mockResolvedValue(players);
       prismaMock.player.count.mockResolvedValue(2);
 
@@ -204,7 +207,9 @@ describe('PlayerService', () => {
 
       await expect(
         service.updatePlayer('missing', { nameFirst: 'X' }),
-      ).rejects.toThrow(new NotFoundException('Player with id missing not found'));
+      ).rejects.toThrow(
+        new NotFoundException('Player with id missing not found'),
+      );
     });
   });
 
