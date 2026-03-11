@@ -15,11 +15,8 @@ import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import type { AuthorisedRequest } from 'src/auth/auth.types';
 import { UseGuards } from '@nestjs/common';
-import {
-  PaginationQueryDto,
-  DEFAULT_PAGE,
-  DEFAULT_LIMIT,
-} from 'src/common/pagination.dto';
+import { DEFAULT_PAGE, DEFAULT_LIMIT } from 'src/common/pagination.dto';
+import { CollectionQueryDto } from './dto/collection-query.dto';
 
 @Controller('collection')
 export class CollectionController {
@@ -39,12 +36,13 @@ export class CollectionController {
   @Get()
   findAll(
     @Req() request: AuthorisedRequest,
-    @Query() pagination: PaginationQueryDto,
+    @Query() query: CollectionQueryDto,
   ) {
     return this.collectionService.findAll(
       request.user.sub,
-      pagination.page ?? DEFAULT_PAGE,
-      pagination.limit ?? DEFAULT_LIMIT,
+      query.page ?? DEFAULT_PAGE,
+      query.limit ?? DEFAULT_LIMIT,
+      query.name,
     );
   }
 
