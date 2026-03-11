@@ -57,6 +57,18 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## CI and branch protection
+
+The **CI** workflow (`.github/workflows/ci.yml`) runs on every push and pull request to `main`. It runs `npm ci`, `npm run lint`, and `npm test`. To prevent merging to `main` unless CI passes:
+
+1. Open the repo on GitHub → **Settings** → **Branches**.
+2. Add or edit a **Branch protection rule** for `main`.
+3. Enable **Require status checks to pass before merging**.
+4. Select the status check **Lint & Test** (from the CI workflow).
+5. Save.
+
+After this, PRs cannot be merged until the CI workflow succeeds.
+
 ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
