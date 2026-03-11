@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { TeamResponseDto } from './dto/team-response.dto';
 import { plainToInstance } from 'class-transformer';
@@ -80,7 +80,7 @@ export class TeamsService {
     return where;
   }
 
-  async findOne(id: string, year: number): Promise<TeamResponseDto | null> {
+  async findOne(id: string, year: number): Promise<TeamResponseDto> {
     const team = await this.prisma.team.findUnique({
       where: {
         yearID_teamID: {
@@ -89,6 +89,10 @@ export class TeamsService {
         },
       },
     });
+
+    if (!team) {
+      throw new NotFoundException('Team not found');
+    }
 
     // Calculate stats using stat service
     const [stats] = await Promise.all([
@@ -107,7 +111,7 @@ export class TeamsService {
       }),
     ]);
     if (!stats) {
-      return this.mapToDto(team!);
+      return this.mapToDto(team);
     }
     const s = stats._sum;
 
@@ -136,7 +140,7 @@ export class TeamsService {
     };
 
     // Merge stats into team object for DTO mapping
-    return this.mapToDto(team!, career_batting);
+    return this.mapToDto(team, career_batting);
   }
 
   async update(id: number, updateTeamDto: UpdateTeamDto) {
