@@ -5,7 +5,8 @@ describe('PrismaService', () => {
   const originalEnv = process.env.DATABASE_URL;
 
   beforeAll(() => {
-    process.env.DATABASE_URL = process.env.DATABASE_URL ?? 'postgresql://user:pass@localhost:5432/test';
+    process.env.DATABASE_URL =
+      process.env.DATABASE_URL ?? 'postgresql://user:pass@localhost:5432/test';
   });
 
   afterAll(() => {
