@@ -7,11 +7,8 @@ import { UpdatePlayerDto } from './dto/player-response/update-player.dto';
 import { Controller, Body, Patch, Get } from '@nestjs/common';
 import { AdminGuard } from 'src/auth/admin.guard';
 import { CreatePlayerDto } from './dto/player-response/create-player.dto';
-import {
-  PaginationQueryDto,
-  DEFAULT_PAGE,
-  DEFAULT_LIMIT,
-} from 'src/common/pagination.dto';
+import { DEFAULT_PAGE, DEFAULT_LIMIT } from 'src/common/pagination.dto';
+import { PlayerQueryDto } from './dto/player-query.dto';
 
 @Controller('player')
 export class PlayerController {
@@ -24,16 +21,13 @@ export class PlayerController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async getAllPlayers(
-    @Query('name') name?: string,
-    @Query() pagination?: PaginationQueryDto,
-  ) {
-    const page = pagination?.page ?? DEFAULT_PAGE;
-    const limit = pagination?.limit ?? DEFAULT_LIMIT;
-    if (name) {
-      return await this.playerService.getPlayerByName(name, page, limit);
-    }
-    return await this.playerService.getAllPlayers(page, limit);
+  async getAllPlayers(@Query() query: PlayerQueryDto) {
+    return await this.playerService.findAll(
+      query.page ?? DEFAULT_PAGE,
+      query.limit ?? DEFAULT_LIMIT,
+      query.name,
+      query.birthCountry,
+    );
   }
 
   @UseGuards(AdminGuard)

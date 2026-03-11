@@ -25,9 +25,10 @@ export class CollectionService {
     userId: string,
     page: number = 1,
     limit: number = 20,
+    name?: string,
   ): Promise<PaginatedResponse<{ id: string; name: string; description: string | null; playerIDs: string[]; createdAt: Date; updatedAt: Date; userId: string }>> {
     const { skip, take } = getPaginationParams(page, limit);
-    const where = { userId };
+    const where = this.buildCollectionWhere(userId, name);
     const [data, total] = await Promise.all([
       this.prisma.collection.findMany({
         where,
@@ -38,6 +39,14 @@ export class CollectionService {
       this.prisma.collection.count({ where }),
     ]);
     return paginate(data, total, page, limit);
+  }
+
+  private buildCollectionWhere(userId: string, name?: string) {
+    const where: { userId: string; name?: { contains: string; mode: 'insensitive' } } = { userId };
+    if (name !== undefined && name.trim() !== '') {
+      where.name = { contains: name, mode: 'insensitive' };
+    }
+    return where;
   }
 
   async findOne(id: string, userId: string) {
