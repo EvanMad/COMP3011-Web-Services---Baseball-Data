@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { PrismaService } from '../prisma.service';
@@ -12,7 +16,15 @@ import {
 export class CollectionService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createCollectionDto: CreateCollectionDto, userId: string) {
+  async create(createCollectionDto: CreateCollectionDto, userId: string) {
+    const existing = await this.prisma.collection.findFirst({
+      where: { userId, name: createCollectionDto.name },
+    });
+    if (existing) {
+      throw new ConflictException(
+        `A collection with the name "${createCollectionDto.name}" already exists`,
+      );
+    }
     return this.prisma.collection.create({
       data: {
         ...createCollectionDto,
