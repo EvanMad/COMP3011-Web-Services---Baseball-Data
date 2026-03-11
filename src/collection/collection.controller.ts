@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Req,
+  Query,
 } from '@nestjs/common';
 import { CollectionService } from './collection.service';
 import { CreateCollectionDto } from './dto/create-collection.dto';
@@ -14,6 +15,11 @@ import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import type { AuthorisedRequest } from 'src/auth/auth.types';
 import { UseGuards } from '@nestjs/common';
+import {
+  PaginationQueryDto,
+  DEFAULT_PAGE,
+  DEFAULT_LIMIT,
+} from 'src/common/pagination.dto';
 
 @Controller('collection')
 export class CollectionController {
@@ -31,8 +37,15 @@ export class CollectionController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Req() request: AuthorisedRequest) {
-    return this.collectionService.findAll(request.user.sub);
+  findAll(
+    @Req() request: AuthorisedRequest,
+    @Query() pagination: PaginationQueryDto,
+  ) {
+    return this.collectionService.findAll(
+      request.user.sub,
+      pagination.page ?? DEFAULT_PAGE,
+      pagination.limit ?? DEFAULT_LIMIT,
+    );
   }
 
   @UseGuards(AuthGuard)

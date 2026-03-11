@@ -12,6 +12,11 @@ import {
 import { Player } from '../../generated/prisma/client';
 import { UpdatePlayerDto } from './dto/player-response/update-player.dto';
 import { CreatePlayerDto } from './dto/player-response/create-player.dto';
+import {
+  getPaginationParams,
+  paginate,
+  PaginatedResponse,
+} from 'src/common/pagination.dto';
 
 @Injectable()
 export class PlayerService {
@@ -20,21 +25,35 @@ export class PlayerService {
     private readonly statsService: StatsService,
   ) {}
 
-  // Updated to return DTO array
-  async getPlayerByName(name: string): Promise<PlayerResponseDto[]> {
-    const players = await this.prisma.player.findMany({
-      where: {
-        OR: [
-          { nameFirst: { contains: name, mode: 'insensitive' } },
-          { nameLast: { contains: name, mode: 'insensitive' } },
-        ],
-      },
-    });
+  async getPlayerByName(
+    name: string,
+    page: number = 1,
+    limit: number = 20,
+  ): Promise<PaginatedResponse<PlayerResponseDto>> {
+    const { skip, take } = getPaginationParams(page, limit);
+    const where = {
+      OR: [
+        { nameFirst: { contains: name, mode: 'insensitive' as const } },
+        { nameLast: { contains: name, mode: 'insensitive' as const } },
+      ],
+    };
+    const [players, total] = await Promise.all([
+      this.prisma.player.findMany({
+        where,
+        skip,
+        take,
+        orderBy: [{ nameLast: 'asc' }, { nameFirst: 'asc' }],
+      }),
+      this.prisma.player.count({ where }),
+    ]);
 
-    if (!players || players.length === 0) {
+    if (total === 0) {
       throw new NotFoundException(`Player with name ${name} not found`);
     }
-    return players.map((player) => this.mapToResponseDto(player, null, null));
+    const data = players.map((player) =>
+      this.mapToResponseDto(player, null, null),
+    );
+    return paginate(data, total, page, limit);
   }
 
   async getPlayerById(id: string): Promise<PlayerResponseDto> {
@@ -236,8 +255,22 @@ export class PlayerService {
     };
   }
 
-  async getAllPlayers(): Promise<PlayerResponseDto[]> {
-    const players = await this.prisma.player.findMany({ take: 50 });
-    return players.map((player) => this.mapToResponseDto(player, null, null));
+  async getAllPlayers(
+    page: number = 1,
+    limit: number = 20,
+  ): Promise<PaginatedResponse<PlayerResponseDto>> {
+    const { skip, take } = getPaginationParams(page, limit);
+    const [players, total] = await Promise.all([
+      this.prisma.player.findMany({
+        skip,
+        take,
+        orderBy: [{ nameLast: 'asc' }, { nameFirst: 'asc' }],
+      }),
+      this.prisma.player.count(),
+    ]);
+    const data = players.map((player) =>
+      this.mapToResponseDto(player, null, null),
+    );
+    return paginate(data, total, page, limit);
   }
 }
