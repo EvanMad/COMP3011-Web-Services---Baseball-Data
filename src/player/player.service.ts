@@ -25,18 +25,14 @@ export class PlayerService {
     private readonly statsService: StatsService,
   ) {}
 
-  async getPlayerByName(
-    name: string,
+  async findAll(
     page: number = 1,
     limit: number = 20,
+    name?: string,
+    birthCountry?: string,
   ): Promise<PaginatedResponse<PlayerResponseDto>> {
     const { skip, take } = getPaginationParams(page, limit);
-    const where = {
-      OR: [
-        { nameFirst: { contains: name, mode: 'insensitive' as const } },
-        { nameLast: { contains: name, mode: 'insensitive' as const } },
-      ],
-    };
+    const where = this.buildPlayerWhere(name, birthCountry);
     const [players, total] = await Promise.all([
       this.prisma.player.findMany({
         where,
@@ -46,14 +42,33 @@ export class PlayerService {
       }),
       this.prisma.player.count({ where }),
     ]);
-
-    if (total === 0) {
-      throw new NotFoundException(`Player with name ${name} not found`);
-    }
     const data = players.map((player) =>
       this.mapToResponseDto(player, null, null),
     );
     return paginate(data, total, page, limit);
+  }
+
+  private buildPlayerWhere(name?: string, birthCountry?: string) {
+    const andParts: object[] = [];
+    if (name !== undefined && name.trim() !== '') {
+      andParts.push({
+        OR: [
+          { nameFirst: { contains: name, mode: 'insensitive' as const } },
+          { nameLast: { contains: name, mode: 'insensitive' as const } },
+        ],
+      });
+    }
+    if (birthCountry !== undefined && birthCountry.trim() !== '') {
+      andParts.push({
+        birthCountry: {
+          equals: birthCountry,
+          mode: 'insensitive' as const,
+        },
+      });
+    }
+    if (andParts.length === 0) return undefined;
+    if (andParts.length === 1) return andParts[0];
+    return { AND: andParts };
   }
 
   async getPlayerById(id: string): Promise<PlayerResponseDto> {
@@ -255,22 +270,4 @@ export class PlayerService {
     };
   }
 
-  async getAllPlayers(
-    page: number = 1,
-    limit: number = 20,
-  ): Promise<PaginatedResponse<PlayerResponseDto>> {
-    const { skip, take } = getPaginationParams(page, limit);
-    const [players, total] = await Promise.all([
-      this.prisma.player.findMany({
-        skip,
-        take,
-        orderBy: [{ nameLast: 'asc' }, { nameFirst: 'asc' }],
-      }),
-      this.prisma.player.count(),
-    ]);
-    const data = players.map((player) =>
-      this.mapToResponseDto(player, null, null),
-    );
-    return paginate(data, total, page, limit);
-  }
 }

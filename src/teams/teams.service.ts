@@ -28,30 +28,47 @@ export class TeamsService {
   async findAll(
     page: number = 1,
     limit: number = 20,
+    league?: string,
+    year?: number,
   ): Promise<PaginatedResponse<TeamResponseDto>> {
     const { skip, take } = getPaginationParams(page, limit);
+    const where = this.buildTeamsWhere(league, year);
     const [teams, total] = await Promise.all([
-      this.prisma.team.findMany({ skip, take, orderBy: [{ yearID: 'desc' }, { teamID: 'asc' }] }),
-      this.prisma.team.count(),
+      this.prisma.team.findMany({
+        where,
+        skip,
+        take,
+        orderBy: [{ yearID: 'desc' }, { teamID: 'asc' }],
+      }),
+      this.prisma.team.count({ where }),
     ]);
     const data = teams.map((team) => this.mapToDto(team));
     return paginate(data, total, page, limit);
+  }
+
+  private buildTeamsWhere(league?: string, year?: number) {
+    const where: { lgID?: string; yearID?: number } = {};
+    if (league !== undefined && league !== '') where.lgID = league;
+    if (year !== undefined) where.yearID = year;
+    return Object.keys(where).length ? where : undefined;
   }
 
   async findAllTeams(
     id: string,
     page: number = 1,
     limit: number = 20,
+    year?: number,
   ): Promise<PaginatedResponse<TeamResponseDto>> {
     const { skip, take } = getPaginationParams(page, limit);
+    const where = this.buildTeamHistoryWhere(id, year);
     const [teams, total] = await Promise.all([
       this.prisma.team.findMany({
-        where: { teamID: id },
+        where,
         skip,
         take,
         orderBy: { yearID: 'desc' },
       }),
-      this.prisma.team.count({ where: { teamID: id } }),
+      this.prisma.team.count({ where }),
     ]);
     const data = teams.map((team) => this.mapToDto(team));
     return paginate(data, total, page, limit);

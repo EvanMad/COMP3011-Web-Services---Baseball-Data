@@ -1,20 +1,19 @@
 import { Controller, Get, Param, Delete, Query } from '@nestjs/common';
 import { TeamsService } from './teams.service';
-import {
-  PaginationQueryDto,
-  DEFAULT_PAGE,
-  DEFAULT_LIMIT,
-} from 'src/common/pagination.dto';
+import { DEFAULT_PAGE, DEFAULT_LIMIT } from 'src/common/pagination.dto';
+import { TeamsQueryDto } from './dto/teams-query.dto';
 
 @Controller('teams')
 export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
 
   @Get()
-  findAll(@Query() pagination: PaginationQueryDto) {
+  findAll(@Query() query: TeamsQueryDto) {
     return this.teamsService.findAll(
-      pagination.page ?? DEFAULT_PAGE,
-      pagination.limit ?? DEFAULT_LIMIT,
+      query.page ?? DEFAULT_PAGE,
+      query.limit ?? DEFAULT_LIMIT,
+      query.league,
+      query.year,
     );
   }
 
@@ -24,14 +23,12 @@ export class TeamsController {
   }
 
   @Get(':id')
-  findAllYears(
-    @Param('id') id: string,
-    @Query() pagination: PaginationQueryDto,
-  ) {
+  findAllYears(@Param('id') id: string, @Query() query: TeamsQueryDto) {
     return this.teamsService.findAllTeams(
       id,
-      pagination.page ?? DEFAULT_PAGE,
-      pagination.limit ?? DEFAULT_LIMIT,
+      query.page ?? DEFAULT_PAGE,
+      query.limit ?? DEFAULT_LIMIT,
+      query.year,
     );
   }
 
