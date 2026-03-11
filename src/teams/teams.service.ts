@@ -6,6 +6,11 @@ import { StatsService } from 'src/stats/stats.service';
 import { Team } from '../../generated/prisma/client';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
+import {
+  getPaginationParams,
+  paginate,
+  PaginatedResponse,
+} from 'src/common/pagination.dto';
 
 export interface BattingCalculations {
   battingAverage: number;
@@ -20,16 +25,36 @@ export class TeamsService {
     private readonly statsService: StatsService,
   ) {}
 
-  async findAll() {
-    const teams: Team[] = await this.prisma.team.findMany();
-    return teams.map((team) => this.mapToDto(team));
+  async findAll(
+    page: number = 1,
+    limit: number = 20,
+  ): Promise<PaginatedResponse<TeamResponseDto>> {
+    const { skip, take } = getPaginationParams(page, limit);
+    const [teams, total] = await Promise.all([
+      this.prisma.team.findMany({ skip, take, orderBy: [{ yearID: 'desc' }, { teamID: 'asc' }] }),
+      this.prisma.team.count(),
+    ]);
+    const data = teams.map((team) => this.mapToDto(team));
+    return paginate(data, total, page, limit);
   }
 
-  async findAllTeams(id: string): Promise<TeamResponseDto[]> {
-    const teams = await this.prisma.team.findMany({
-      where: { teamID: id },
-    });
-    return teams.map((team) => this.mapToDto(team));
+  async findAllTeams(
+    id: string,
+    page: number = 1,
+    limit: number = 20,
+  ): Promise<PaginatedResponse<TeamResponseDto>> {
+    const { skip, take } = getPaginationParams(page, limit);
+    const [teams, total] = await Promise.all([
+      this.prisma.team.findMany({
+        where: { teamID: id },
+        skip,
+        take,
+        orderBy: { yearID: 'desc' },
+      }),
+      this.prisma.team.count({ where: { teamID: id } }),
+    ]);
+    const data = teams.map((team) => this.mapToDto(team));
+    return paginate(data, total, page, limit);
   }
 
   async findOne(id: string, year: number): Promise<TeamResponseDto | null> {

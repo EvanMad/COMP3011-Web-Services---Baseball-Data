@@ -2,6 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { PrismaService } from '../prisma.service';
+import {
+  getPaginationParams,
+  paginate,
+  PaginatedResponse,
+} from 'src/common/pagination.dto';
 
 @Injectable()
 export class CollectionService {
@@ -16,10 +21,23 @@ export class CollectionService {
     });
   }
 
-  findAll(userId: string) {
-    return this.prisma.collection.findMany({
-      where: { userId },
-    });
+  async findAll(
+    userId: string,
+    page: number = 1,
+    limit: number = 20,
+  ): Promise<PaginatedResponse<{ id: string; name: string; description: string | null; playerIDs: string[]; createdAt: Date; updatedAt: Date; userId: string }>> {
+    const { skip, take } = getPaginationParams(page, limit);
+    const where = { userId };
+    const [data, total] = await Promise.all([
+      this.prisma.collection.findMany({
+        where,
+        skip,
+        take,
+        orderBy: { updatedAt: 'desc' },
+      }),
+      this.prisma.collection.count({ where }),
+    ]);
+    return paginate(data, total, page, limit);
   }
 
   async findOne(id: string, userId: string) {

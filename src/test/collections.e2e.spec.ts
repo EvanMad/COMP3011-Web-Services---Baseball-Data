@@ -20,7 +20,19 @@ jest.mock('../prisma.service', () => ({
 
 describe('CollectionController (e2e)', () => {
   let app: INestApplication;
-  const collectionService = { findAll: () => ['test'] };
+  const collectionService = {
+    findAll: () => ({
+      data: ['test'],
+      meta: {
+        total: 1,
+        page: 1,
+        limit: 20,
+        totalPages: 1,
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+    }),
+  };
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -34,10 +46,21 @@ describe('CollectionController (e2e)', () => {
     await app.init();
   });
 
-  it(`/GET cats`, () => {
-    return request(app.getHttpServer()).get('/collection').expect(200).expect({
-      data: collectionService.findAll(),
-    });
+  it(`/GET collection (paginated)`, () => {
+    return request(app.getHttpServer())
+      .get('/collection')
+      .expect(200)
+      .expect((res) => {
+        const body = res.body;
+        expect(body).toHaveProperty('data');
+        expect(body).toHaveProperty('meta');
+        expect(body.meta).toMatchObject({
+          total: 1,
+          page: 1,
+          limit: 20,
+          totalPages: 1,
+        });
+      });
   });
 
   afterAll(async () => {
