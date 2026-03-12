@@ -44,7 +44,8 @@ describe('PlayerController (e2e)', () => {
               constraints: e.constraints,
             })),
           }),
-    }));
+      }),
+    );
     await app.init();
 
     const prisma = moduleRef.get(PrismaService);

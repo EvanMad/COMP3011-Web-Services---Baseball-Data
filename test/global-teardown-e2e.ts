@@ -7,9 +7,10 @@ const E2E_DB_FILE = path.join(process.cwd(), 'test', '.e2e-db.json');
 export default async function globalTeardown(): Promise<void> {
   if (!fs.existsSync(E2E_DB_FILE)) return;
 
-  const { containerId } = JSON.parse(
-    fs.readFileSync(E2E_DB_FILE, 'utf-8'),
-  ) as { connectionUri: string; containerId: string };
+  const { containerId } = JSON.parse(fs.readFileSync(E2E_DB_FILE, 'utf-8')) as {
+    connectionUri: string;
+    containerId: string;
+  };
 
   try {
     execSync(`docker stop ${containerId}`, { stdio: 'inherit' });
