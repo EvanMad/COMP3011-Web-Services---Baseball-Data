@@ -4,7 +4,10 @@ import { ApiProperty } from '@nestjs/swagger';
  * Metadata for paginated list responses. Returned in the `meta` field alongside `data`.
  */
 export class PaginationMetaDto {
-  @ApiProperty({ example: 100, description: 'Total number of items across all pages' })
+  @ApiProperty({
+    example: 100,
+    description: 'Total number of items across all pages',
+  })
   total!: number;
 
   @ApiProperty({ example: 1, description: 'Current page (1-based)' })
@@ -19,6 +22,9 @@ export class PaginationMetaDto {
   @ApiProperty({ example: true, description: 'Whether a next page exists' })
   hasNextPage!: boolean;
 
-  @ApiProperty({ example: false, description: 'Whether a previous page exists' })
+  @ApiProperty({
+    example: false,
+    description: 'Whether a previous page exists',
+  })
   hasPreviousPage!: boolean;
 }

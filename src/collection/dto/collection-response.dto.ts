@@ -13,7 +13,11 @@ export class CollectionResponseDto {
   @ApiPropertyOptional({ example: 'Best players of the 1920s' })
   description?: string | null;
 
-  @ApiProperty({ example: ['ruthba01', 'gehrilo01'], type: [String], description: 'Player IDs in this collection' })
+  @ApiProperty({
+    example: ['ruthba01', 'gehrilo01'],
+    type: [String],
+    description: 'Player IDs in this collection',
+  })
   playerIDs!: string[];
 
   @ApiProperty({ example: '2024-01-15T10:00:00.000Z' })

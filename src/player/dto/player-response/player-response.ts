@@ -41,12 +41,21 @@ export class PlayerResponseDto {
   @ApiProperty({ example: 72, description: 'Height in inches' })
   height!: number;
 
-  @ApiPropertyOptional({ description: 'Present when the player has batting stats', type: () => CareerBattingDto })
+  @ApiPropertyOptional({
+    description: 'Present when the player has batting stats',
+    type: () => CareerBattingDto,
+  })
   career_batting?: CareerBattingDto;
 
-  @ApiPropertyOptional({ description: 'Present when the player has batting stats', type: () => CareerHighsDto })
+  @ApiPropertyOptional({
+    description: 'Present when the player has batting stats',
+    type: () => CareerHighsDto,
+  })
   careerHighs?: CareerHighsDto;
 
-  @ApiPropertyOptional({ description: 'Present when the player has pitching stats', type: () => CareerPitchingDto })
+  @ApiPropertyOptional({
+    description: 'Present when the player has pitching stats',
+    type: () => CareerPitchingDto,
+  })
   career_pitching?: CareerPitchingDto;
 }

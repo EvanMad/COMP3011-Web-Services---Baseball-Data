@@ -9,7 +9,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AdminGuard } from 'src/auth/admin.guard';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ErrorDto } from 'src/common/dto/error.dto';
@@ -29,7 +35,11 @@ export class PlayerController {
   @Get(':id')
   @ApiOperation({ summary: 'Get player by ID' })
   @ApiParam({ name: 'id', description: 'Player ID' })
-  @ApiResponse({ status: 200, description: 'Player found', type: () => PlayerResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Player found',
+    type: () => PlayerResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Player not found', type: ErrorDto })
   async getPlayerById(@Param('id') id: string): Promise<PlayerResponseDto> {
     return await this.playerService.getPlayerById(id);
@@ -39,7 +49,11 @@ export class PlayerController {
   @Get()
   @ApiBearerAuth('defaultBearerAuth')
   @ApiOperation({ summary: 'List players (paginated, optional filters)' })
-  @ApiResponse({ status: 200, description: 'Paginated list of players', type: () => PaginatedPlayerResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Paginated list of players',
+    type: () => PaginatedPlayerResponseDto,
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized', type: ErrorDto })
   async getAllPlayers(@Query() query: PlayerQueryDto) {
     return await this.playerService.findAll(
@@ -55,7 +69,11 @@ export class PlayerController {
   @ApiBearerAuth('defaultBearerAuth')
   @ApiOperation({ summary: 'Update player (admin)' })
   @ApiParam({ name: 'id', description: 'Player ID' })
-  @ApiResponse({ status: 200, description: 'Updated player', type: () => PlayerResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Updated player',
+    type: () => PlayerResponseDto,
+  })
   @ApiResponse({ status: 400, description: 'Validation error', type: ErrorDto })
   @ApiResponse({ status: 401, description: 'Unauthorized', type: ErrorDto })
   @ApiResponse({ status: 404, description: 'Player not found', type: ErrorDto })
@@ -82,7 +100,11 @@ export class PlayerController {
   @Post()
   @ApiBearerAuth('defaultBearerAuth')
   @ApiOperation({ summary: 'Create player (admin)' })
-  @ApiResponse({ status: 201, description: 'Player created', type: () => PlayerResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Player created',
+    type: () => PlayerResponseDto,
+  })
   @ApiResponse({ status: 400, description: 'Validation error', type: ErrorDto })
   @ApiResponse({ status: 401, description: 'Unauthorized', type: ErrorDto })
   async createPlayer(

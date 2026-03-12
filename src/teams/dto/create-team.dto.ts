@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString, MinLength, MaxLength } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  MinLength,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateTeamDto {
   @ApiProperty({ example: 2023, description: 'Season year' })

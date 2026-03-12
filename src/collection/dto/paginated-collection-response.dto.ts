@@ -6,7 +6,11 @@ import { CollectionResponseDto } from './collection-response.dto';
  * Paginated list of collections. Returned by GET /collection.
  */
 export class PaginatedCollectionResponseDto {
-  @ApiProperty({ type: () => CollectionResponseDto, isArray: true, description: 'List of collections' })
+  @ApiProperty({
+    type: () => CollectionResponseDto,
+    isArray: true,
+    description: 'List of collections',
+  })
   data!: CollectionResponseDto[];
 
   @ApiProperty({ type: PaginationMetaDto })

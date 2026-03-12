@@ -17,8 +17,16 @@ export class ErrorDto {
   message!: string;
 
   @ApiPropertyOptional({
-    description: 'Validation details (e.g. property-level errors when statusCode is 400)',
-    example: [{ property: 'nameFirst', constraints: { minLength: 'nameFirst must be longer than or equal to 1 characters' } }],
+    description:
+      'Validation details (e.g. property-level errors when statusCode is 400)',
+    example: [
+      {
+        property: 'nameFirst',
+        constraints: {
+          minLength: 'nameFirst must be longer than or equal to 1 characters',
+        },
+      },
+    ],
   })
   errors?: Array<{ property: string; constraints?: Record<string, string> }>;
 }
