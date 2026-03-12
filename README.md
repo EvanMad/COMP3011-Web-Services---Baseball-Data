@@ -1,137 +1,82 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Evan's Super Cool Baseball Stats API
+*Evan's Super Cool Baseball Stats API* is my project submitted for COMP3011 Web Services and Web Data at the University of Leeds.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Project setup instructions
+### Prerequisites
+- NodeJS Version >20
+- PostgreSQL version >18
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
+### Database seeding
+The database must be seeded to add in the relevant baseball data. This can be done with:
 ```bash
-$ yarn install
+$ npx tsx prisma/seed.ts
 ```
 
-## Compile and run the project
+### Commands to start local development server
+```bash
+$ npm install
+```
 
 ```bash
-# development
-$ yarn run start
+$ npm run sync
+```
 
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+```bash
+$ npm run start:dev
 ```
 
 ## Run tests
 
 ```bash
 # unit tests
-$ yarn run test
+$ npm run test:unit
 
 # e2e tests
-$ yarn run test:e2e
+$ npm run test:e2e
 
 # test coverage
-$ yarn run test:cov
+$ npm run test:cov
 ```
 
-## API
-
-### Analytics – League leaders
-
-**`GET /analytics/league-leaders`**
-
-Returns the top players for a given batting or pitching stat. Optionally filter by season year and league.
-
-**Query parameters**
-
-| Parameter  | Type   | Required | Description                                                                 |
-|-----------|--------|----------|-----------------------------------------------------------------------------|
-| `category`| string | Yes      | `batting` or `pitching`                                                     |
-| `stat`    | string | Yes      | Stat to rank by (see allowed stats below)                                   |
-| `year`    | number | No       | Season year (e.g. `1927`). Omit for career totals.                           |
-| `league`  | string | No       | League ID (e.g. `AL`, `NL`)                                                 |
-| `limit`   | number | No       | Number of leaders to return (default `10`, max `100`)                       |
-
-**Batting stats:** `homeRuns`, `hits`, `runs`, `rbi`, `stolenBases`, `walks`, `battingAverage`, `onBasePercentage`, `sluggingPercentage`
-
-**Pitching stats:** `wins`, `strikeouts`, `losses`, `era`
-
-For rate stats (e.g. `battingAverage`), only players with at least 100 at-bats are included. ERA leaders are sorted ascending (lower is better).
-
-**Example**
+## Format and Linting
+Formatting and Linting is setup with Prettier and ESLint.
 
 ```bash
-# Top 10 career home run leaders
-curl "http://localhost:3000/analytics/league-leaders?category=batting&stat=homeRuns"
-
-# Top 5 batting average leaders in 1927
-curl "http://localhost:3000/analytics/league-leaders?category=batting&stat=battingAverage&year=1927&limit=5"
+$ npm run format
 ```
 
-**Response (200)**  
-`{ "category": "batting", "stat": "homeRuns", "leaders": [ { "playerID": "...", "nameFirst": "...", "nameLast": "...", "rank": 1, "value": 60 } ], "year"?: number, "league"?: string }`
+```bash
+$ npm run lint
+```
 
+## API documentation
 OpenAPI (Swagger) docs are available at `/api` when the app is running.
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+A rendered version of this documentation is available in `/docs`. This can be re-generated with
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+$ npm run doc
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Database
+This application uses a [PostgreSQL](https://www.postgresql.org/) database with [Prisma ORM](https://www.prisma.io/). After any schema updates you must re-sync and generate the Prisma client library with:
 
-## Resources
+```bash
+$ npm run sync
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+## Data source
+All data was sourced from the [Lahman Baseball Database](https://sabr.org/lahman-database/), created by Sean Lahman and maintained by Bryan Walko at [SABR](https://sabr.org/). Licenced under Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) license.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Deployment
+The application is currently deployed at [comp3011.evanmadurai.co.uk](https://comp3011.evanmadurai.co.uk/).
 
-## Support
+This deployment is handled by [Render](https://render.com/). This was chosen as it seemed like a relatively easy and cheap place to deploy a web application with a PostgreSQL instance with good support for Github CI/CD based deployments.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Deploying a new version is done automatically on any push or merge into the main branch of the Github remote repo.
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Use of Artificial Intelligence
+Artificial Intelligence tools (such as Anthropic's *Claude* and and Google's *Gemini*) were used for both brainstorming ideas and generating code features. All code has been manually checked and approved by a human (me).
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is [MIT licensed](https://opensource.org/license/mit).
