@@ -103,6 +103,47 @@ describe('PlayerService', () => {
         }),
       );
     });
+
+    it('should use single where clause when only one filter is provided', async () => {
+      prismaMock.player.findMany.mockResolvedValue([]);
+      prismaMock.player.count.mockResolvedValue(0);
+
+      await service.findAll(1, 20, 'joe', undefined);
+
+      expect(prismaMock.player.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            OR: [
+              { nameFirst: { contains: 'joe', mode: 'insensitive' } },
+              { nameLast: { contains: 'joe', mode: 'insensitive' } },
+            ],
+          },
+        }),
+      );
+    });
+
+    it('should use AND when both name and birthCountry are provided', async () => {
+      prismaMock.player.findMany.mockResolvedValue([]);
+      prismaMock.player.count.mockResolvedValue(0);
+
+      await service.findAll(1, 20, 'smith', 'USA');
+
+      expect(prismaMock.player.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            AND: [
+              {
+                OR: [
+                  { nameFirst: { contains: 'smith', mode: 'insensitive' } },
+                  { nameLast: { contains: 'smith', mode: 'insensitive' } },
+                ],
+              },
+              { birthCountry: { equals: 'USA', mode: 'insensitive' } },
+            ],
+          },
+        }),
+      );
+    });
   });
 
   describe('getPlayerById', () => {
@@ -180,6 +221,66 @@ describe('PlayerService', () => {
       await expect(service.createPlayer(inputDto)).rejects.toThrow(
         `Player with id ${inputDto.playerID} already exists`,
       );
+    });
+
+    it('should create player with batting and pitching stats', async () => {
+      const inputDto: CreatePlayerDto = {
+        playerID: 'test-002',
+        nameFirst: 'Babe',
+        nameLast: 'Ruth',
+        weight: 215,
+        height: 72,
+        batting: [
+          {
+            yearID: 1927,
+            stint: 1,
+            teamID: 'NYA',
+            lgID: 'AL',
+            G: 151,
+            AB: 540,
+            H: 192,
+            HR: 60,
+          },
+        ],
+        pitching: [
+          {
+            yearID: 1914,
+            stint: 1,
+            teamID: 'BOS',
+            W: 2,
+            L: 1,
+            ERA: 3.91,
+            SO: 3,
+          },
+        ],
+      };
+      const dbResponse = mockPlayer({ playerID: 'test-002' });
+      prismaMock.player.findUnique.mockResolvedValue(null);
+      prismaMock.player.create.mockResolvedValue(dbResponse);
+
+      const result = await service.createPlayer(inputDto);
+
+      expect(result.playerID).toBe('test-002');
+      expect(prismaMock.player.create).toHaveBeenCalledTimes(1);
+      const createCall = prismaMock.player.create.mock.calls[0][0];
+      expect(createCall.data.playerID).toBe('test-002');
+      expect(createCall.data.battingStats?.create).toHaveLength(1);
+      expect(createCall.data.battingStats?.create[0]).toMatchObject({
+        stint: 1,
+        lgID: 'AL',
+        H: 192,
+        HR: 60,
+        team: { connect: { yearID_teamID: { yearID: 1927, teamID: 'NYA' } } },
+      });
+      expect(createCall.data.pitchingStats?.create).toHaveLength(1);
+      expect(createCall.data.pitchingStats?.create[0]).toMatchObject({
+        stint: 1,
+        W: 2,
+        L: 1,
+        ERA: 3.91,
+        SO: 3,
+        team: { connect: { yearID_teamID: { yearID: 1914, teamID: 'BOS' } } },
+      });
     });
   });
 
