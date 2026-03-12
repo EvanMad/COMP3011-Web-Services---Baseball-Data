@@ -17,8 +17,8 @@ describe('AppService', () => {
   });
 
   describe('getStatus', () => {
-    it('should return "OK"', () => {
-      expect(service.getStatus()).toBe('OK');
+    it('should return "STATUS UP"', () => {
+      expect(service.getStatus()).toStrictEqual({ STATUS: 'UP' });
     });
   });
 });
