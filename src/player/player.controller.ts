@@ -45,7 +45,6 @@ export class PlayerController {
   }
 
   @Get()
-  @ApiBearerAuth('defaultBearerAuth')
   @ApiOperation({ summary: 'List players (paginated, optional filters)' })
   @ApiResponse({
     status: 200,
