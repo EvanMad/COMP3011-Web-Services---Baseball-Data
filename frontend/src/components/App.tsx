@@ -3,9 +3,10 @@ import { AuthProvider, useAuth } from 'contexts/AuthContext';
 import AuthForm from 'components/AuthForm';
 import MLBTab from 'components/mlb/MLBTab';
 import FantasyTab from 'components/fantasy/FantasyTab';
+import LeaderboardsTab from 'components/leaderboards/LeaderboardsTab';
 import { classNames } from 'utils';
 
-type Tab = 'mlb' | 'fantasy';
+type Tab = 'mlb' | 'leaderboards' | 'fantasy';
 
 function AppContent() {
   const [tab, setTab] = useState<Tab>('mlb');
@@ -34,6 +35,18 @@ function AppContent() {
           </button>
           <button
             type="button"
+            onClick={() => setTab('leaderboards')}
+            className={classNames(
+              'border-b-2 px-4 py-2 text-sm font-medium',
+              tab === 'leaderboards'
+                ? 'border-indigo-600 text-indigo-600'
+                : 'border-transparent text-slate-600 hover:border-slate-300 hover:text-slate-900'
+            )}
+          >
+            Leaderboards
+          </button>
+          <button
+            type="button"
             onClick={() => setTab('fantasy')}
             className={classNames(
               'border-b-2 px-4 py-2 text-sm font-medium',
@@ -46,6 +59,7 @@ function AppContent() {
           </button>
         </div>
         {tab === 'mlb' && <MLBTab />}
+        {tab === 'leaderboards' && <LeaderboardsTab />}
         {tab === 'fantasy' && <FantasyTab />}
       </main>
     </div>

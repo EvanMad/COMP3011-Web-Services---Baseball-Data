@@ -125,3 +125,41 @@ export function collectionUpdate(id: string, dto: import('./types').UpdateCollec
 export function collectionDelete(id: string) {
   return apiFetch<unknown>(`/collection/${encodeURIComponent(id)}`, { method: 'DELETE' });
 }
+
+// Analytics
+export function leagueLeaders(params: {
+  category: 'batting' | 'pitching';
+  stat: import('./types').LeagueStat;
+  year?: number;
+  league?: string;
+  limit?: number;
+}) {
+  const sp = new URLSearchParams();
+  sp.set('category', params.category);
+  sp.set('stat', params.stat);
+  if (params.year != null) sp.set('year', String(params.year));
+  if (params.league) sp.set('league', params.league);
+  if (params.limit != null) sp.set('limit', String(params.limit));
+  const q = sp.toString();
+  return apiFetch<import('./types').LeagueLeadersResponseDto>(`/analytics/league-leaders?${q}`);
+}
+
+// Matches (require auth)
+export function matchesList(params: { page?: number; limit?: number } = {}) {
+  const sp = new URLSearchParams();
+  if (params.page != null) sp.set('page', String(params.page));
+  if (params.limit != null) sp.set('limit', String(params.limit));
+  const q = sp.toString();
+  return apiFetch<import('./types').PaginatedMatchResponseDto>(`/match${q ? `?${q}` : ''}`);
+}
+
+export function matchById(id: string) {
+  return apiFetch<import('./types').MatchResponseDto>(`/match/${encodeURIComponent(id)}`);
+}
+
+export function matchCreate(dto: import('./types').CreateMatchDto) {
+  return apiFetch<import('./types').MatchResponseDto>('/match', {
+    method: 'POST',
+    body: JSON.stringify(dto),
+  });
+}

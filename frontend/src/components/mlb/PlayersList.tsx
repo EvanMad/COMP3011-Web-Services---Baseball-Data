@@ -1,8 +1,147 @@
 import { useEffect, useState } from 'react';
-import { playersList } from 'api/client';
+import { playerById, playersList } from 'api/client';
 import type { PlayerResponseDto } from 'api/types';
 import { useAuth } from 'contexts/AuthContext';
 import { classNames } from 'utils';
+
+function PlayerDrawer({ playerId, onClose }: { playerId: string; onClose: () => void }) {
+  const [player, setPlayer] = useState<PlayerResponseDto | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    playerById(playerId)
+      .then(setPlayer)
+      .catch((e) => setError(e instanceof Error ? e.message : 'Failed to load player details'))
+      .finally(() => setLoading(false));
+  }, [playerId]);
+
+  const career_batting = player?.career_batting;
+  const careerHighs = player?.careerHighs;
+  const career_pitching = player?.career_pitching;
+
+  return (
+    <div className="border-t border-slate-200 bg-slate-50/80">
+      <div className="flex items-center justify-between px-4 py-2">
+        <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Player details</span>
+        <button
+          type="button"
+          onClick={onClose}
+          className="text-slate-500 hover:text-slate-700 text-sm"
+          aria-label="Close"
+        >
+          Close
+        </button>
+      </div>
+      <div className="grid gap-6 px-4 pb-4 pt-0 sm:grid-cols-2 lg:grid-cols-3">
+        {loading && (
+          <p className="col-span-full text-sm text-slate-500">Loading player details…</p>
+        )}
+        {error && !loading && (
+          <p className="col-span-full text-sm text-red-600">{error}</p>
+        )}
+        {!loading && !error && player && (
+          <>
+        <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+          <h4 className="mb-3 text-sm font-semibold text-slate-800">Profile</h4>
+          <dl className="space-y-1.5 text-sm">
+            <div className="flex justify-between">
+              <dt className="text-slate-500">Name</dt>
+              <dd className="font-medium text-slate-900">
+                {player.nameFirst} {player.nameLast}
+              </dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-slate-500">ID</dt>
+              <dd className="font-mono text-xs text-slate-900">{player.playerID}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-slate-500">Country</dt>
+              <dd className="font-medium text-slate-900">{player.birthCountry}</dd>
+            </div>
+              <div className="flex justify-between">
+                <dt className="text-slate-500">Height</dt>
+                <dd className="font-medium text-slate-900">{player.height}&quot;</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-slate-500">Weight</dt>
+                <dd className="font-medium text-slate-900">{player.weight} lb</dd>
+              </div>
+          </dl>
+        </section>
+
+        {career_batting && (
+          <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <h4 className="mb-3 text-sm font-semibold text-slate-800">Career batting</h4>
+            <dl className="space-y-1.5 text-sm">
+              <div className="flex justify-between">
+                <dt className="text-slate-500">BA</dt>
+                <dd className="font-medium tabular-nums text-slate-900">
+                  {career_batting.battingAverage.toFixed(3)}
+                </dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-slate-500">OBP</dt>
+                <dd className="font-medium tabular-nums text-slate-900">
+                  {career_batting.onBasePercentage.toFixed(3)}
+                </dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-slate-500">SLG</dt>
+                <dd className="font-medium tabular-nums text-slate-900">
+                  {career_batting.sluggingPercentage.toFixed(3)}
+                </dd>
+              </div>
+            </dl>
+            {careerHighs && (
+              <div className="mt-3 border-t border-dashed border-slate-200 pt-2">
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Single‑season highs</p>
+                <dl className="space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <dt className="text-slate-500">HR</dt>
+                    <dd className="font-medium tabular-nums text-slate-900">{careerHighs.HR}</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-slate-500">Hits</dt>
+                    <dd className="font-medium tabular-nums text-slate-900">{careerHighs.H}</dd>
+                  </div>
+                </dl>
+              </div>
+            )}
+          </section>
+        )}
+
+        {career_pitching && (
+          <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <h4 className="mb-3 text-sm font-semibold text-slate-800">Career pitching</h4>
+            <dl className="space-y-1.5 text-sm">
+              <div className="flex justify-between">
+                <dt className="text-slate-500">Record</dt>
+                <dd className="font-medium tabular-nums text-slate-900">
+                  {career_pitching.wins}–{career_pitching.losses}
+                </dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-slate-500">ERA</dt>
+                <dd className="font-medium tabular-nums text-slate-900">
+                  {career_pitching.averageEra.toFixed(2)}
+                </dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-slate-500">Strikeouts</dt>
+                <dd className="font-medium tabular-nums text-slate-900">{career_pitching.strikeouts}</dd>
+              </div>
+            </dl>
+          </section>
+        )}
+        </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function PlayersList() {
   const { isAuthenticated } = useAuth();
@@ -14,6 +153,7 @@ export default function PlayersList() {
   const [birthCountry, setBirthCountry] = useState('');
   const [searchName, setSearchName] = useState('');
   const [searchCountry, setSearchCountry] = useState('');
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -33,6 +173,7 @@ export default function PlayersList() {
     setSearchName(name.trim() || '');
     setSearchCountry(birthCountry.trim() || '');
     setPage(1);
+    setExpandedId(null);
   };
 
   if (!isAuthenticated) {
@@ -78,24 +219,42 @@ export default function PlayersList() {
       {data && !loading && (
         <>
           <p className="text-sm text-slate-600">Total: {data.meta.total}</p>
-          <ul className="divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white">
-            {data.data.map((p) => (
-              <li key={p.playerID} className="flex flex-wrap items-center justify-between gap-2 px-4 py-3">
-                <div>
-                  <span className={classNames('font-medium text-slate-900')}>
-                    {p.nameFirst} {p.nameLast}
-                  </span>
-                  <span className="ml-2 text-slate-500 text-sm">({p.playerID})</span>
-                </div>
-                <div className="flex gap-4 text-sm text-slate-600">
-                  <span>Country: {p.birthCountry}</span>
-                  <span>H: {p.height}" W: {p.weight} lb</span>
-                  {p.career_batting && (
-                    <span>AVG .{p.career_batting.battingAverage?.toFixed(3)?.replace('0.', '') ?? '---'}</span>
-                  )}
-                </div>
-              </li>
-            ))}
+          <ul className="divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white overflow-hidden">
+            {data.data.map((p) => {
+              const isExpanded = expandedId === p.playerID;
+              const ba =
+                p.career_batting?.battingAverage != null
+                  ? p.career_batting.battingAverage.toFixed(3).replace('0.', '')
+                  : null;
+              return (
+                <li key={p.playerID}>
+                  <button
+                    type="button"
+                    onClick={() => setExpandedId(isExpanded ? null : p.playerID)}
+                    className="flex w-full flex-wrap items-center justify-between gap-2 px-4 py-3 text-left hover:bg-slate-50 focus:bg-slate-50 focus:outline-none"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className={classNames('font-medium text-slate-900')}>
+                        {p.nameFirst} {p.nameLast}
+                      </span>
+                      <span className="text-slate-500 text-sm">({p.playerID})</span>
+                      <span className="text-slate-400 text-sm" aria-hidden>
+                        {isExpanded ? '▼' : '▶'}
+                      </span>
+                    </div>
+                    <div className="flex gap-4 text-sm text-slate-600">
+                      <span>Country: {p.birthCountry}</span>
+                      <span>
+                        H: {p.height}"
+                        {'  '}W: {p.weight} lb
+                      </span>
+                      {ba && <span>BA .{ba}</span>}
+                    </div>
+                  </button>
+                  {isExpanded && <PlayerDrawer playerId={p.playerID} onClose={() => setExpandedId(null)} />}
+                </li>
+              );
+            })}
           </ul>
           {data.meta.totalPages > 1 && (
             <div className="flex items-center gap-2">

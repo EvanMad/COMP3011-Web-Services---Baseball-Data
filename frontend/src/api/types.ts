@@ -81,3 +81,52 @@ export interface ErrorDto {
   message: string;
   errors?: unknown[];
 }
+
+export type BattingStat =
+  | 'homeRuns'
+  | 'hits'
+  | 'runs'
+  | 'rbi'
+  | 'stolenBases'
+  | 'walks'
+  | 'battingAverage'
+  | 'onBasePercentage'
+  | 'sluggingPercentage';
+
+export type PitchingStat = 'wins' | 'strikeouts' | 'losses' | 'era';
+
+export type LeagueStat = BattingStat | PitchingStat;
+
+export interface LeagueLeaderEntryDto {
+  playerID: string;
+  nameFirst: string;
+  nameLast: string;
+  rank: number;
+  value: number;
+}
+
+export interface LeagueLeadersResponseDto {
+  category: 'batting' | 'pitching';
+  stat: LeagueStat;
+  year?: number;
+  league?: string;
+  leaders: LeagueLeaderEntryDto[];
+}
+
+export interface MatchResponseDto {
+  id: string;
+  collectionAId: string;
+  collectionBId: string;
+  winnerCollectionId: string | null;
+  createdAt: string;
+}
+
+export interface PaginatedMatchResponseDto {
+  data: MatchResponseDto[];
+  meta: PaginationMeta;
+}
+
+export interface CreateMatchDto {
+  collectionAId: string;
+  collectionBId: string;
+}

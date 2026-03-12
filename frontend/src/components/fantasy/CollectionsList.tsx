@@ -3,8 +3,9 @@ import {
   collectionsList,
   collectionDelete,
   collectionById,
+  playerById,
 } from 'api/client';
-import type { CollectionResponseDto } from 'api/types';
+import type { CollectionResponseDto, PlayerResponseDto } from 'api/types';
 import { useAuth } from 'contexts/AuthContext';
 import CollectionForm from './CollectionForm';
 
@@ -23,6 +24,8 @@ export default function CollectionsList() {
   const [creating, setCreating] = useState(false);
   const [detailId, setDetailId] = useState<string | null>(null);
   const [detail, setDetail] = useState<CollectionResponseDto | null>(null);
+  const [detailPlayers, setDetailPlayers] = useState<PlayerResponseDto[]>([]);
+  const [detailLoadingPlayers, setDetailLoadingPlayers] = useState(false);
 
   const fetchList = useCallback(() => {
     if (!isAuthenticated) return;
@@ -45,9 +48,35 @@ export default function CollectionsList() {
   useEffect(() => {
     if (!detailId || !isAuthenticated) {
       setDetail(null);
+      setDetailPlayers([]);
       return;
     }
-    collectionById(detailId).then(setDetail).catch(() => setDetail(null));
+    collectionById(detailId)
+      .then((c) => {
+        setDetail(c);
+        if (c.playerIDs.length === 0) {
+          setDetailPlayers([]);
+          return;
+        }
+        setDetailLoadingPlayers(true);
+        Promise.all(
+          Array.from(new Set(c.playerIDs)).map(async (id) => {
+            try {
+              return await playerById(id);
+            } catch {
+              return null;
+            }
+          })
+        )
+          .then((players) => {
+            setDetailPlayers(players.filter((p): p is PlayerResponseDto => p !== null));
+          })
+          .finally(() => setDetailLoadingPlayers(false));
+      })
+      .catch(() => {
+        setDetail(null);
+        setDetailPlayers([]);
+      });
   }, [detailId, isAuthenticated]);
 
   const handleDelete = async (id: string) => {
@@ -202,7 +231,40 @@ export default function CollectionsList() {
             </button>
           </div>
           {detail.description && <p className="mt-1 text-sm text-slate-600">{detail.description}</p>}
-          <p className="mt-2 text-xs text-slate-500">Player IDs: {detail.playerIDs.join(', ')}</p>
+
+          <div className="mt-3 rounded border border-slate-200 bg-white p-3">
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Players in collection
+            </h4>
+            {detailLoadingPlayers && (
+              <p className="text-xs text-slate-500">Loading player details…</p>
+            )}
+            {!detailLoadingPlayers && detail.playerIDs.length === 0 && (
+              <p className="text-xs text-slate-500">No players.</p>
+            )}
+            {!detailLoadingPlayers && detail.playerIDs.length > 0 && (
+              <ul className="max-h-56 divide-y divide-slate-200 overflow-auto text-sm">
+                {detail.playerIDs.map((id) => {
+                  const player = detailPlayers.find((p) => p.playerID === id);
+                  return (
+                    <li key={id} className="flex items-center justify-between gap-2 py-1.5">
+                      <div>
+                        <span className="font-medium text-slate-900">
+                          {player ? `${player.nameFirst} ${player.nameLast}` : id}
+                        </span>
+                        <span className="ml-2 text-xs text-slate-500">({id})</span>
+                        {player && (
+                          <span className="ml-2 text-xs text-slate-400">
+                            {player.birthCountry} · H {player.height}&quot; · W {player.weight} lb
+                          </span>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
         </div>
       )}
     </div>
