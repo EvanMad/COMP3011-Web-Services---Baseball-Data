@@ -197,9 +197,13 @@ font-style: italic;
 
   <h3>Table of Contents </h3>
   <div class="method-summary"></div>
+  <h4><a href="#Analytics">Analytics</a></h4>
+  <ul>
+  <li><a href="#analyticsControllerGetLeagueLeaders"><code><span class="http-method">get</span> /analytics/league-leaders</code></a></li>
+  </ul>
   <h4><a href="#App">App</a></h4>
   <ul>
-  <li><a href="#appControllerGetStatus"><code><span class="http-method">get</span> /</code></a></li>
+  <li><a href="#appControllerGetStatus"><code><span class="http-method">get</span> /health</code></a></li>
   </ul>
   <h4><a href="#Auth">Auth</a></h4>
   <ul>
@@ -213,6 +217,12 @@ font-style: italic;
   <li><a href="#collectionControllerFindOne"><code><span class="http-method">get</span> /collection/{id}</code></a></li>
   <li><a href="#collectionControllerRemove"><code><span class="http-method">delete</span> /collection/{id}</code></a></li>
   <li><a href="#collectionControllerUpdate"><code><span class="http-method">patch</span> /collection/{id}</code></a></li>
+  </ul>
+  <h4><a href="#Match">Match</a></h4>
+  <ul>
+  <li><a href="#matchControllerCreate"><code><span class="http-method">post</span> /match</code></a></li>
+  <li><a href="#matchControllerFindAll"><code><span class="http-method">get</span> /match</code></a></li>
+  <li><a href="#matchControllerFindOne"><code><span class="http-method">get</span> /match/{id}</code></a></li>
   </ul>
   <h4><a href="#Player">Player</a></h4>
   <ul>
@@ -230,28 +240,76 @@ font-style: italic;
   <li><a href="#teamsControllerRemove"><code><span class="http-method">delete</span> /teams/{id}</code></a></li>
   </ul>
 
-  <h1><a name="App">App</a></h1>
-  <div class="method"><a name="appControllerGetStatus"/>
+  <h1><a name="Analytics">Analytics</a></h1>
+  <div class="method"><a name="analyticsControllerGetLeagueLeaders"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /</code></pre></div>
-    <div class="method-summary">Health / welcome (<span class="nickname">appControllerGetStatus</span>)</div>
-    <div class="method-notes"></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /analytics/league-leaders</code></pre></div>
+    <div class="method-summary">Get league leaders for a stat (<span class="nickname">analyticsControllerGetLeagueLeaders</span>)</div>
+    <div class="method-notes">Returns the top players for a given batting or pitching stat. Optionally filter by year and league. For rate stats (e.g. battingAverage), only players with at least 100 AB are included. ERA leaders are sorted ascending (lower is better).</div>
 
 
 
 
 
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">category (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Stat category default: null </div><div class="param">stat (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Stat to rank by. Must match category (e.g. batting + homeRuns, pitching + strikeouts). default: null </div><div class="param">year (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Season year (omit for career totals) default: null </div><div class="param">league (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; League ID (e.g. AL, NL) default: null </div><div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Number of leaders (default 10, max 100) default: 10 </div>
+    </div>  <!-- field-items -->
 
 
     <h3 class="field-label">Return type</h3>
     <div class="return-type">
+      <a href="#LeagueLeadersResponseDto">LeagueLeadersResponseDto</a>
       
-      String
     </div>
 
     <!--Todo: process Response Object and its headers, schema, examples -->
 
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "stat" : "homeRuns",
+  "year" : 1927,
+  "league" : "AL",
+  "leaders" : [ {
+    "nameLast" : "Ruth",
+    "nameFirst" : "Babe",
+    "rank" : 1,
+    "value" : 60,
+    "playerID" : "ruthba01"
+  }, {
+    "nameLast" : "Ruth",
+    "nameFirst" : "Babe",
+    "rank" : 1,
+    "value" : 60,
+    "playerID" : "ruthba01"
+  } ],
+  "category" : "batting"
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
 
     <h3 class="field-label">Produces</h3>
     This API call produces the following media types according to the <span class="header">Accept</span> request header;
@@ -262,8 +320,36 @@ font-style: italic;
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
+    League leaders for the requested stat
+        <a href="#LeagueLeadersResponseDto">LeagueLeadersResponseDto</a>
+    <h4 class="field-label">400</h4>
+    Invalid query (e.g. stat/category mismatch)
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="App">App</a></h1>
+  <div class="method"><a name="appControllerGetStatus"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /health</code></pre></div>
+    <div class="method-summary">Health / welcome (<span class="nickname">appControllerGetStatus</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
     
-        <a href="#String">String</a>
+        <a href="#"></a>
   </div> <!-- method -->
   <hr/>
   <h1><a name="Auth">Auth</a></h1>
@@ -840,6 +926,277 @@ font-style: italic;
         <a href="#ErrorDto">ErrorDto</a>
     <h4 class="field-label">404</h4>
     Collection not found
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Match">Match</a></h1>
+  <div class="method"><a name="matchControllerCreate"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /match</code></pre></div>
+    <div class="method-summary">Play a match between two lineups (<span class="nickname">matchControllerCreate</span>)</div>
+    <div class="method-notes">Submit two collections (each with exactly 9 players). A winner is decided (e.g. coin toss) and the result is stored.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">CreateMatchDto <a href="#CreateMatchDto">CreateMatchDto</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#MatchResponseDto">MatchResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "createdAt" : "2024-01-15T10:00:00.000Z",
+  "collectionAId" : "claa...",
+  "winnerCollectionId" : "claa...",
+  "collectionBId" : "clbb...",
+  "id" : "clxx..."
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Match played and result recorded
+        <a href="#MatchResponseDto">MatchResponseDto</a>
+    <h4 class="field-label">400</h4>
+    Validation error or invalid lineups
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">404</h4>
+    Collection not found
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="matchControllerFindAll"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /match</code></pre></div>
+    <div class="method-summary">List current user's matches (paginated) (<span class="nickname">matchControllerFindAll</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">page (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: 1 </div><div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: 20 </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PaginatedMatchResponseDto">PaginatedMatchResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "data" : [ {
+    "createdAt" : "2024-01-15T10:00:00.000Z",
+    "collectionAId" : "claa...",
+    "winnerCollectionId" : "claa...",
+    "collectionBId" : "clbb...",
+    "id" : "clxx..."
+  }, {
+    "createdAt" : "2024-01-15T10:00:00.000Z",
+    "collectionAId" : "claa...",
+    "winnerCollectionId" : "claa...",
+    "collectionBId" : "clbb...",
+    "id" : "clxx..."
+  } ],
+  "meta" : {
+    "total" : 100,
+    "hasNextPage" : true,
+    "limit" : 20,
+    "totalPages" : 5,
+    "hasPreviousPage" : false,
+    "page" : 1
+  }
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Paginated list of matches
+        <a href="#PaginatedMatchResponseDto">PaginatedMatchResponseDto</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="matchControllerFindOne"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /match/{id}</code></pre></div>
+    <div class="method-summary">Get match by ID (<span class="nickname">matchControllerFindOne</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Match ID default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#MatchResponseDto">MatchResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "createdAt" : "2024-01-15T10:00:00.000Z",
+  "collectionAId" : "claa...",
+  "winnerCollectionId" : "claa...",
+  "collectionBId" : "clbb...",
+  "id" : "clxx..."
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Match found
+        <a href="#MatchResponseDto">MatchResponseDto</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">404</h4>
+    Match not found
         <a href="#ErrorDto">ErrorDto</a>
   </div> <!-- method -->
   <hr/>
@@ -1798,10 +2155,15 @@ font-style: italic;
     <li><a href="#CollectionResponseDto"><code>CollectionResponseDto</code> - </a></li>
     <li><a href="#CreateBattingDto"><code>CreateBattingDto</code> - </a></li>
     <li><a href="#CreateCollectionDto"><code>CreateCollectionDto</code> - </a></li>
+    <li><a href="#CreateMatchDto"><code>CreateMatchDto</code> - </a></li>
     <li><a href="#CreatePitchingDto"><code>CreatePitchingDto</code> - </a></li>
     <li><a href="#CreatePlayerDto"><code>CreatePlayerDto</code> - </a></li>
     <li><a href="#ErrorDto"><code>ErrorDto</code> - </a></li>
+    <li><a href="#LeagueLeaderEntryDto"><code>LeagueLeaderEntryDto</code> - </a></li>
+    <li><a href="#LeagueLeadersResponseDto"><code>LeagueLeadersResponseDto</code> - </a></li>
+    <li><a href="#MatchResponseDto"><code>MatchResponseDto</code> - </a></li>
     <li><a href="#PaginatedCollectionResponseDto"><code>PaginatedCollectionResponseDto</code> - </a></li>
+    <li><a href="#PaginatedMatchResponseDto"><code>PaginatedMatchResponseDto</code> - </a></li>
     <li><a href="#PaginatedPlayerResponseDto"><code>PaginatedPlayerResponseDto</code> - </a></li>
     <li><a href="#PaginatedTeamResponseDto"><code>PaginatedTeamResponseDto</code> - </a></li>
     <li><a href="#PaginationMetaDto"><code>PaginationMetaDto</code> - </a></li>
@@ -1894,6 +2256,14 @@ font-style: italic;
     </div>  <!-- field-items -->
   </div>
   <div class="model">
+    <h3><a name="CreateMatchDto"><code>CreateMatchDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">collectionAId </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> ID of the first collection (lineup). Must have exactly 9 players. </div>
+<div class="param">collectionBId </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> ID of the second collection (lineup). Must have exactly 9 players. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
     <h3><a name="CreatePitchingDto"><code>CreatePitchingDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
     <div class='model-description'></div>
     <div class="field-items">
@@ -1935,10 +2305,51 @@ font-style: italic;
     </div>  <!-- field-items -->
   </div>
   <div class="model">
+    <h3><a name="LeagueLeaderEntryDto"><code>LeagueLeaderEntryDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">playerID </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Player ID </div>
+<div class="param">nameFirst </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">nameLast </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">rank </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Rank among league leaders (1-based) </div>
+<div class="param">value </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Value of the stat (e.g. home runs, batting average) </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="LeagueLeadersResponseDto"><code>LeagueLeadersResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">category </div><div class="param-desc"><span class="param-type"><a href="#">Object</a></span>  </div>
+<div class="param">stat </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">year (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Season year when provided in query </div>
+<div class="param">league (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> League ID when provided in query </div>
+<div class="param">leaders </div><div class="param-desc"><span class="param-type"><a href="#LeagueLeaderEntryDto">array[LeagueLeaderEntryDto]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="MatchResponseDto"><code>MatchResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Match ID </div>
+<div class="param">collectionAId </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> First lineup (collection) ID </div>
+<div class="param">collectionBId </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Second lineup (collection) ID </div>
+<div class="param">winnerCollectionId (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> ID of the winning collection, or null for a draw </div>
+<div class="param">createdAt </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> When the match was played </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
     <h3><a name="PaginatedCollectionResponseDto"><code>PaginatedCollectionResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
     <div class='model-description'></div>
     <div class="field-items">
       <div class="param">data </div><div class="param-desc"><span class="param-type"><a href="#CollectionResponseDto">array[CollectionResponseDto]</a></span> List of collections </div>
+<div class="param">meta </div><div class="param-desc"><span class="param-type"><a href="#PaginationMetaDto">PaginationMetaDto</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PaginatedMatchResponseDto"><code>PaginatedMatchResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">data </div><div class="param-desc"><span class="param-type"><a href="#MatchResponseDto">array[MatchResponseDto]</a></span> List of matches </div>
 <div class="param">meta </div><div class="param-desc"><span class="param-type"><a href="#PaginationMetaDto">PaginationMetaDto</a></span>  </div>
     </div>  <!-- field-items -->
   </div>
