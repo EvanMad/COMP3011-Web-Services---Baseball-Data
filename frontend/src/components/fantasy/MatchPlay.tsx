@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { collectionsList, matchCreate, matchesList } from 'api/client';
+import { useState } from 'react';
+import { matchCreate } from 'api/client';
 import type { CollectionResponseDto, MatchResponseDto } from 'api/types';
 import { useAuth } from 'contexts/AuthContext';
 
@@ -20,44 +20,26 @@ function formatMatchResult(match: MatchResponseDto, collections: CollectionRespo
   };
 }
 
-export default function MatchPlay() {
-  const { isAuthenticated } = useAuth();
-  const [collections, setCollections] = useState<CollectionResponseDto[]>([]);
-  const [collectionsLoading, setCollectionsLoading] = useState(false);
-  const [collectionsError, setCollectionsError] = useState<string | null>(null);
+interface MatchPlayProps {
+  collections: CollectionResponseDto[];
+  collectionsLoading: boolean;
+  collectionsError: string | null;
+  lastMatch: MatchResponseDto | null;
+  onMatchPlayed: (match: MatchResponseDto) => void;
+}
 
+export default function MatchPlay({
+  collections,
+  collectionsLoading,
+  collectionsError,
+  lastMatch,
+  onMatchPlayed,
+}: MatchPlayProps) {
+  const { isAuthenticated } = useAuth();
   const [selectedA, setSelectedA] = useState<string>('');
   const [selectedB, setSelectedB] = useState<string>('');
-
   const [playing, setPlaying] = useState(false);
   const [playError, setPlayError] = useState<string | null>(null);
-  const [lastMatch, setLastMatch] = useState<MatchResponseDto | null>(null);
-
-  const [recentMatches, setRecentMatches] = useState<MatchResponseDto[]>([]);
-  const [matchesLoading, setMatchesLoading] = useState(false);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setCollections([]);
-      setRecentMatches([]);
-      return;
-    }
-
-    setCollectionsLoading(true);
-    setCollectionsError(null);
-    collectionsList({ page: 1, limit: 50 })
-      .then((res) => {
-        setCollections(res.data);
-      })
-      .catch((e) => setCollectionsError(e instanceof Error ? e.message : 'Failed to load collections'))
-      .finally(() => setCollectionsLoading(false));
-
-    setMatchesLoading(true);
-    matchesList({ page: 1, limit: 10 })
-      .then((res) => setRecentMatches(res.data))
-      .catch(() => setRecentMatches([]))
-      .finally(() => setMatchesLoading(false));
-  }, [isAuthenticated]);
 
   if (!isAuthenticated) {
     return null;
@@ -83,11 +65,7 @@ export default function MatchPlay() {
         collectionAId: collectionA.id,
         collectionBId: collectionB.id,
       });
-      setLastMatch(match);
-      setRecentMatches((prev) => {
-        const existing = prev.filter((m) => m.id !== match.id);
-        return [match, ...existing].slice(0, 10);
-      });
+      onMatchPlayed(match);
     } catch (e) {
       setPlayError(e instanceof Error ? e.message : 'Match failed');
     } finally {
@@ -183,52 +161,21 @@ export default function MatchPlay() {
           <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-emerald-800">
             Latest result
           </h4>
-          <MatchSummary match={lastMatch} collections={collections} />
+          <div className="text-sm text-slate-700">
+            <span className="font-medium text-slate-900">
+              {formatMatchResult(lastMatch, collections).aName}
+            </span>
+            {' vs '}
+            <span className="font-medium text-slate-900">
+              {formatMatchResult(lastMatch, collections).bName}
+            </span>
+            {' — Winner: '}
+            <span className="font-medium text-slate-900">
+              {formatMatchResult(lastMatch, collections).winner}
+            </span>
+          </div>
         </div>
       )}
-
-      <div className="rounded border border-slate-200 bg-slate-50 p-3">
-        <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-          Recent matches
-        </h4>
-        {matchesLoading && <p className="text-xs text-slate-500">Loading matches…</p>}
-        {!matchesLoading && recentMatches.length === 0 && (
-          <p className="text-xs text-slate-500">No matches have been played yet.</p>
-        )}
-        {!matchesLoading && recentMatches.length > 0 && (
-          <ul className="space-y-1 text-xs">
-            {recentMatches.map((m) => (
-              <li key={m.id} className="flex items-center justify-between gap-2">
-                <MatchSummary match={m} collections={collections} />
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
     </section>
   );
 }
-
-function MatchSummary({ match, collections }: { match: MatchResponseDto; collections: CollectionResponseDto[] }) {
-  const { aName, bName, winner } = formatMatchResult(match, collections);
-  const date = new Date(match.createdAt);
-  const formatted = Number.isNaN(date.getTime()) ? match.createdAt : date.toLocaleString();
-
-  return (
-    <>
-      <div className="flex flex-col text-xs text-slate-700">
-        <span>
-          {aName} vs {bName}
-        </span>
-        <span className="text-slate-500">
-          Winner:{' '}
-          <span className="font-medium text-slate-900">
-            {winner}
-          </span>
-        </span>
-      </div>
-      <span className="text-[10px] text-slate-400">{formatted}</span>
-    </>
-  );
-}
-

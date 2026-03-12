@@ -35,7 +35,16 @@ export interface TeamResponseDto {
   divisionID?: string;
   park?: string;
   attendance?: number;
-  results: { rank: number; divisionWin: boolean; wildCardWin: boolean; leagueWin: boolean; worldSeriesWin: boolean };
+  results: {
+    rank: number;
+    divisionWin: boolean;
+    wildCardWin: boolean;
+    leagueWin: boolean;
+    worldSeriesWin: boolean;
+    wins?: number;
+    losses?: number;
+    games?: number;
+  };
   batting: Record<string, number>;
   pitching: Record<string, number>;
 }
