@@ -18,9 +18,23 @@ const winstonLogger = WinstonModule.createLogger({
       filename: join(logDir, 'app.log'),
       format: format.combine(
         format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        format.printf(({ timestamp, level, message, context, ...meta }) =>
-          `${timestamp} [${level}] ${context ? `[${context}] ` : ''}${message} ${Object.keys(meta).length ? JSON.stringify(meta) : ''}`.trim(),
-        ),
+        format.printf(({ timestamp, level, message, context, ...meta }) => {
+          const ts =
+            typeof timestamp === 'string'
+              ? timestamp
+              : JSON.stringify(timestamp ?? '');
+          const lvl = String(level ?? 'info');
+          const msg = typeof message === 'string' ? message : String(message);
+          const ctx =
+            context === undefined || context === null
+              ? ''
+              : typeof context === 'string'
+                ? `[${context}] `
+                : `[${JSON.stringify(context)}] `;
+          const metaStr =
+            Object.keys(meta).length > 0 ? JSON.stringify(meta) : '';
+          return `${ts} [${lvl}] ${ctx}${msg} ${metaStr}`.trim();
+        }),
       ),
     }),
   ],
