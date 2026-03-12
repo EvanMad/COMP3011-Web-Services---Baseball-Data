@@ -137,15 +137,33 @@ model Collection {
   updatedAt   DateTime @updatedAt
   players     Player[]
 
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
+  user         User   @relation(fields: [userId], references: [id])
+  userId       String
+  matchesAsA   Match[] @relation("MatchCollectionA")
+  matchesAsB   Match[] @relation("MatchCollectionB")
+  wins         Match[] @relation("MatchWinner")
+}
+
+model Match {
+  id                 String    @id @default(cuid())
+  collectionAId      String
+  collectionBId      String
+  winnerCollectionId String?
+  createdAt          DateTime  @default(now())
+
+  collectionA  Collection @relation("MatchCollectionA", fields: [collectionAId], references: [id])
+  collectionB  Collection @relation("MatchCollectionB", fields: [collectionBId], references: [id])
+  winner       Collection? @relation("MatchWinner", fields: [winnerCollectionId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String
 }
 
 model User {
-  id          String   @id @default(cuid()) 
+  id          String   @id @default(cuid())
   username    String   @unique
-  password    String 
+  password    String
   role       String   @default("user")
 
-  collections  Collection[]
+  collections Collection[]
+  matches     Match[]
 }

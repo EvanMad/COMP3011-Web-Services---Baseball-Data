@@ -88,9 +88,16 @@
       "^src/(.*)$": "<rootDir>/src/$1"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.ts",
+      "!src/**/*.spec.ts",
+      "!**/generated/**"
     ],
-    "coverageDirectory": "../coverage",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "\\.spec\\.ts$",
+      "/generated/"
+    ],
+    "coverageDirectory": "./coverage",
     "testEnvironment": "node"
   }
 }
