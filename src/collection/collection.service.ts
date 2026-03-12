@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { PrismaService } from '../prisma.service';
@@ -10,15 +10,21 @@ import {
 
 @Injectable()
 export class CollectionService {
+  private readonly logger = new Logger(CollectionService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createCollectionDto: CreateCollectionDto, userId: string) {
-    return this.prisma.collection.create({
+  async create(createCollectionDto: CreateCollectionDto, userId: string) {
+    const collection = await this.prisma.collection.create({
       data: {
         ...createCollectionDto,
         userId: userId,
       },
     });
+    this.logger.log(
+      `Collection created: id=${collection.id} name=${collection.name} userId=${userId}`,
+    );
+    return collection;
   }
 
   async findAll(
@@ -83,10 +89,12 @@ export class CollectionService {
     if (!collection) {
       throw new NotFoundException('Collection not found');
     }
-    return this.prisma.collection.update({
+    const updated = await this.prisma.collection.update({
       where: { id },
       data: updateCollectionDto,
     });
+    this.logger.log(`Collection updated: id=${id} userId=${userId}`);
+    return updated;
   }
 
   async remove(id: string, userId: string) {
@@ -96,6 +104,7 @@ export class CollectionService {
     if (!collection) {
       throw new NotFoundException('Collection not found');
     }
+    this.logger.log(`Collection deleted: id=${id} name=${collection.name} userId=${userId}`);
     return this.prisma.collection.delete({
       where: { id },
     });

@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
@@ -34,6 +35,8 @@ interface LineupStrength {
 
 @Injectable()
 export class MatchService {
+  private readonly logger = new Logger(MatchService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   /**
@@ -214,6 +217,10 @@ export class MatchService {
         userId,
       },
     });
+
+    this.logger.log(
+      `Match created: id=${match.id} winnerCollectionId=${winnerCollectionId} userId=${userId}`,
+    );
 
     return {
       ...match,
