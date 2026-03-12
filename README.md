@@ -57,6 +57,45 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## API
+
+### Analytics – League leaders
+
+**`GET /analytics/league-leaders`**
+
+Returns the top players for a given batting or pitching stat. Optionally filter by season year and league.
+
+**Query parameters**
+
+| Parameter  | Type   | Required | Description                                                                 |
+|-----------|--------|----------|-----------------------------------------------------------------------------|
+| `category`| string | Yes      | `batting` or `pitching`                                                     |
+| `stat`    | string | Yes      | Stat to rank by (see allowed stats below)                                   |
+| `year`    | number | No       | Season year (e.g. `1927`). Omit for career totals.                           |
+| `league`  | string | No       | League ID (e.g. `AL`, `NL`)                                                 |
+| `limit`   | number | No       | Number of leaders to return (default `10`, max `100`)                       |
+
+**Batting stats:** `homeRuns`, `hits`, `runs`, `rbi`, `stolenBases`, `walks`, `battingAverage`, `onBasePercentage`, `sluggingPercentage`
+
+**Pitching stats:** `wins`, `strikeouts`, `losses`, `era`
+
+For rate stats (e.g. `battingAverage`), only players with at least 100 at-bats are included. ERA leaders are sorted ascending (lower is better).
+
+**Example**
+
+```bash
+# Top 10 career home run leaders
+curl "http://localhost:3000/analytics/league-leaders?category=batting&stat=homeRuns"
+
+# Top 5 batting average leaders in 1927
+curl "http://localhost:3000/analytics/league-leaders?category=batting&stat=battingAverage&year=1927&limit=5"
+```
+
+**Response (200)**  
+`{ "category": "batting", "stat": "homeRuns", "leaders": [ { "playerID": "...", "nameFirst": "...", "nameLast": "...", "rank": 1, "value": 60 } ], "year"?: number, "league"?: string }`
+
+OpenAPI (Swagger) docs are available at `/api` when the app is running.
+
 ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.

@@ -13,7 +13,7 @@ const SEED_USERNAME = 'testuser';
 const SEED_PASSWORD = 'password';
 const SALT_ROUNDS = 10;
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL_PROD });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
