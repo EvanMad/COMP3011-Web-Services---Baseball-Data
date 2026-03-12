@@ -9,6 +9,7 @@ import { CollectionModule } from './collection/collection.module';
 import { MatchModule } from './match/match.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UsersModule } from './users/users.module';
     MatchModule,
     AuthModule,
     UsersModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
