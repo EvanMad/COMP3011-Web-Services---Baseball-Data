@@ -19,7 +19,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "TESTCONTAINERS_RYUK_DISABLED=true NODE_OPTIONS='--experimental-vm-modules' jest --config ./test/jest-e2e.json",
-    "sync": "prisma db push && prisma generate"
+    "sync": "prisma db push && prisma generate",
+    "doc": "npx @openapitools/openapi-generator-cli generate -g html -i http://localhost:3000/api-yaml -o docs"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.13",
