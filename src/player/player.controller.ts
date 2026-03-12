@@ -17,7 +17,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AdminGuard } from 'src/auth/admin.guard';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { ErrorDto } from 'src/common/dto/error.dto';
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from 'src/common/pagination.dto';
 import { CreatePlayerDto } from './dto/player-response/create-player.dto';
@@ -45,7 +44,6 @@ export class PlayerController {
     return await this.playerService.getPlayerById(id);
   }
 
-  @UseGuards(AuthGuard)
   @Get()
   @ApiBearerAuth('defaultBearerAuth')
   @ApiOperation({ summary: 'List players (paginated, optional filters)' })

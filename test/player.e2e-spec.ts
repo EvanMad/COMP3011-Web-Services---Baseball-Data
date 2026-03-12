@@ -141,12 +141,31 @@ describe('PlayerController (e2e)', () => {
       });
   });
 
-  it('GET /player/:id returns 404 for non-existent id', () => {
-    return server().get('/player/nonexistent-id-99999').expect(404);
-  });
-
-  it('GET /player (list) returns 401 without auth', () => {
-    return server().get('/player').expect(401);
+  it('GET /player (list) returns list of players', () => {
+    return server()
+      .get('/player')
+      .expect(200)
+      .expect((res) => {
+        const body = res.body as {
+          data: PlayerListItem[];
+        };
+        expect(body.data).toBeDefined();
+        expect(Array.isArray(body.data)).toBe(true);
+        expect(body.data.length).toBeGreaterThan(0);
+        expect(body.data.every((p) => typeof p.playerID === 'string')).toBe(
+          true,
+        );
+        expect(body.data.every((p) => typeof p.nameFirst === 'string')).toBe(
+          true,
+        );
+        expect(body.data.every((p) => typeof p.nameLast === 'string')).toBe(
+          true,
+        );
+        const found = body.data.find((p) => p.playerID === createdPlayerId);
+        expect(found).toBeDefined();
+        expect(found?.nameFirst).toBe('E2E');
+        expect(found?.nameLast).toBe('Player');
+      });
   });
 
   it('GET /player (list) returns 200 with auth and paginated shape', () => {

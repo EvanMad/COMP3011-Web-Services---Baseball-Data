@@ -1,9 +1,17 @@
 import { Pool } from 'pg';
+import * as bcrypt from 'bcrypt';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../generated/prisma/client';
-import { parse } from 'csv-parse/sync'; // Install with: npm install csv-parse
+import { parse } from 'csv-parse/sync';
 import fs from 'fs';
 import 'dotenv/config';
+
+const DEFAULT_ADMIN_USERNAME = 'admin';
+const DEFAULT_ADMIN_PASSWORD = 'zadra';
+
+const SEED_USERNAME = 'testuser';
+const SEED_PASSWORD = 'password';
+const SALT_ROUNDS = 10;
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
@@ -173,6 +181,75 @@ function formatDateToISO(y: string, m: string, d: string): string | null {
   return new Date(`${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}T00:00:00Z`).toISOString();
 }
 
+async function getOrCreateSeedUser(): Promise<string> {
+  let user = await prisma.user.findUnique({ where: { username: SEED_USERNAME } });
+  if (!user) {
+    const hashedPassword = await bcrypt.hash(SEED_PASSWORD, SALT_ROUNDS);
+    user = await prisma.user.create({
+      data: { username: SEED_USERNAME, password: hashedPassword },
+    });
+    console.log('✅ Created seed user:', SEED_USERNAME);
+  }
+  return user.id;
+}
+
+async function getOrCreateDefaultAdminUser(): Promise<string> {
+  let user = await prisma.user.findUnique({ where: { username: DEFAULT_ADMIN_USERNAME } });
+  if (!user) {
+    const hashedPassword = await bcrypt.hash(DEFAULT_ADMIN_PASSWORD, SALT_ROUNDS);
+    user = await prisma.user.create({
+      data: { username: DEFAULT_ADMIN_USERNAME, password: hashedPassword },
+    });
+  }
+  return user.id;
+}
+
+async function seedCollections(userId: string, playerIDs: string[]) {
+  console.log('⏳ Seeding collections...');
+  if (playerIDs.length < 54) {
+    console.warn('⚠️ Fewer than 54 players; some collections may reuse player IDs.');
+  }
+  // Delete existing matches and collections for seed user (so re-run is idempotent)
+  await prisma.match.deleteMany({ where: { userId } });
+  await prisma.collection.deleteMany({ where: { userId } });
+
+  const collections = [
+    {
+      name: '2000s All-Stars',
+      description: 'Top lineup from 2000s debuts (9 players)',
+      playerIDs: playerIDs.slice(0, 9),
+    },
+    {
+      name: 'Modern Sluggers',
+      description: 'Power hitters lineup (9 players)',
+      playerIDs: playerIDs.slice(9, 18),
+    },
+    {
+      name: 'Rising Stars',
+      description: 'Young talent lineup (9 players)',
+      playerIDs: playerIDs.slice(18, 27),
+    },
+    {
+      name: 'Veteran Lineup',
+      description: 'Experienced players (10 players)',
+      playerIDs: playerIDs.slice(27, 37),
+    },
+    {
+      name: 'Fantasy Nine',
+      description: 'Mixed fantasy lineup (9 players)',
+      playerIDs: playerIDs.slice(37, 46),
+    },
+    {
+      name: 'Bench Squad',
+      description: 'Extended bench collection (12 players)',
+      playerIDs: playerIDs.slice(46, 58),
+    },
+  ].map((c) => ({ ...c, userId }));
+
+  await prisma.collection.createMany({ data: collections });
+  console.log(`✅ Inserted ${collections.length} collections.`);
+}
+
 async function main() {
   // Delete in FK order: batting/pitching reference team and player
   await prisma.batting.deleteMany();
@@ -185,6 +262,10 @@ async function main() {
   await seedTeams();
   await seedBattingStats(idSet);
   await seedPitchingStats(idSet);
+
+  const seedUserId = await getOrCreateSeedUser();
+  const defaultAdminUserId = await getOrCreateDefaultAdminUser();
+  await seedCollections(seedUserId, playerIDs);
 }
 
 main().catch(console.error).finally(() => prisma.$disconnect());
