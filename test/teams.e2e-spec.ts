@@ -10,6 +10,22 @@ import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma.service';
 import { AllExceptionsFilter } from '../src/common/filters/http-exception.filter';
 
+interface TeamsPaginatedMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+interface TeamListItem {
+  teamID: string;
+  yearID: number;
+  name: string;
+  league: string;
+}
+
 /**
  * Teams e2e tests run against the real app and Testcontainers Postgres.
  */
@@ -65,17 +81,19 @@ describe('TeamsController (e2e)', () => {
       .get('/teams')
       .expect(200)
       .expect((res) => {
-        expect(res.body).toHaveProperty('data');
-        expect(Array.isArray(res.body.data)).toBe(true);
-        expect(res.body).toHaveProperty('meta');
-        expect(res.body.meta).toMatchObject({
-          page: expect.any(Number),
-          limit: expect.any(Number),
-          total: expect.any(Number),
-          totalPages: expect.any(Number),
-          hasNextPage: expect.any(Boolean),
-          hasPreviousPage: expect.any(Boolean),
-        });
+        const body = res.body as {
+          data: TeamListItem[];
+          meta: TeamsPaginatedMeta;
+        };
+        expect(body).toHaveProperty('data');
+        expect(Array.isArray(body.data)).toBe(true);
+        expect(body).toHaveProperty('meta');
+        expect(typeof body.meta.page).toBe('number');
+        expect(typeof body.meta.limit).toBe('number');
+        expect(typeof body.meta.total).toBe('number');
+        expect(typeof body.meta.totalPages).toBe('number');
+        expect(typeof body.meta.hasNextPage).toBe('boolean');
+        expect(typeof body.meta.hasPreviousPage).toBe('boolean');
       });
   });
 
@@ -85,9 +103,13 @@ describe('TeamsController (e2e)', () => {
       .query({ page: 1, limit: 5 })
       .expect(200)
       .expect((res) => {
-        expect(res.body.meta.page).toBe(1);
-        expect(res.body.meta.limit).toBe(5);
-        expect(res.body.data.length).toBeLessThanOrEqual(5);
+        const body = res.body as {
+          data: TeamListItem[];
+          meta: TeamsPaginatedMeta;
+        };
+        expect(body.meta.page).toBe(1);
+        expect(body.meta.limit).toBe(5);
+        expect(body.data.length).toBeLessThanOrEqual(5);
       });
   });
 
@@ -97,10 +119,12 @@ describe('TeamsController (e2e)', () => {
       .query({ year: 2024 })
       .expect(200)
       .expect((res) => {
-        expect(res.body).toHaveProperty('data');
-        expect(
-          res.body.data.every((t: { yearID: number }) => t.yearID === 2024),
-        ).toBe(true);
+        const body = res.body as {
+          data: TeamListItem[];
+          meta: TeamsPaginatedMeta;
+        };
+        expect(body).toHaveProperty('data');
+        expect(body.data.every((t) => t.yearID === 2024)).toBe(true);
       });
   });
 
@@ -109,13 +133,15 @@ describe('TeamsController (e2e)', () => {
       .get('/teams/E2E')
       .expect(200)
       .expect((res) => {
-        expect(res.body).toHaveProperty('data');
-        expect(Array.isArray(res.body.data)).toBe(true);
-        expect(res.body).toHaveProperty('meta');
-        expect(res.body.data.length).toBeGreaterThanOrEqual(1);
-        expect(
-          res.body.data.some((t: { teamID: string }) => t.teamID === 'E2E'),
-        ).toBe(true);
+        const body = res.body as {
+          data: TeamListItem[];
+          meta: TeamsPaginatedMeta;
+        };
+        expect(body).toHaveProperty('data');
+        expect(Array.isArray(body.data)).toBe(true);
+        expect(body).toHaveProperty('meta');
+        expect(body.data.length).toBeGreaterThanOrEqual(1);
+        expect(body.data.some((t) => t.teamID === 'E2E')).toBe(true);
       });
   });
 
@@ -147,9 +173,11 @@ describe('TeamsController (e2e)', () => {
       .query({ league: 'NL' })
       .expect(200)
       .expect((res) => {
-        expect(
-          res.body.data.every((t: { league: string }) => t.league === 'NL'),
-        ).toBe(true);
+        const body = res.body as {
+          data: TeamListItem[];
+          meta: TeamsPaginatedMeta;
+        };
+        expect(body.data.every((t) => t.league === 'NL')).toBe(true);
       });
   });
 });

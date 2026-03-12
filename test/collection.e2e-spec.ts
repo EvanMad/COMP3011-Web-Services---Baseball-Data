@@ -10,6 +10,29 @@ import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma.service';
 import { AllExceptionsFilter } from '../src/common/filters/http-exception.filter';
 
+interface PaginatedMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+interface CollectionListItem {
+  id: string;
+  name: string;
+  playerIDs: string[];
+}
+
+interface CollectionDetail {
+  id: string;
+  name: string;
+  description: string | null;
+  playerIDs: string[];
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 /**
  * Collection e2e tests run against the real app and Testcontainers Postgres.
  * Uses a real user (auth) and a player created by admin for collection playerIDs.
@@ -152,21 +175,21 @@ describe('CollectionController (e2e)', () => {
       .set('Authorization', `Bearer ${userToken}`)
       .expect(200)
       .expect((res) => {
-        expect(res.body).toHaveProperty('data');
-        expect(Array.isArray(res.body.data)).toBe(true);
-        expect(res.body).toHaveProperty('meta');
-        expect(res.body.meta).toMatchObject({
-          page: expect.any(Number),
-          limit: expect.any(Number),
-          total: expect.any(Number),
-          totalPages: expect.any(Number),
-        });
-        const found = res.body.data.find(
-          (c: { id: string }) => c.id === createdCollectionId,
-        );
+        const body = res.body as {
+          data: CollectionListItem[];
+          meta: PaginatedMeta;
+        };
+        expect(body).toHaveProperty('data');
+        expect(Array.isArray(body.data)).toBe(true);
+        expect(body).toHaveProperty('meta');
+        expect(typeof body.meta.page).toBe('number');
+        expect(typeof body.meta.limit).toBe('number');
+        expect(typeof body.meta.total).toBe('number');
+        expect(typeof body.meta.totalPages).toBe('number');
+        const found = body.data.find((c) => c.id === createdCollectionId);
         expect(found).toBeDefined();
-        expect(found.name).toBe('E2E Test Collection');
-        expect(found.playerIDs).toContain(playerId);
+        expect(found?.name).toBe('E2E Test Collection');
+        expect(found?.playerIDs).toContain(playerId);
       });
   });
 
@@ -177,8 +200,12 @@ describe('CollectionController (e2e)', () => {
       .query({ page: 1, limit: 5 })
       .expect(200)
       .expect((res) => {
-        expect(res.body.meta.limit).toBe(5);
-        expect(res.body.data.length).toBeLessThanOrEqual(5);
+        const body = res.body as {
+          data: CollectionListItem[];
+          meta: PaginatedMeta;
+        };
+        expect(body.meta.limit).toBe(5);
+        expect(body.data.length).toBeLessThanOrEqual(5);
       });
   });
 
@@ -192,15 +219,16 @@ describe('CollectionController (e2e)', () => {
       .set('Authorization', `Bearer ${userToken}`)
       .expect(200)
       .expect((res) => {
-        expect(res.body).toMatchObject({
+        const body = res.body as CollectionDetail;
+        expect(body).toMatchObject({
           id: createdCollectionId,
           name: 'E2E Test Collection',
           description: 'For e2e tests',
           playerIDs: [playerId],
         });
-        expect(res.body).toHaveProperty('userId');
-        expect(res.body).toHaveProperty('createdAt');
-        expect(res.body).toHaveProperty('updatedAt');
+        expect(body).toHaveProperty('userId');
+        expect(body).toHaveProperty('createdAt');
+        expect(body).toHaveProperty('updatedAt');
       });
   });
 
@@ -225,8 +253,9 @@ describe('CollectionController (e2e)', () => {
       .send({ name: 'E2E Updated Name', description: 'Updated description' })
       .expect(200)
       .expect((res) => {
-        expect(res.body.name).toBe('E2E Updated Name');
-        expect(res.body.description).toBe('Updated description');
+        const body = res.body as CollectionDetail;
+        expect(body.name).toBe('E2E Updated Name');
+        expect(body.description).toBe('Updated description');
       });
   });
 

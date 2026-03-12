@@ -10,6 +10,27 @@ import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma.service';
 import { AllExceptionsFilter } from '../src/common/filters/http-exception.filter';
 
+interface PlayerDetail {
+  playerID: string;
+  nameFirst: string;
+  nameLast: string;
+  weight: number;
+  height: number;
+}
+
+interface PaginatedMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+interface PlayerListItem {
+  playerID: string;
+  nameFirst: string;
+  nameLast: string;
+}
+
 /**
  * Player e2e tests run against the real app and Testcontainers Postgres.
  * DATABASE_URL is set in test/setup-e2e.ts from the container started in global-setup-e2e.ts.
@@ -111,11 +132,12 @@ describe('PlayerController (e2e)', () => {
           weight: 180,
           height: 72,
         });
-        expect(typeof res.body.playerID).toBe('string');
-        expect(typeof res.body.nameFirst).toBe('string');
-        expect(typeof res.body.nameLast).toBe('string');
-        expect(typeof res.body.weight).toBe('number');
-        expect(typeof res.body.height).toBe('number');
+        const body = res.body as PlayerDetail;
+        expect(typeof body.playerID).toBe('string');
+        expect(typeof body.nameFirst).toBe('string');
+        expect(typeof body.nameLast).toBe('string');
+        expect(typeof body.weight).toBe('number');
+        expect(typeof body.height).toBe('number');
       });
   });
 
@@ -133,21 +155,21 @@ describe('PlayerController (e2e)', () => {
       .set('Authorization', `Bearer ${userToken}`)
       .expect(200)
       .expect((res) => {
-        expect(res.body).toHaveProperty('data');
-        expect(Array.isArray(res.body.data)).toBe(true);
-        expect(res.body).toHaveProperty('meta');
-        expect(res.body.meta).toMatchObject({
-          page: expect.any(Number),
-          limit: expect.any(Number),
-          total: expect.any(Number),
-          totalPages: expect.any(Number),
-        });
-        const found = res.body.data.find(
-          (p: { playerID: string }) => p.playerID === createdPlayerId,
-        );
+        const body = res.body as {
+          data: PlayerListItem[];
+          meta: PaginatedMeta;
+        };
+        expect(body).toHaveProperty('data');
+        expect(Array.isArray(body.data)).toBe(true);
+        expect(body).toHaveProperty('meta');
+        expect(typeof body.meta.page).toBe('number');
+        expect(typeof body.meta.limit).toBe('number');
+        expect(typeof body.meta.total).toBe('number');
+        expect(typeof body.meta.totalPages).toBe('number');
+        const found = body.data.find((p) => p.playerID === createdPlayerId);
         expect(found).toBeDefined();
-        expect(found.nameFirst).toBe('E2E');
-        expect(found.nameLast).toBe('Player');
+        expect(found?.nameFirst).toBe('E2E');
+        expect(found?.nameLast).toBe('Player');
       });
   });
 
@@ -158,8 +180,9 @@ describe('PlayerController (e2e)', () => {
       .send({ weight: 185 })
       .expect(200)
       .expect((res) => {
-        expect(res.body.playerID).toBe(createdPlayerId);
-        expect(res.body.weight).toBe(185);
+        const body = res.body as PlayerDetail;
+        expect(body.playerID).toBe(createdPlayerId);
+        expect(body.weight).toBe(185);
       });
   });
 
