@@ -205,12 +205,19 @@ export default function CollectionForm({ initial, onSaved, onCancel }: Collectio
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleSearch();
+                }
+              }}
               placeholder="e.g. Ruth"
               className="w-48 rounded border border-slate-300 px-3 py-1.5 text-sm"
             />
           </div>
           <button
             type="button"
+            onClick={handleSearch}
             disabled={searchLoading}
             className="rounded bg-slate-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
           >

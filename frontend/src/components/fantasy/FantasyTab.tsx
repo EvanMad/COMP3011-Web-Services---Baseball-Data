@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { collectionsList, matchesList } from 'api/client';
 import type { CollectionResponseDto, MatchResponseDto } from 'api/types';
 import { useAuth } from 'contexts/AuthContext';
+import CollectionWinsLeaderboard from './CollectionWinsLeaderboard';
 import CollectionsList from './CollectionsList';
 import MatchLog from './MatchLog';
 import MatchPlay from './MatchPlay';
-import TeamWinsLeaderboard from './TeamWinsLeaderboard';
 
 export default function FantasyTab() {
   const { isAuthenticated } = useAuth();
@@ -21,7 +21,7 @@ export default function FantasyTab() {
   const fetchMatches = useCallback(() => {
     if (!isAuthenticated) return;
     setMatchesLoading(true);
-    matchesList({ page: 1, limit: 10 })
+    matchesList({ page: 1, limit: 100 })
       .then((res) => setRecentMatches(res.data))
       .catch(() => setRecentMatches([]))
       .finally(() => setMatchesLoading(false));
@@ -49,7 +49,7 @@ export default function FantasyTab() {
     setLastMatch(match);
     setRecentMatches((prev) => {
       const existing = prev.filter((m) => m.id !== match.id);
-      return [match, ...existing].slice(0, 10);
+      return [match, ...existing].slice(0, 100);
     });
   }, []);
 
@@ -59,7 +59,9 @@ export default function FantasyTab() {
         Create and manage your fantasy collections, then play them against each other using the match service.
       </p>
 
-      <TeamWinsLeaderboard />
+      {isAuthenticated && (
+        <CollectionWinsLeaderboard collections={collections} matches={recentMatches} />
+      )}
 
       <MatchPlay
         collections={collections}

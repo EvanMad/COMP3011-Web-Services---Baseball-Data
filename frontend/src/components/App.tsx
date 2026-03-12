@@ -15,7 +15,7 @@ function AppContent() {
     <div className="min-h-screen bg-slate-100">
       <header className="border-b border-slate-200 bg-white shadow-sm">
         <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-4 px-4 py-4">
-          <h1 className="text-xl font-bold text-slate-900">Baseball API</h1>
+          <h1 className="text-xl font-bold text-slate-900">Evan's Super Cool Baseball API</h1>
           <AuthForm />
         </div>
       </header>
