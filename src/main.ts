@@ -18,9 +18,8 @@ const winstonLogger = WinstonModule.createLogger({
       filename: join(logDir, 'app.log'),
       format: format.combine(
         format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        format.printf(
-          ({ timestamp, level, message, context, ...meta }) =>
-            `${timestamp} [${level}] ${context ? `[${context}] ` : ''}${message} ${Object.keys(meta).length ? JSON.stringify(meta) : ''}`.trim(),
+        format.printf(({ timestamp, level, message, context, ...meta }) =>
+          `${timestamp} [${level}] ${context ? `[${context}] ` : ''}${message} ${Object.keys(meta).length ? JSON.stringify(meta) : ''}`.trim(),
         ),
       ),
     }),
@@ -75,6 +74,9 @@ async function bootstrap() {
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
-  winstonLogger.log?.('Application listening on port ' + String(port), 'Bootstrap');
+  winstonLogger.log?.(
+    'Application listening on port ' + String(port),
+    'Bootstrap',
+  );
 }
 void bootstrap();

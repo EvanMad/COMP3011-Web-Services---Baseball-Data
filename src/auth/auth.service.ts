@@ -42,7 +42,9 @@ export class AuthService {
   async signUp(username: string, pass: string) {
     const existingUser = await this.usersService.findOne(username);
     if (existingUser) {
-      this.logger.warn(`Registration rejected, username already exists: ${username}`);
+      this.logger.warn(
+        `Registration rejected, username already exists: ${username}`,
+      );
       throw new ConflictException('Username already exists');
     }
     const newUser = await this.usersService.create(username, pass);

@@ -104,7 +104,9 @@ export class CollectionService {
     if (!collection) {
       throw new NotFoundException('Collection not found');
     }
-    this.logger.log(`Collection deleted: id=${id} name=${collection.name} userId=${userId}`);
+    this.logger.log(
+      `Collection deleted: id=${id} name=${collection.name} userId=${userId}`,
+    );
     return this.prisma.collection.delete({
       where: { id },
     });
