@@ -1,5 +1,4 @@
-// dto/update-collection.dto.ts
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import { CreateCollectionDto } from './create-collection.dto';
 
 export class UpdateCollectionDto extends PartialType(CreateCollectionDto) {}

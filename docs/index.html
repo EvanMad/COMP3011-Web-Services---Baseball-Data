@@ -1,0 +1,2104 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Web Services API</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>Web Services API</h1>
+    <div class="app-desc">API for baseball players, teams, and user collections. Authenticate via <code>/auth/login</code> or <code>/auth/register</code> and use the returned JWT as Bearer token for protected routes.</div>
+    <div class="app-desc">More information: <a href="https://openapi-generator.tech">https://openapi-generator.tech</a></div>
+    <div class="app-desc">Contact Info: <a href="team@openapitools.org">team@openapitools.org</a></div>
+    <div class="app-desc">Version: 1.0</div>
+    <div class="app-desc">BasePath:</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+    <ol>
+      <li>HTTP Bearer Token authentication (JWT)</li>
+    </ol>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#App">App</a></h4>
+  <ul>
+  <li><a href="#appControllerGetStatus"><code><span class="http-method">get</span> /</code></a></li>
+  </ul>
+  <h4><a href="#Auth">Auth</a></h4>
+  <ul>
+  <li><a href="#authControllerSignIn"><code><span class="http-method">post</span> /auth/login</code></a></li>
+  <li><a href="#authControllerSignUp"><code><span class="http-method">post</span> /auth/register</code></a></li>
+  </ul>
+  <h4><a href="#Collection">Collection</a></h4>
+  <ul>
+  <li><a href="#collectionControllerCreate"><code><span class="http-method">post</span> /collection</code></a></li>
+  <li><a href="#collectionControllerFindAll"><code><span class="http-method">get</span> /collection</code></a></li>
+  <li><a href="#collectionControllerFindOne"><code><span class="http-method">get</span> /collection/{id}</code></a></li>
+  <li><a href="#collectionControllerRemove"><code><span class="http-method">delete</span> /collection/{id}</code></a></li>
+  <li><a href="#collectionControllerUpdate"><code><span class="http-method">patch</span> /collection/{id}</code></a></li>
+  </ul>
+  <h4><a href="#Player">Player</a></h4>
+  <ul>
+  <li><a href="#playerControllerCreatePlayer"><code><span class="http-method">post</span> /player</code></a></li>
+  <li><a href="#playerControllerDeletePlayer"><code><span class="http-method">delete</span> /player/{id}</code></a></li>
+  <li><a href="#playerControllerGetAllPlayers"><code><span class="http-method">get</span> /player</code></a></li>
+  <li><a href="#playerControllerGetPlayerById"><code><span class="http-method">get</span> /player/{id}</code></a></li>
+  <li><a href="#playerControllerUpdatePlayer"><code><span class="http-method">patch</span> /player/{id}</code></a></li>
+  </ul>
+  <h4><a href="#Teams">Teams</a></h4>
+  <ul>
+  <li><a href="#teamsControllerFindAll"><code><span class="http-method">get</span> /teams</code></a></li>
+  <li><a href="#teamsControllerFindAllYears"><code><span class="http-method">get</span> /teams/{id}</code></a></li>
+  <li><a href="#teamsControllerFindOneTeam"><code><span class="http-method">get</span> /teams/{id}/{year}</code></a></li>
+  <li><a href="#teamsControllerRemove"><code><span class="http-method">delete</span> /teams/{id}</code></a></li>
+  </ul>
+
+  <h1><a name="App">App</a></h1>
+  <div class="method"><a name="appControllerGetStatus"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /</code></pre></div>
+    <div class="method-summary">Health / welcome (<span class="nickname">appControllerGetStatus</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      String
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    
+        <a href="#String">String</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Auth">Auth</a></h1>
+  <div class="method"><a name="authControllerSignIn"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /auth/login</code></pre></div>
+    <div class="method-summary">Log in (<span class="nickname">authControllerSignIn</span>)</div>
+    <div class="method-notes">Returns a JWT access token.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">SignInDto <a href="#SignInDto">SignInDto</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#AuthResponseDto">AuthResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Success
+        <a href="#AuthResponseDto">AuthResponseDto</a>
+    <h4 class="field-label">401</h4>
+    Invalid credentials
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="authControllerSignUp"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /auth/register</code></pre></div>
+    <div class="method-summary">Register (<span class="nickname">authControllerSignUp</span>)</div>
+    <div class="method-notes">Create a new user and return a JWT access token.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">SignUpDto <a href="#SignUpDto">SignUpDto</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#AuthResponseDto">AuthResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    User created
+        <a href="#AuthResponseDto">AuthResponseDto</a>
+    <h4 class="field-label">409</h4>
+    Username already exists
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Collection">Collection</a></h1>
+  <div class="method"><a name="collectionControllerCreate"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /collection</code></pre></div>
+    <div class="method-summary">Create a collection (<span class="nickname">collectionControllerCreate</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">CreateCollectionDto <a href="#CreateCollectionDto">CreateCollectionDto</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#CollectionResponseDto">CollectionResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "createdAt" : "2024-01-15T10:00:00.000Z",
+  "name" : "My Favourites",
+  "description" : "Best players of the 1920s",
+  "id" : "clxx...",
+  "playerIDs" : [ "ruthba01", "gehrilo01" ],
+  "updatedAt" : "2024-01-15T10:00:00.000Z"
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Collection created
+        <a href="#CollectionResponseDto">CollectionResponseDto</a>
+    <h4 class="field-label">400</h4>
+    Validation error
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="collectionControllerFindAll"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /collection</code></pre></div>
+    <div class="method-summary">List current user's collections (paginated) (<span class="nickname">collectionControllerFindAll</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">page (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: 1 </div><div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: 20 </div><div class="param">name (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PaginatedCollectionResponseDto">PaginatedCollectionResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "data" : [ {
+    "createdAt" : "2024-01-15T10:00:00.000Z",
+    "name" : "My Favourites",
+    "description" : "Best players of the 1920s",
+    "id" : "clxx...",
+    "playerIDs" : [ "ruthba01", "gehrilo01" ],
+    "updatedAt" : "2024-01-15T10:00:00.000Z"
+  }, {
+    "createdAt" : "2024-01-15T10:00:00.000Z",
+    "name" : "My Favourites",
+    "description" : "Best players of the 1920s",
+    "id" : "clxx...",
+    "playerIDs" : [ "ruthba01", "gehrilo01" ],
+    "updatedAt" : "2024-01-15T10:00:00.000Z"
+  } ],
+  "meta" : {
+    "total" : 100,
+    "hasNextPage" : true,
+    "limit" : 20,
+    "totalPages" : 5,
+    "hasPreviousPage" : false,
+    "page" : 1
+  }
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Paginated list of collections
+        <a href="#PaginatedCollectionResponseDto">PaginatedCollectionResponseDto</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="collectionControllerFindOne"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /collection/{id}</code></pre></div>
+    <div class="method-summary">Get collection by ID (<span class="nickname">collectionControllerFindOne</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Collection ID default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#CollectionResponseDto">CollectionResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "createdAt" : "2024-01-15T10:00:00.000Z",
+  "name" : "My Favourites",
+  "description" : "Best players of the 1920s",
+  "id" : "clxx...",
+  "playerIDs" : [ "ruthba01", "gehrilo01" ],
+  "updatedAt" : "2024-01-15T10:00:00.000Z"
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Collection found
+        <a href="#CollectionResponseDto">CollectionResponseDto</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">404</h4>
+    Collection not found
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="collectionControllerRemove"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /collection/{id}</code></pre></div>
+    <div class="method-summary">Delete collection (<span class="nickname">collectionControllerRemove</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Collection ID default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Collection deleted
+        <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">404</h4>
+    Collection not found
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="collectionControllerUpdate"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="patch"><code class="huge"><span class="http-method">patch</span> /collection/{id}</code></pre></div>
+    <div class="method-summary">Update collection (<span class="nickname">collectionControllerUpdate</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Collection ID default: null </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">UpdateCollectionDto <a href="#UpdateCollectionDto">UpdateCollectionDto</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#CollectionResponseDto">CollectionResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "createdAt" : "2024-01-15T10:00:00.000Z",
+  "name" : "My Favourites",
+  "description" : "Best players of the 1920s",
+  "id" : "clxx...",
+  "playerIDs" : [ "ruthba01", "gehrilo01" ],
+  "updatedAt" : "2024-01-15T10:00:00.000Z"
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Collection updated
+        <a href="#CollectionResponseDto">CollectionResponseDto</a>
+    <h4 class="field-label">400</h4>
+    Validation error
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">404</h4>
+    Collection not found
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Player">Player</a></h1>
+  <div class="method"><a name="playerControllerCreatePlayer"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /player</code></pre></div>
+    <div class="method-summary">Create player (admin) (<span class="nickname">playerControllerCreatePlayer</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">CreatePlayerDto <a href="#CreatePlayerDto">CreatePlayerDto</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PlayerResponseDto">PlayerResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "nameLast" : "Ruth",
+  "nameFirst" : "Babe",
+  "career_batting" : "",
+  "birthCountry" : "USA",
+  "weight" : 215,
+  "careerHighs" : "",
+  "career_pitching" : "",
+  "playerID" : "ruthba01",
+  "height" : 72
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Player created
+        <a href="#PlayerResponseDto">PlayerResponseDto</a>
+    <h4 class="field-label">400</h4>
+    Validation error
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="playerControllerDeletePlayer"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /player/{id}</code></pre></div>
+    <div class="method-summary">Delete player (admin) (<span class="nickname">playerControllerDeletePlayer</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Player ID default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Player deleted
+        <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">404</h4>
+    Player not found
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="playerControllerGetAllPlayers"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /player</code></pre></div>
+    <div class="method-summary">List players (paginated, optional filters) (<span class="nickname">playerControllerGetAllPlayers</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">page (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: 1 </div><div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: 20 </div><div class="param">name (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: null </div><div class="param">birthCountry (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PaginatedPlayerResponseDto">PaginatedPlayerResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "data" : [ {
+    "nameLast" : "Ruth",
+    "nameFirst" : "Babe",
+    "career_batting" : "",
+    "birthCountry" : "USA",
+    "weight" : 215,
+    "careerHighs" : "",
+    "career_pitching" : "",
+    "playerID" : "ruthba01",
+    "height" : 72
+  }, {
+    "nameLast" : "Ruth",
+    "nameFirst" : "Babe",
+    "career_batting" : "",
+    "birthCountry" : "USA",
+    "weight" : 215,
+    "careerHighs" : "",
+    "career_pitching" : "",
+    "playerID" : "ruthba01",
+    "height" : 72
+  } ],
+  "meta" : {
+    "total" : 100,
+    "hasNextPage" : true,
+    "limit" : 20,
+    "totalPages" : 5,
+    "hasPreviousPage" : false,
+    "page" : 1
+  }
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Paginated list of players
+        <a href="#PaginatedPlayerResponseDto">PaginatedPlayerResponseDto</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="playerControllerGetPlayerById"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /player/{id}</code></pre></div>
+    <div class="method-summary">Get player by ID (<span class="nickname">playerControllerGetPlayerById</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Player ID default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PlayerResponseDto">PlayerResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "nameLast" : "Ruth",
+  "nameFirst" : "Babe",
+  "career_batting" : "",
+  "birthCountry" : "USA",
+  "weight" : 215,
+  "careerHighs" : "",
+  "career_pitching" : "",
+  "playerID" : "ruthba01",
+  "height" : 72
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Player found
+        <a href="#PlayerResponseDto">PlayerResponseDto</a>
+    <h4 class="field-label">404</h4>
+    Player not found
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="playerControllerUpdatePlayer"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="patch"><code class="huge"><span class="http-method">patch</span> /player/{id}</code></pre></div>
+    <div class="method-summary">Update player (admin) (<span class="nickname">playerControllerUpdatePlayer</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Player ID default: null </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">UpdatePlayerDto <a href="#UpdatePlayerDto">UpdatePlayerDto</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PlayerResponseDto">PlayerResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "nameLast" : "Ruth",
+  "nameFirst" : "Babe",
+  "career_batting" : "",
+  "birthCountry" : "USA",
+  "weight" : 215,
+  "careerHighs" : "",
+  "career_pitching" : "",
+  "playerID" : "ruthba01",
+  "height" : 72
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Updated player
+        <a href="#PlayerResponseDto">PlayerResponseDto</a>
+    <h4 class="field-label">400</h4>
+    Validation error
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#ErrorDto">ErrorDto</a>
+    <h4 class="field-label">404</h4>
+    Player not found
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Teams">Teams</a></h1>
+  <div class="method"><a name="teamsControllerFindAll"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /teams</code></pre></div>
+    <div class="method-summary">List teams (paginated, optional league/year filters) (<span class="nickname">teamsControllerFindAll</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">page (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: 1 </div><div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: 20 </div><div class="param">league (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: null </div><div class="param">year (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PaginatedTeamResponseDto">PaginatedTeamResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "data" : [ {
+    "batting" : {
+      "wins" : 2.3021358869347655,
+      "sacrificeFlies" : 4.965218492984954,
+      "caughtStealing" : 7.457744773683766,
+      "triples" : 7.386281948385884,
+      "homeRuns" : 1.2315135367772556,
+      "hitByPitch" : 1.1730742509559433,
+      "losses" : 7.061401241503109,
+      "hits" : 2.027123023002322,
+      "walks" : 1.0246457001441578,
+      "gamesHome" : 5.637376656633329,
+      "stolenBases" : 6.84685269835264,
+      "doubles" : 4.145608029883936,
+      "games" : 5.962133916683182,
+      "atBats" : 3.616076749251911,
+      "strikeouts" : 1.4894159098541704,
+      "runs" : 9.301444243932576
+    },
+    "pitchingStats" : [ "{}", "{}" ],
+    "league" : "league",
+    "pitching" : {
+      "fieldingPercentage" : 5.944895607614016,
+      "walksAllowed" : 1.284659006116532,
+      "earnedRuns" : 9.965781217890562,
+      "completeGames" : 6.683562403749608,
+      "hrAllowed" : 6.965117697638846,
+      "strikeoutsAllowed" : 2.8841621266687802,
+      "outsPitched" : 6.438423552598547,
+      "hitsAllowed" : 3.5571952270680973,
+      "doublePlays" : 6.878052220127876,
+      "shutouts" : 8.762042012749001,
+      "saves" : 9.018348186070783,
+      "era" : 9.369310271410669,
+      "runsAllowed" : 5.025004791520295,
+      "errors" : 6.778324963048013
+    },
+    "yearID" : 0.8008281904610115,
+    "teamID" : "teamID",
+    "name" : "name",
+    "franchiseID" : "franchiseID",
+    "battingStats" : [ "{}", "{}" ],
+    "divisionID" : "divisionID",
+    "results" : {
+      "leagueWin" : true,
+      "rank" : 1.4658129805029452,
+      "divisionWin" : true,
+      "wildCardWin" : true,
+      "worldSeriesWin" : true
+    },
+    "park" : "park",
+    "attendance" : 6.027456183070403
+  }, {
+    "batting" : {
+      "wins" : 2.3021358869347655,
+      "sacrificeFlies" : 4.965218492984954,
+      "caughtStealing" : 7.457744773683766,
+      "triples" : 7.386281948385884,
+      "homeRuns" : 1.2315135367772556,
+      "hitByPitch" : 1.1730742509559433,
+      "losses" : 7.061401241503109,
+      "hits" : 2.027123023002322,
+      "walks" : 1.0246457001441578,
+      "gamesHome" : 5.637376656633329,
+      "stolenBases" : 6.84685269835264,
+      "doubles" : 4.145608029883936,
+      "games" : 5.962133916683182,
+      "atBats" : 3.616076749251911,
+      "strikeouts" : 1.4894159098541704,
+      "runs" : 9.301444243932576
+    },
+    "pitchingStats" : [ "{}", "{}" ],
+    "league" : "league",
+    "pitching" : {
+      "fieldingPercentage" : 5.944895607614016,
+      "walksAllowed" : 1.284659006116532,
+      "earnedRuns" : 9.965781217890562,
+      "completeGames" : 6.683562403749608,
+      "hrAllowed" : 6.965117697638846,
+      "strikeoutsAllowed" : 2.8841621266687802,
+      "outsPitched" : 6.438423552598547,
+      "hitsAllowed" : 3.5571952270680973,
+      "doublePlays" : 6.878052220127876,
+      "shutouts" : 8.762042012749001,
+      "saves" : 9.018348186070783,
+      "era" : 9.369310271410669,
+      "runsAllowed" : 5.025004791520295,
+      "errors" : 6.778324963048013
+    },
+    "yearID" : 0.8008281904610115,
+    "teamID" : "teamID",
+    "name" : "name",
+    "franchiseID" : "franchiseID",
+    "battingStats" : [ "{}", "{}" ],
+    "divisionID" : "divisionID",
+    "results" : {
+      "leagueWin" : true,
+      "rank" : 1.4658129805029452,
+      "divisionWin" : true,
+      "wildCardWin" : true,
+      "worldSeriesWin" : true
+    },
+    "park" : "park",
+    "attendance" : 6.027456183070403
+  } ],
+  "meta" : {
+    "total" : 100,
+    "hasNextPage" : true,
+    "limit" : 20,
+    "totalPages" : 5,
+    "hasPreviousPage" : false,
+    "page" : 1
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Paginated list of teams
+        <a href="#PaginatedTeamResponseDto">PaginatedTeamResponseDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="teamsControllerFindAllYears"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /teams/{id}</code></pre></div>
+    <div class="method-summary">List all years for a team (paginated) (<span class="nickname">teamsControllerFindAllYears</span>)</div>
+    <div class="method-notes">Returns team records for the given team ID across seasons. Use query param <code>year</code> to filter. The team ID here is the franchise/team identifier (e.g. BOS), not the numeric primary key.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Team ID (e.g. BOS, NYA) default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">page (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: 1 </div><div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: 20 </div><div class="param">league (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: null </div><div class="param">year (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PaginatedTeamResponseDto">PaginatedTeamResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "data" : [ {
+    "batting" : {
+      "wins" : 2.3021358869347655,
+      "sacrificeFlies" : 4.965218492984954,
+      "caughtStealing" : 7.457744773683766,
+      "triples" : 7.386281948385884,
+      "homeRuns" : 1.2315135367772556,
+      "hitByPitch" : 1.1730742509559433,
+      "losses" : 7.061401241503109,
+      "hits" : 2.027123023002322,
+      "walks" : 1.0246457001441578,
+      "gamesHome" : 5.637376656633329,
+      "stolenBases" : 6.84685269835264,
+      "doubles" : 4.145608029883936,
+      "games" : 5.962133916683182,
+      "atBats" : 3.616076749251911,
+      "strikeouts" : 1.4894159098541704,
+      "runs" : 9.301444243932576
+    },
+    "pitchingStats" : [ "{}", "{}" ],
+    "league" : "league",
+    "pitching" : {
+      "fieldingPercentage" : 5.944895607614016,
+      "walksAllowed" : 1.284659006116532,
+      "earnedRuns" : 9.965781217890562,
+      "completeGames" : 6.683562403749608,
+      "hrAllowed" : 6.965117697638846,
+      "strikeoutsAllowed" : 2.8841621266687802,
+      "outsPitched" : 6.438423552598547,
+      "hitsAllowed" : 3.5571952270680973,
+      "doublePlays" : 6.878052220127876,
+      "shutouts" : 8.762042012749001,
+      "saves" : 9.018348186070783,
+      "era" : 9.369310271410669,
+      "runsAllowed" : 5.025004791520295,
+      "errors" : 6.778324963048013
+    },
+    "yearID" : 0.8008281904610115,
+    "teamID" : "teamID",
+    "name" : "name",
+    "franchiseID" : "franchiseID",
+    "battingStats" : [ "{}", "{}" ],
+    "divisionID" : "divisionID",
+    "results" : {
+      "leagueWin" : true,
+      "rank" : 1.4658129805029452,
+      "divisionWin" : true,
+      "wildCardWin" : true,
+      "worldSeriesWin" : true
+    },
+    "park" : "park",
+    "attendance" : 6.027456183070403
+  }, {
+    "batting" : {
+      "wins" : 2.3021358869347655,
+      "sacrificeFlies" : 4.965218492984954,
+      "caughtStealing" : 7.457744773683766,
+      "triples" : 7.386281948385884,
+      "homeRuns" : 1.2315135367772556,
+      "hitByPitch" : 1.1730742509559433,
+      "losses" : 7.061401241503109,
+      "hits" : 2.027123023002322,
+      "walks" : 1.0246457001441578,
+      "gamesHome" : 5.637376656633329,
+      "stolenBases" : 6.84685269835264,
+      "doubles" : 4.145608029883936,
+      "games" : 5.962133916683182,
+      "atBats" : 3.616076749251911,
+      "strikeouts" : 1.4894159098541704,
+      "runs" : 9.301444243932576
+    },
+    "pitchingStats" : [ "{}", "{}" ],
+    "league" : "league",
+    "pitching" : {
+      "fieldingPercentage" : 5.944895607614016,
+      "walksAllowed" : 1.284659006116532,
+      "earnedRuns" : 9.965781217890562,
+      "completeGames" : 6.683562403749608,
+      "hrAllowed" : 6.965117697638846,
+      "strikeoutsAllowed" : 2.8841621266687802,
+      "outsPitched" : 6.438423552598547,
+      "hitsAllowed" : 3.5571952270680973,
+      "doublePlays" : 6.878052220127876,
+      "shutouts" : 8.762042012749001,
+      "saves" : 9.018348186070783,
+      "era" : 9.369310271410669,
+      "runsAllowed" : 5.025004791520295,
+      "errors" : 6.778324963048013
+    },
+    "yearID" : 0.8008281904610115,
+    "teamID" : "teamID",
+    "name" : "name",
+    "franchiseID" : "franchiseID",
+    "battingStats" : [ "{}", "{}" ],
+    "divisionID" : "divisionID",
+    "results" : {
+      "leagueWin" : true,
+      "rank" : 1.4658129805029452,
+      "divisionWin" : true,
+      "wildCardWin" : true,
+      "worldSeriesWin" : true
+    },
+    "park" : "park",
+    "attendance" : 6.027456183070403
+  } ],
+  "meta" : {
+    "total" : 100,
+    "hasNextPage" : true,
+    "limit" : 20,
+    "totalPages" : 5,
+    "hasPreviousPage" : false,
+    "page" : 1
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Paginated list of team records by year
+        <a href="#PaginatedTeamResponseDto">PaginatedTeamResponseDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="teamsControllerFindOneTeam"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /teams/{id}/{year}</code></pre></div>
+    <div class="method-summary">Get team by ID and year (<span class="nickname">teamsControllerFindOneTeam</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Team ID default: null </div><div class="param">year (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Year default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#TeamResponseDto">TeamResponseDto</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "batting" : {
+    "wins" : 2.3021358869347655,
+    "sacrificeFlies" : 4.965218492984954,
+    "caughtStealing" : 7.457744773683766,
+    "triples" : 7.386281948385884,
+    "homeRuns" : 1.2315135367772556,
+    "hitByPitch" : 1.1730742509559433,
+    "losses" : 7.061401241503109,
+    "hits" : 2.027123023002322,
+    "walks" : 1.0246457001441578,
+    "gamesHome" : 5.637376656633329,
+    "stolenBases" : 6.84685269835264,
+    "doubles" : 4.145608029883936,
+    "games" : 5.962133916683182,
+    "atBats" : 3.616076749251911,
+    "strikeouts" : 1.4894159098541704,
+    "runs" : 9.301444243932576
+  },
+  "pitchingStats" : [ "{}", "{}" ],
+  "league" : "league",
+  "pitching" : {
+    "fieldingPercentage" : 5.944895607614016,
+    "walksAllowed" : 1.284659006116532,
+    "earnedRuns" : 9.965781217890562,
+    "completeGames" : 6.683562403749608,
+    "hrAllowed" : 6.965117697638846,
+    "strikeoutsAllowed" : 2.8841621266687802,
+    "outsPitched" : 6.438423552598547,
+    "hitsAllowed" : 3.5571952270680973,
+    "doublePlays" : 6.878052220127876,
+    "shutouts" : 8.762042012749001,
+    "saves" : 9.018348186070783,
+    "era" : 9.369310271410669,
+    "runsAllowed" : 5.025004791520295,
+    "errors" : 6.778324963048013
+  },
+  "yearID" : 0.8008281904610115,
+  "teamID" : "teamID",
+  "name" : "name",
+  "franchiseID" : "franchiseID",
+  "battingStats" : [ "{}", "{}" ],
+  "divisionID" : "divisionID",
+  "results" : {
+    "leagueWin" : true,
+    "rank" : 1.4658129805029452,
+    "divisionWin" : true,
+    "wildCardWin" : true,
+    "worldSeriesWin" : true
+  },
+  "park" : "park",
+  "attendance" : 6.027456183070403
+}</code></pre>
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Team found
+        <a href="#TeamResponseDto">TeamResponseDto</a>
+    <h4 class="field-label">404</h4>
+    Team not found
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="teamsControllerRemove"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /teams/{id}</code></pre></div>
+    <div class="method-summary">Remove a single team record (<span class="nickname">teamsControllerRemove</span>)</div>
+    <div class="method-notes">Deletes one team record by its numeric primary key (internal id). This removes a single season entry, not all years for a franchise. To delete by teamID and year, use the id of the corresponding record.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Numeric primary key of the team record to delete (one season) default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "error" : "Bad Request",
+  "message" : "Validation failed",
+  "errors" : [ {
+    "property" : "nameFirst",
+    "constraints" : {
+      "minLength" : "nameFirst must be longer than or equal to 1 characters"
+    }
+  } ],
+  "statusCode" : 400
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Team record removed
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Team not found
+        <a href="#ErrorDto">ErrorDto</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#AuthResponseDto"><code>AuthResponseDto</code> - </a></li>
+    <li><a href="#CareerBattingDto"><code>CareerBattingDto</code> - </a></li>
+    <li><a href="#CareerHighsDto"><code>CareerHighsDto</code> - </a></li>
+    <li><a href="#CareerPitchingDto"><code>CareerPitchingDto</code> - </a></li>
+    <li><a href="#CollectionResponseDto"><code>CollectionResponseDto</code> - </a></li>
+    <li><a href="#CreateBattingDto"><code>CreateBattingDto</code> - </a></li>
+    <li><a href="#CreateCollectionDto"><code>CreateCollectionDto</code> - </a></li>
+    <li><a href="#CreatePitchingDto"><code>CreatePitchingDto</code> - </a></li>
+    <li><a href="#CreatePlayerDto"><code>CreatePlayerDto</code> - </a></li>
+    <li><a href="#ErrorDto"><code>ErrorDto</code> - </a></li>
+    <li><a href="#PaginatedCollectionResponseDto"><code>PaginatedCollectionResponseDto</code> - </a></li>
+    <li><a href="#PaginatedPlayerResponseDto"><code>PaginatedPlayerResponseDto</code> - </a></li>
+    <li><a href="#PaginatedTeamResponseDto"><code>PaginatedTeamResponseDto</code> - </a></li>
+    <li><a href="#PaginationMetaDto"><code>PaginationMetaDto</code> - </a></li>
+    <li><a href="#PitchingAllowedDto"><code>PitchingAllowedDto</code> - </a></li>
+    <li><a href="#PlayerResponseDto"><code>PlayerResponseDto</code> - </a></li>
+    <li><a href="#SignInDto"><code>SignInDto</code> - </a></li>
+    <li><a href="#SignUpDto"><code>SignUpDto</code> - </a></li>
+    <li><a href="#TeamResponseDto"><code>TeamResponseDto</code> - </a></li>
+    <li><a href="#TeamResultsDto"><code>TeamResultsDto</code> - </a></li>
+    <li><a href="#TeamStatsDto"><code>TeamStatsDto</code> - </a></li>
+    <li><a href="#UpdateCollectionDto"><code>UpdateCollectionDto</code> - </a></li>
+    <li><a href="#UpdatePlayerDto"><code>UpdatePlayerDto</code> - </a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="AuthResponseDto"><code>AuthResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">access_token </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> JWT access token; use as Bearer token for protected routes </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CareerBattingDto"><code>CareerBattingDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">battingAverage </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">onBasePercentage </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">sluggingPercentage </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CareerHighsDto"><code>CareerHighsDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">HR </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Single-season high for home runs </div>
+<div class="param">H </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Single-season high for hits </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CareerPitchingDto"><code>CareerPitchingDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">wins </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">losses </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">strikeouts </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">averageEra </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CollectionResponseDto"><code>CollectionResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Collection ID </div>
+<div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">description (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">playerIDs </div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span> Player IDs in this collection </div>
+<div class="param">createdAt </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">updatedAt </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CreateBattingDto"><code>CreateBattingDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">yearID </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">stint </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">teamID </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">lgID </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">G (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">AB (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">BB (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">R (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">H (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">HR (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">RBI (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">HBP (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">SF (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">SB (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">DOUBLE (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">TRIPLE (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CreateCollectionDto"><code>CreateCollectionDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">description (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">playerIDs </div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CreatePitchingDto"><code>CreatePitchingDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">yearID </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">stint </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">teamID </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">W (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">L (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">ERA (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">SO (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CreatePlayerDto"><code>CreatePlayerDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">playerID </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Unique player ID </div>
+<div class="param">nameFirst </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">nameLast </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">dateOfBirth (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span>  format: date-time</div>
+<div class="param">dateOfDeath (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span>  format: date-time</div>
+<div class="param">birthCountry (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">weight </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">height </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">bats (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">throws (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">batting (optional)</div><div class="param-desc"><span class="param-type"><a href="#CreateBattingDto">array[CreateBattingDto]</a></span>  </div>
+<div class="param">pitching (optional)</div><div class="param-desc"><span class="param-type"><a href="#CreatePitchingDto">array[CreatePitchingDto]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ErrorDto"><code>ErrorDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">statusCode </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> HTTP status code </div>
+<div class="param">error </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Error type or title </div>
+<div class="param">message </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Human-readable error message </div>
+<div class="param">errors (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span> Validation details (e.g. property-level errors when statusCode is 400) </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PaginatedCollectionResponseDto"><code>PaginatedCollectionResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">data </div><div class="param-desc"><span class="param-type"><a href="#CollectionResponseDto">array[CollectionResponseDto]</a></span> List of collections </div>
+<div class="param">meta </div><div class="param-desc"><span class="param-type"><a href="#PaginationMetaDto">PaginationMetaDto</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PaginatedPlayerResponseDto"><code>PaginatedPlayerResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">data </div><div class="param-desc"><span class="param-type"><a href="#PlayerResponseDto">array[PlayerResponseDto]</a></span> List of players </div>
+<div class="param">meta </div><div class="param-desc"><span class="param-type"><a href="#PaginationMetaDto">PaginationMetaDto</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PaginatedTeamResponseDto"><code>PaginatedTeamResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">data </div><div class="param-desc"><span class="param-type"><a href="#TeamResponseDto">array[TeamResponseDto]</a></span> List of teams </div>
+<div class="param">meta </div><div class="param-desc"><span class="param-type"><a href="#PaginationMetaDto">PaginationMetaDto</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PaginationMetaDto"><code>PaginationMetaDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">total </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Total number of items across all pages </div>
+<div class="param">page </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Current page (1-based) </div>
+<div class="param">limit </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of items per page </div>
+<div class="param">totalPages </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Total number of pages </div>
+<div class="param">hasNextPage </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Whether a next page exists </div>
+<div class="param">hasPreviousPage </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Whether a previous page exists </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PitchingAllowedDto"><code>PitchingAllowedDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">runsAllowed </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">earnedRuns </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">era </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">completeGames </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">shutouts </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">saves </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">outsPitched </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">hitsAllowed </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">hrAllowed </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">walksAllowed </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">strikeoutsAllowed </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">errors </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">doublePlays </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">fieldingPercentage </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerResponseDto"><code>PlayerResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">playerID </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Unique player identifier </div>
+<div class="param">nameFirst </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">nameLast </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">birthCountry </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">weight </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Weight in pounds </div>
+<div class="param">height </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Height in inches </div>
+<div class="param">career_batting (optional)</div><div class="param-desc"><span class="param-type"><a href="#CareerBattingDto">CareerBattingDto</a></span> Present when the player has batting stats </div>
+<div class="param">careerHighs (optional)</div><div class="param-desc"><span class="param-type"><a href="#CareerHighsDto">CareerHighsDto</a></span> Present when the player has batting stats </div>
+<div class="param">career_pitching (optional)</div><div class="param-desc"><span class="param-type"><a href="#CareerPitchingDto">CareerPitchingDto</a></span> Present when the player has pitching stats </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="SignInDto"><code>SignInDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">username </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Username </div>
+<div class="param">password </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Password </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="SignUpDto"><code>SignUpDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">username </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Username </div>
+<div class="param">password </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Password </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="TeamResponseDto"><code>TeamResponseDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">yearID </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">teamID </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">league </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">franchiseID </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">divisionID (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">park (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">attendance (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">results </div><div class="param-desc"><span class="param-type"><a href="#TeamResultsDto">TeamResultsDto</a></span>  </div>
+<div class="param">batting </div><div class="param-desc"><span class="param-type"><a href="#TeamStatsDto">TeamStatsDto</a></span>  </div>
+<div class="param">pitching </div><div class="param-desc"><span class="param-type"><a href="#PitchingAllowedDto">PitchingAllowedDto</a></span>  </div>
+<div class="param">battingStats (optional)</div><div class="param-desc"><span class="param-type"><a href="#object">array[Object]</a></span>  </div>
+<div class="param">pitchingStats (optional)</div><div class="param-desc"><span class="param-type"><a href="#object">array[Object]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="TeamResultsDto"><code>TeamResultsDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">rank </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">divisionWin </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">wildCardWin </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">leagueWin </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">worldSeriesWin </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="TeamStatsDto"><code>TeamStatsDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">games </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">gamesHome (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">wins </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">losses </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">runs </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">atBats </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">hits </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">doubles </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">triples </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">homeRuns </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">walks </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">strikeouts </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">stolenBases </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">caughtStealing (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">hitByPitch (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">sacrificeFlies (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="UpdateCollectionDto"><code>UpdateCollectionDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">description (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">playerIDs (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="UpdatePlayerDto"><code>UpdatePlayerDto</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">playerID (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Unique player ID </div>
+<div class="param">nameFirst (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">nameLast (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">dateOfBirth (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span>  format: date-time</div>
+<div class="param">dateOfDeath (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span>  format: date-time</div>
+<div class="param">birthCountry (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">weight (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">height (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+<div class="param">bats (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">throws (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">batting (optional)</div><div class="param-desc"><span class="param-type"><a href="#CreateBattingDto">array[CreateBattingDto]</a></span>  </div>
+<div class="param">pitching (optional)</div><div class="param-desc"><span class="param-type"><a href="#CreatePitchingDto">array[CreatePitchingDto]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>
