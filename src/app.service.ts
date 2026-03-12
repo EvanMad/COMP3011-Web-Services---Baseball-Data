@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getStatus(): string {
-    return 'OK';
+  // Change return type to an object
+  getStatus(): { STATUS: string } {
+    return { STATUS: 'UP' };
   }
 }
