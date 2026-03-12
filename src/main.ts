@@ -22,7 +22,9 @@ const winstonLogger = WinstonModule.createLogger({
           const ts =
             typeof timestamp === 'string'
               ? timestamp
-              : JSON.stringify(timestamp ?? '');
+              : timestamp == null
+                ? ''
+                : JSON.stringify(timestamp);
           const lvl = String(level ?? 'info');
           const msg = typeof message === 'string' ? message : String(message);
           const ctx =
