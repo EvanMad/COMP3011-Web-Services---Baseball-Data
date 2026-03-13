@@ -21,7 +21,8 @@
     "test:e2e": "TESTCONTAINERS_RYUK_DISABLED=true NODE_OPTIONS='--experimental-vm-modules' jest --config ./test/jest-e2e.json",
     "sync": "prisma db push && prisma generate",
     "doc:html": "npx @openapitools/openapi-generator-cli generate -g html -i http://localhost:3000/api-yaml -o docs/html",
-    "doc:markdown": "npx @openapitools/openapi-generator-cli generate -g markdown -i http://localhost:3000/api-yaml -o docs/markdown"
+    "doc:markdown": "npx @openapitools/openapi-generator-cli generate -g markdown -i http://localhost:3000/api-yaml -o docs/markdown",
+    "build:all": "npm ci && npm run sync && npm run build && npm ci --prefix frontend && npm run build --prefix frontend"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1",
