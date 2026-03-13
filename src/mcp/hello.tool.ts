@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Tool } from '@rekog/mcp-nest';
-import type { Context } from '@rekog/mcp-nest';
 import { AppService } from '../app.service';
 
 @Injectable()
@@ -12,9 +11,8 @@ export class HealthTool {
     description:
       'Returns the current health status of the Web Services API as a JSON object.',
   })
-  async getHealth(_context: Context): Promise<{ STATUS: string }> {
+  getHealth(): { STATUS: string } {
     // Reuse the existing health logic from AppService
     return this.appService.getStatus();
   }
 }
-
