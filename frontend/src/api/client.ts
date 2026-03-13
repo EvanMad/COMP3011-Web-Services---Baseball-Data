@@ -11,7 +11,7 @@ export async function apiFetch<T>(
   options: RequestInit & { token?: string | null } = {}
 ): Promise<T> {
   const { token = getToken(), ...init } = options;
-  const url = `${API_BASE}${path}`;
+  const url = `${API_BASE}/api${path}`;
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
     ...(init.headers as Record<string, string>),
@@ -64,7 +64,7 @@ export function authRegister(username: string, password: string) {
   });
 }
 
-// Players (require auth)
+// Players (list and get-by-id are public; create/update/delete require auth)
 export function playersList(params: { page?: number; limit?: number; name?: string; birthCountry?: string } = {}) {
   const sp = new URLSearchParams();
   if (params.page != null) sp.set('page', String(params.page));
