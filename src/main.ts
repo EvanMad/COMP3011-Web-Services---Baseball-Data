@@ -46,6 +46,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: winstonLogger,
   });
+  app.setGlobalPrefix('api');
   app.enableCors({
     origin: true, // allow the request's Origin (e.g. localhost:5173, comp3011.evanmadurai.co.uk)
     credentials: true,
@@ -86,7 +87,7 @@ async function bootstrap() {
     )
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('docs', app, document);
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
