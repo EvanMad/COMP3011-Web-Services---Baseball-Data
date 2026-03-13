@@ -64,6 +64,8 @@ A rendered version of this documentation is also available in the `/docs` direct
 $ npm run doc
 ```
 
+PDF documentation can be found at docs/pdf/docs.pdf
+
 ## Database
 This application uses a [PostgreSQL](https://www.postgresql.org/) database with [Prisma ORM](https://www.prisma.io/). After any schema updates you must re-sync and generate the Prisma client library with:
 
