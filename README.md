@@ -40,6 +40,14 @@ $ npm run sync
 ```bash
 $ npm run start:dev
 ```
+### Test User Details
+
+Two test users are seeded into the database during initialization:
+
+| Username   | Password  |
+|------------|-----------|
+| `admin`    | `zadra`   |
+| `testuser` | `password`|
 
 You may also want to rebuild the frontend
 
