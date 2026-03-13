@@ -25,6 +25,13 @@ $ npm run sync
 $ npm run start:dev
 ```
 
+You may also want to rebuild the frontend
+
+```bash
+$ cd frontend
+$ npm run build
+```
+
 ## Run tests
 
 ```bash
