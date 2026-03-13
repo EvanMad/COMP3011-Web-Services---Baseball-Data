@@ -71,7 +71,7 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Web Services API')
+    .setTitle("Evan's Super Cool Baseball Data API")
     .setDescription(
       'API for baseball players, teams, and user collections. Authenticate via `/auth/login` or `/auth/register` and use the returned JWT as Bearer token for protected routes.',
     )
