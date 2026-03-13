@@ -38,6 +38,8 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+You also must be sure to have a valid 'DATABASE_URL=' in your .env
+
 ## Format and Linting
 Formatting and Linting is setup with Prettier and ESLint.
 
