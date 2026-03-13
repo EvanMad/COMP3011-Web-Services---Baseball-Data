@@ -4,11 +4,11 @@ All URIs are relative to *http://localhost*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**playerControllerCreatePlayer**](PlayerApi.md#playerControllerCreatePlayer) | **POST** /player | Create player (admin) |
-| [**playerControllerDeletePlayer**](PlayerApi.md#playerControllerDeletePlayer) | **DELETE** /player/{id} | Delete player (admin) |
-| [**playerControllerGetAllPlayers**](PlayerApi.md#playerControllerGetAllPlayers) | **GET** /player | List players (paginated, optional filters) |
-| [**playerControllerGetPlayerById**](PlayerApi.md#playerControllerGetPlayerById) | **GET** /player/{id} | Get player by ID |
-| [**playerControllerUpdatePlayer**](PlayerApi.md#playerControllerUpdatePlayer) | **PATCH** /player/{id} | Update player (admin) |
+| [**playerControllerCreatePlayer**](PlayerApi.md#playerControllerCreatePlayer) | **POST** /api/player | Create player (admin) |
+| [**playerControllerDeletePlayer**](PlayerApi.md#playerControllerDeletePlayer) | **DELETE** /api/player/{id} | Delete player (admin) |
+| [**playerControllerGetAllPlayers**](PlayerApi.md#playerControllerGetAllPlayers) | **GET** /api/player | List players (paginated, optional filters) |
+| [**playerControllerGetPlayerById**](PlayerApi.md#playerControllerGetPlayerById) | **GET** /api/player/{id} | Get player by ID |
+| [**playerControllerUpdatePlayer**](PlayerApi.md#playerControllerUpdatePlayer) | **PATCH** /api/player/{id} | Update player (admin) |
 
 
 <a name="playerControllerCreatePlayer"></a>

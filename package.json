@@ -20,8 +20,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "TESTCONTAINERS_RYUK_DISABLED=true NODE_OPTIONS='--experimental-vm-modules' jest --config ./test/jest-e2e.json",
     "sync": "prisma db push && prisma generate",
-    "doc:html": "npx @openapitools/openapi-generator-cli generate -g html -i http://localhost:3000/api-yaml -o docs/html",
-    "doc:markdown": "npx @openapitools/openapi-generator-cli generate -g markdown -i http://localhost:3000/api-yaml -o docs/markdown",
+    "doc:html": "npx @openapitools/openapi-generator-cli generate -g html -i http://localhost:3000/docs-yaml -o docs/html",
+    "doc:markdown": "npx @openapitools/openapi-generator-cli generate -g markdown -i http://localhost:3000/docs-yaml -o docs/markdown",
     "build:all": "npm ci && npm run sync && npm run build && npm ci --prefix frontend && npm run build --prefix frontend"
   },
   "dependencies": {

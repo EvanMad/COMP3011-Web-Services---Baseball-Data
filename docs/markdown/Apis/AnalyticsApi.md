@@ -4,7 +4,7 @@ All URIs are relative to *http://localhost*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**analyticsControllerGetLeagueLeaders**](AnalyticsApi.md#analyticsControllerGetLeagueLeaders) | **GET** /analytics/league-leaders | Get league leaders for a stat |
+| [**analyticsControllerGetLeagueLeaders**](AnalyticsApi.md#analyticsControllerGetLeagueLeaders) | **GET** /api/analytics/league-leaders | Get league leaders for a stat |
 
 
 <a name="analyticsControllerGetLeagueLeaders"></a>

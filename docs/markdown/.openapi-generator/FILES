@@ -1,10 +1,11 @@
-.openapi-generator-ignore
 Apis/AnalyticsApi.md
 Apis/AppApi.md
 Apis/AuthApi.md
 Apis/CollectionApi.md
 Apis/MatchApi.md
 Apis/PlayerApi.md
+Apis/SseApi.md
+Apis/StreamableHttpApi.md
 Apis/TeamsApi.md
 Models/AuthResponseDto.md
 Models/CareerBattingDto.md
