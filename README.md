@@ -1,6 +1,22 @@
 # Evan's Super Cool Baseball Stats API
 *Evan's Super Cool Baseball Stats API* is my project submitted for COMP3011 Web Services and Web Data at the University of Leeds.
 
+It aims to provide a programmatic interface to large baseball statistics datasets, allowing developers to integrate this data into other applications. The API exposes endpoints for querying players, teams, and season records drawn from the [Lahman Baseball Database](https://sabr.org/lahman-database/), alongside analytical endpoints for league leaders and computed sabermetric statistics. It also supports user authentication, personal player collections, and a fantasy match system — and exposes an [MCP server](https://modelcontextprotocol.io/) for querying the data directly via an LLM.
+
+## Architecture
+
+Built with **TypeScript** on **NestJS**, following a modular Controller → Service pattern with **Prisma ORM** backed by **PostgreSQL**.
+
+| Layer | Technology |
+|---|---|
+| Language | TypeScript |
+| Web Framework | NestJS |
+| ORM | Prisma |
+| Database | PostgreSQL |
+| Testing | Jest + Testcontainers |
+| CI/CD | GitHub Actions |
+| Deployment | Render |
+
 ## Project setup instructions
 ### Prerequisites
 - NodeJS Version >20
@@ -64,12 +80,17 @@ A rendered version of this documentation is also available in the `/docs` direct
 $ npm run doc
 ```
 
+PDF documentation can be found at docs/pdf/docs.pdf
+
 ## Database
 This application uses a [PostgreSQL](https://www.postgresql.org/) database with [Prisma ORM](https://www.prisma.io/). After any schema updates you must re-sync and generate the Prisma client library with:
 
 ```bash
 $ npm run sync
 ```
+
+## MCP Server
+An MCP Server is hosted on /api/mcp. There are a few tools implemented there for player + team searching as well as some analytical endpoints.
 
 ## Data source
 All data was sourced from the [Lahman Baseball Database](https://sabr.org/lahman-database/), created by Sean Lahman and maintained by Bryan Walko at [SABR](https://sabr.org/). Licenced under Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) license.
