@@ -5,6 +5,7 @@ import { McpModule } from '@rekog/mcp-nest';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthTool } from './mcp/hello.tool';
+import { AnalyticsTools } from './mcp/analytics.tools';
 import { PlayerModule } from './player/player.module';
 import { PrismaModule } from './prisma.module';
 import { StatsModule } from './stats/stats.module';
@@ -48,6 +49,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
   providers: [
     AppService,
     HealthTool,
+    AnalyticsTools,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
