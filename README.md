@@ -1,6 +1,22 @@
 # Evan's Super Cool Baseball Stats API
 *Evan's Super Cool Baseball Stats API* is my project submitted for COMP3011 Web Services and Web Data at the University of Leeds.
 
+It aims to provide a programmatic interface to large baseball statistics datasets, allowing developers to integrate this data into other applications. The API exposes endpoints for querying players, teams, and season records drawn from the [Lahman Baseball Database](https://sabr.org/lahman-database/), alongside analytical endpoints for league leaders and computed sabermetric statistics. It also supports user authentication, personal player collections, and a fantasy match system — and exposes an [MCP server](https://modelcontextprotocol.io/) for querying the data directly via an LLM.
+
+## Architecture
+
+Built with **TypeScript** on **NestJS**, following a modular Controller → Service pattern with **Prisma ORM** backed by **PostgreSQL**.
+
+| Layer | Technology |
+|---|---|
+| Language | TypeScript |
+| Web Framework | NestJS |
+| ORM | Prisma |
+| Database | PostgreSQL |
+| Testing | Jest + Testcontainers |
+| CI/CD | GitHub Actions |
+| Deployment | Render |
+
 ## Project setup instructions
 ### Prerequisites
 - NodeJS Version >20
