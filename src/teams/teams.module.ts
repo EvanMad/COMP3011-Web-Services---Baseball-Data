@@ -7,5 +7,6 @@ import { StatsModule } from 'src/stats/stats.module';
   controllers: [TeamsController],
   providers: [TeamsService],
   imports: [StatsModule],
+  exports: [TeamsService],
 })
 export class TeamsModule {}

@@ -23,12 +23,12 @@ export class AnalyticsTools {
     parameters: z.object({
       category: z
         .enum(['batting', 'pitching'])
+        .describe('Which category of stats to query: "batting" or "pitching".'),
+      stat: z
+        .string()
         .describe(
-          'Which category of stats to query: "batting" or "pitching".',
+          'Stat identifier, e.g. "homeRuns", "battingAverage", "era". Must be valid for the chosen category.',
         ),
-      stat: z.string().describe(
-        'Stat identifier, e.g. "homeRuns", "battingAverage", "era". Must be valid for the chosen category.',
-      ),
       year: z
         .number()
         .int()
@@ -47,9 +47,7 @@ export class AnalyticsTools {
         .describe('Maximum number of leaders to return (1–50).'),
     }),
   })
-  async getLeagueLeaders(
-    params: LeagueLeadersParams,
-  ): Promise<{
+  async getLeagueLeaders(params: LeagueLeadersParams): Promise<{
     summary: string;
     leaders: {
       rank: number;
@@ -89,4 +87,3 @@ export class AnalyticsTools {
     return { summary, leaders };
   }
 }
-

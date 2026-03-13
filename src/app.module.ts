@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthTool } from './mcp/hello.tool';
 import { AnalyticsTools } from './mcp/analytics.tools';
+import { PlayerTools } from './mcp/player.tools';
+import { TeamsTools } from './mcp/teams.tools';
 import { PlayerModule } from './player/player.module';
 import { PrismaModule } from './prisma.module';
 import { StatsModule } from './stats/stats.module';
@@ -50,6 +52,8 @@ import { AnalyticsModule } from './analytics/analytics.module';
     AppService,
     HealthTool,
     AnalyticsTools,
+    PlayerTools,
+    TeamsTools,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
