@@ -71,6 +71,9 @@ This application uses a [PostgreSQL](https://www.postgresql.org/) database with 
 $ npm run sync
 ```
 
+## MCP Server
+An MCP Server is hosted on /api/mcp. There are a few tools implemented there for player + team searching as well as some analytical endpoints.
+
 ## Data source
 All data was sourced from the [Lahman Baseball Database](https://sabr.org/lahman-database/), created by Sean Lahman and maintained by Bryan Walko at [SABR](https://sabr.org/). Licenced under Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) license.
 
