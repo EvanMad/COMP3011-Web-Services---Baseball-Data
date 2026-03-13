@@ -4,8 +4,8 @@ All URIs are relative to *http://localhost*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**authControllerSignIn**](AuthApi.md#authControllerSignIn) | **POST** /auth/login | Log in |
-| [**authControllerSignUp**](AuthApi.md#authControllerSignUp) | **POST** /auth/register | Register |
+| [**authControllerSignIn**](AuthApi.md#authControllerSignIn) | **POST** /api/auth/login | Log in |
+| [**authControllerSignUp**](AuthApi.md#authControllerSignUp) | **POST** /api/auth/register | Register |
 
 
 <a name="authControllerSignIn"></a>

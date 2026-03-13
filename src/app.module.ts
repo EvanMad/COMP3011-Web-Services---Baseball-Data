@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'node:path';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { McpModule } from '@rekog/mcp-nest';
@@ -20,6 +22,11 @@ import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      // Use project root so this works after compilation to dist/
+      rootPath: join(process.cwd(), 'frontend', 'dist'),
+      exclude: ['/api/(.*)'],
+    }),
     McpModule.forRoot({
       name: 'webservices-mcp-server',
       version: '1.0.0',

@@ -4,11 +4,11 @@ All URIs are relative to *http://localhost*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**collectionControllerCreate**](CollectionApi.md#collectionControllerCreate) | **POST** /collection | Create a collection |
-| [**collectionControllerFindAll**](CollectionApi.md#collectionControllerFindAll) | **GET** /collection | List current user&#39;s collections (paginated) |
-| [**collectionControllerFindOne**](CollectionApi.md#collectionControllerFindOne) | **GET** /collection/{id} | Get collection by ID |
-| [**collectionControllerRemove**](CollectionApi.md#collectionControllerRemove) | **DELETE** /collection/{id} | Delete collection |
-| [**collectionControllerUpdate**](CollectionApi.md#collectionControllerUpdate) | **PATCH** /collection/{id} | Update collection |
+| [**collectionControllerCreate**](CollectionApi.md#collectionControllerCreate) | **POST** /api/collection | Create a collection |
+| [**collectionControllerFindAll**](CollectionApi.md#collectionControllerFindAll) | **GET** /api/collection | List current user&#39;s collections (paginated) |
+| [**collectionControllerFindOne**](CollectionApi.md#collectionControllerFindOne) | **GET** /api/collection/{id} | Get collection by ID |
+| [**collectionControllerRemove**](CollectionApi.md#collectionControllerRemove) | **DELETE** /api/collection/{id} | Delete collection |
+| [**collectionControllerUpdate**](CollectionApi.md#collectionControllerUpdate) | **PATCH** /api/collection/{id} | Update collection |
 
 
 <a name="collectionControllerCreate"></a>

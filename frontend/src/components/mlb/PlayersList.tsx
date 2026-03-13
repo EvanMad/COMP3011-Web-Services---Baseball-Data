@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { playerById, playersList } from 'api/client';
 import type { PlayerResponseDto } from 'api/types';
-import { useAuth } from 'contexts/AuthContext';
 import { classNames } from 'utils';
 
 function PlayerDrawer({ playerId, onClose }: { playerId: string; onClose: () => void }) {
@@ -144,7 +143,6 @@ function PlayerDrawer({ playerId, onClose }: { playerId: string; onClose: () => 
 }
 
 export default function PlayersList() {
-  const { isAuthenticated } = useAuth();
   const [data, setData] = useState<{ data: PlayerResponseDto[]; meta: { total: number; page: number; totalPages: number } } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -156,17 +154,13 @@ export default function PlayersList() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      setData(null);
-      return;
-    }
     setLoading(true);
     setError(null);
     playersList({ page, limit: 10, name: searchName || undefined, birthCountry: searchCountry || undefined })
       .then(setData)
       .catch((e) => setError(e instanceof Error ? e.message : 'Failed to load players'))
       .finally(() => setLoading(false));
-  }, [isAuthenticated, page, searchName, searchCountry]);
+  }, [page, searchName, searchCountry]);
 
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,14 +169,6 @@ export default function PlayersList() {
     setPage(1);
     setExpandedId(null);
   };
-
-  if (!isAuthenticated) {
-    return (
-      <p className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-        Log in to view and search players.
-      </p>
-    );
-  }
 
   return (
     <div className="space-y-4">

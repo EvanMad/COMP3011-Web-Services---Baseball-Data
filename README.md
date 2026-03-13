@@ -50,9 +50,9 @@ $ npm run lint
 ```
 
 ## API documentation
-OpenAPI (Swagger) docs are available at `/api` when the app is running.
+OpenAPI (Swagger) docs are available at `/docs` when the app is running.
 
-A rendered version of this documentation is available in `/docs`. This can be re-generated with
+A rendered version of this documentation is also available in the `/docs` directory. This can be re-generated with
 ```bash
 $ npm run doc
 ```

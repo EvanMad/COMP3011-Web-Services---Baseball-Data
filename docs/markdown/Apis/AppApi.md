@@ -4,7 +4,7 @@ All URIs are relative to *http://localhost*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**appControllerGetStatus**](AppApi.md#appControllerGetStatus) | **GET** /health | Health / welcome |
+| [**appControllerGetStatus**](AppApi.md#appControllerGetStatus) | **GET** /api/health | Health / welcome |
 
 
 <a name="appControllerGetStatus"></a>

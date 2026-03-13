@@ -8,12 +8,7 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   server: {
     proxy: {
-      '/auth': { target: 'http://localhost:3000', changeOrigin: true },
-      '/player': { target: 'http://localhost:3000', changeOrigin: true },
-      '/teams': { target: 'http://localhost:3000', changeOrigin: true },
-      '/collection': { target: 'http://localhost:3000', changeOrigin: true },
-      '/match': { target: 'http://localhost:3000', changeOrigin: true },
-      '/health': { target: 'http://localhost:3000', changeOrigin: true },
+      '/api': { target: 'http://localhost:3000', changeOrigin: true },
     },
   },
   test: {

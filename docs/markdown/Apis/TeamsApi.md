@@ -4,10 +4,10 @@ All URIs are relative to *http://localhost*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**teamsControllerFindAll**](TeamsApi.md#teamsControllerFindAll) | **GET** /teams | List teams (paginated, optional league/year filters) |
-| [**teamsControllerFindAllYears**](TeamsApi.md#teamsControllerFindAllYears) | **GET** /teams/{id} | List all years for a team (paginated) |
-| [**teamsControllerFindOneTeam**](TeamsApi.md#teamsControllerFindOneTeam) | **GET** /teams/{id}/{year} | Get team by ID and year |
-| [**teamsControllerRemove**](TeamsApi.md#teamsControllerRemove) | **DELETE** /teams/{id} | Remove a single team record |
+| [**teamsControllerFindAll**](TeamsApi.md#teamsControllerFindAll) | **GET** /api/teams | List teams (paginated, optional league/year filters) |
+| [**teamsControllerFindAllYears**](TeamsApi.md#teamsControllerFindAllYears) | **GET** /api/teams/{id} | List all years for a team (paginated) |
+| [**teamsControllerFindOneTeam**](TeamsApi.md#teamsControllerFindOneTeam) | **GET** /api/teams/{id}/{year} | Get team by ID and year |
+| [**teamsControllerRemove**](TeamsApi.md#teamsControllerRemove) | **DELETE** /api/teams/{id} | Remove a single team record |
 
 
 <a name="teamsControllerFindAll"></a>

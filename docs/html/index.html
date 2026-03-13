@@ -199,52 +199,63 @@ font-style: italic;
   <div class="method-summary"></div>
   <h4><a href="#Analytics">Analytics</a></h4>
   <ul>
-  <li><a href="#analyticsControllerGetLeagueLeaders"><code><span class="http-method">get</span> /analytics/league-leaders</code></a></li>
+  <li><a href="#analyticsControllerGetLeagueLeaders"><code><span class="http-method">get</span> /api/analytics/league-leaders</code></a></li>
   </ul>
   <h4><a href="#App">App</a></h4>
   <ul>
-  <li><a href="#appControllerGetStatus"><code><span class="http-method">get</span> /health</code></a></li>
+  <li><a href="#appControllerGetStatus"><code><span class="http-method">get</span> /api/health</code></a></li>
   </ul>
   <h4><a href="#Auth">Auth</a></h4>
   <ul>
-  <li><a href="#authControllerSignIn"><code><span class="http-method">post</span> /auth/login</code></a></li>
-  <li><a href="#authControllerSignUp"><code><span class="http-method">post</span> /auth/register</code></a></li>
+  <li><a href="#authControllerSignIn"><code><span class="http-method">post</span> /api/auth/login</code></a></li>
+  <li><a href="#authControllerSignUp"><code><span class="http-method">post</span> /api/auth/register</code></a></li>
   </ul>
   <h4><a href="#Collection">Collection</a></h4>
   <ul>
-  <li><a href="#collectionControllerCreate"><code><span class="http-method">post</span> /collection</code></a></li>
-  <li><a href="#collectionControllerFindAll"><code><span class="http-method">get</span> /collection</code></a></li>
-  <li><a href="#collectionControllerFindOne"><code><span class="http-method">get</span> /collection/{id}</code></a></li>
-  <li><a href="#collectionControllerRemove"><code><span class="http-method">delete</span> /collection/{id}</code></a></li>
-  <li><a href="#collectionControllerUpdate"><code><span class="http-method">patch</span> /collection/{id}</code></a></li>
+  <li><a href="#collectionControllerCreate"><code><span class="http-method">post</span> /api/collection</code></a></li>
+  <li><a href="#collectionControllerFindAll"><code><span class="http-method">get</span> /api/collection</code></a></li>
+  <li><a href="#collectionControllerFindOne"><code><span class="http-method">get</span> /api/collection/{id}</code></a></li>
+  <li><a href="#collectionControllerRemove"><code><span class="http-method">delete</span> /api/collection/{id}</code></a></li>
+  <li><a href="#collectionControllerUpdate"><code><span class="http-method">patch</span> /api/collection/{id}</code></a></li>
   </ul>
   <h4><a href="#Match">Match</a></h4>
   <ul>
-  <li><a href="#matchControllerCreate"><code><span class="http-method">post</span> /match</code></a></li>
-  <li><a href="#matchControllerFindAll"><code><span class="http-method">get</span> /match</code></a></li>
-  <li><a href="#matchControllerFindOne"><code><span class="http-method">get</span> /match/{id}</code></a></li>
+  <li><a href="#matchControllerCreate"><code><span class="http-method">post</span> /api/match</code></a></li>
+  <li><a href="#matchControllerFindAll"><code><span class="http-method">get</span> /api/match</code></a></li>
+  <li><a href="#matchControllerFindOne"><code><span class="http-method">get</span> /api/match/{id}</code></a></li>
   </ul>
   <h4><a href="#Player">Player</a></h4>
   <ul>
-  <li><a href="#playerControllerCreatePlayer"><code><span class="http-method">post</span> /player</code></a></li>
-  <li><a href="#playerControllerDeletePlayer"><code><span class="http-method">delete</span> /player/{id}</code></a></li>
-  <li><a href="#playerControllerGetAllPlayers"><code><span class="http-method">get</span> /player</code></a></li>
-  <li><a href="#playerControllerGetPlayerById"><code><span class="http-method">get</span> /player/{id}</code></a></li>
-  <li><a href="#playerControllerUpdatePlayer"><code><span class="http-method">patch</span> /player/{id}</code></a></li>
+  <li><a href="#playerControllerCreatePlayer"><code><span class="http-method">post</span> /api/player</code></a></li>
+  <li><a href="#playerControllerDeletePlayer"><code><span class="http-method">delete</span> /api/player/{id}</code></a></li>
+  <li><a href="#playerControllerGetAllPlayers"><code><span class="http-method">get</span> /api/player</code></a></li>
+  <li><a href="#playerControllerGetPlayerById"><code><span class="http-method">get</span> /api/player/{id}</code></a></li>
+  <li><a href="#playerControllerUpdatePlayer"><code><span class="http-method">patch</span> /api/player/{id}</code></a></li>
+  </ul>
+  <h4><a href="#Sse">Sse</a></h4>
+  <ul>
+  <li><a href="#sseControllerMessages"><code><span class="http-method">post</span> /api/messages</code></a></li>
+  <li><a href="#sseControllerSse"><code><span class="http-method">get</span> /api/sse</code></a></li>
+  </ul>
+  <h4><a href="#StreamableHttp">StreamableHttp</a></h4>
+  <ul>
+  <li><a href="#streamableHttpControllerHandleDeleteRequest"><code><span class="http-method">delete</span> /api/mcp</code></a></li>
+  <li><a href="#streamableHttpControllerHandleGetRequest"><code><span class="http-method">get</span> /api/mcp</code></a></li>
+  <li><a href="#streamableHttpControllerHandlePostRequest"><code><span class="http-method">post</span> /api/mcp</code></a></li>
   </ul>
   <h4><a href="#Teams">Teams</a></h4>
   <ul>
-  <li><a href="#teamsControllerFindAll"><code><span class="http-method">get</span> /teams</code></a></li>
-  <li><a href="#teamsControllerFindAllYears"><code><span class="http-method">get</span> /teams/{id}</code></a></li>
-  <li><a href="#teamsControllerFindOneTeam"><code><span class="http-method">get</span> /teams/{id}/{year}</code></a></li>
-  <li><a href="#teamsControllerRemove"><code><span class="http-method">delete</span> /teams/{id}</code></a></li>
+  <li><a href="#teamsControllerFindAll"><code><span class="http-method">get</span> /api/teams</code></a></li>
+  <li><a href="#teamsControllerFindAllYears"><code><span class="http-method">get</span> /api/teams/{id}</code></a></li>
+  <li><a href="#teamsControllerFindOneTeam"><code><span class="http-method">get</span> /api/teams/{id}/{year}</code></a></li>
+  <li><a href="#teamsControllerRemove"><code><span class="http-method">delete</span> /api/teams/{id}</code></a></li>
   </ul>
 
   <h1><a name="Analytics">Analytics</a></h1>
   <div class="method"><a name="analyticsControllerGetLeagueLeaders"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /analytics/league-leaders</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/analytics/league-leaders</code></pre></div>
     <div class="method-summary">Get league leaders for a stat (<span class="nickname">analyticsControllerGetLeagueLeaders</span>)</div>
     <div class="method-notes">Returns the top players for a given batting or pitching stat. Optionally filter by year and league. For rate stats (e.g. battingAverage), only players with at least 100 AB are included. ERA leaders are sorted ascending (lower is better).</div>
 
@@ -331,7 +342,7 @@ font-style: italic;
   <div class="method"><a name="appControllerGetStatus"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /health</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/health</code></pre></div>
     <div class="method-summary">Health / welcome (<span class="nickname">appControllerGetStatus</span>)</div>
     <div class="method-notes"></div>
 
@@ -356,7 +367,7 @@ font-style: italic;
   <div class="method"><a name="authControllerSignIn"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /auth/login</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/auth/login</code></pre></div>
     <div class="method-summary">Log in (<span class="nickname">authControllerSignIn</span>)</div>
     <div class="method-notes">Returns a JWT access token.</div>
 
@@ -424,7 +435,7 @@ font-style: italic;
   <div class="method"><a name="authControllerSignUp"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /auth/register</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/auth/register</code></pre></div>
     <div class="method-summary">Register (<span class="nickname">authControllerSignUp</span>)</div>
     <div class="method-notes">Create a new user and return a JWT access token.</div>
 
@@ -493,7 +504,7 @@ font-style: italic;
   <div class="method"><a name="collectionControllerCreate"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /collection</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/collection</code></pre></div>
     <div class="method-summary">Create a collection (<span class="nickname">collectionControllerCreate</span>)</div>
     <div class="method-notes"></div>
 
@@ -582,7 +593,7 @@ font-style: italic;
   <div class="method"><a name="collectionControllerFindAll"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /collection</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/collection</code></pre></div>
     <div class="method-summary">List current user's collections (paginated) (<span class="nickname">collectionControllerFindAll</span>)</div>
     <div class="method-notes"></div>
 
@@ -670,7 +681,7 @@ font-style: italic;
   <div class="method"><a name="collectionControllerFindOne"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /collection/{id}</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/collection/{id}</code></pre></div>
     <div class="method-summary">Get collection by ID (<span class="nickname">collectionControllerFindOne</span>)</div>
     <div class="method-notes"></div>
 
@@ -753,7 +764,7 @@ font-style: italic;
   <div class="method"><a name="collectionControllerRemove"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /collection/{id}</code></pre></div>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /api/collection/{id}</code></pre></div>
     <div class="method-summary">Delete collection (<span class="nickname">collectionControllerRemove</span>)</div>
     <div class="method-notes"></div>
 
@@ -821,7 +832,7 @@ font-style: italic;
   <div class="method"><a name="collectionControllerUpdate"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="patch"><code class="huge"><span class="http-method">patch</span> /collection/{id}</code></pre></div>
+    <pre class="patch"><code class="huge"><span class="http-method">patch</span> /api/collection/{id}</code></pre></div>
     <div class="method-summary">Update collection (<span class="nickname">collectionControllerUpdate</span>)</div>
     <div class="method-notes"></div>
 
@@ -933,7 +944,7 @@ font-style: italic;
   <div class="method"><a name="matchControllerCreate"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /match</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/match</code></pre></div>
     <div class="method-summary">Play a match between two lineups (<span class="nickname">matchControllerCreate</span>)</div>
     <div class="method-notes">Submit two collections (each with exactly 9 players). A winner is decided (e.g. coin toss) and the result is stored.</div>
 
@@ -1037,7 +1048,7 @@ font-style: italic;
   <div class="method"><a name="matchControllerFindAll"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /match</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/match</code></pre></div>
     <div class="method-summary">List current user's matches (paginated) (<span class="nickname">matchControllerFindAll</span>)</div>
     <div class="method-notes"></div>
 
@@ -1121,7 +1132,7 @@ font-style: italic;
   <div class="method"><a name="matchControllerFindOne"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /match/{id}</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/match/{id}</code></pre></div>
     <div class="method-summary">Get match by ID (<span class="nickname">matchControllerFindOne</span>)</div>
     <div class="method-notes"></div>
 
@@ -1204,7 +1215,7 @@ font-style: italic;
   <div class="method"><a name="playerControllerCreatePlayer"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /player</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/player</code></pre></div>
     <div class="method-summary">Create player (admin) (<span class="nickname">playerControllerCreatePlayer</span>)</div>
     <div class="method-notes"></div>
 
@@ -1296,7 +1307,7 @@ font-style: italic;
   <div class="method"><a name="playerControllerDeletePlayer"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /player/{id}</code></pre></div>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /api/player/{id}</code></pre></div>
     <div class="method-summary">Delete player (admin) (<span class="nickname">playerControllerDeletePlayer</span>)</div>
     <div class="method-notes"></div>
 
@@ -1364,7 +1375,7 @@ font-style: italic;
   <div class="method"><a name="playerControllerGetAllPlayers"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /player</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/player</code></pre></div>
     <div class="method-summary">List players (paginated, optional filters) (<span class="nickname">playerControllerGetAllPlayers</span>)</div>
     <div class="method-notes"></div>
 
@@ -1460,7 +1471,7 @@ font-style: italic;
   <div class="method"><a name="playerControllerGetPlayerById"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /player/{id}</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/player/{id}</code></pre></div>
     <div class="method-summary">Get player by ID (<span class="nickname">playerControllerGetPlayerById</span>)</div>
     <div class="method-notes"></div>
 
@@ -1530,7 +1541,7 @@ font-style: italic;
   <div class="method"><a name="playerControllerUpdatePlayer"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="patch"><code class="huge"><span class="http-method">patch</span> /player/{id}</code></pre></div>
+    <pre class="patch"><code class="huge"><span class="http-method">patch</span> /api/player/{id}</code></pre></div>
     <div class="method-summary">Update player (admin) (<span class="nickname">playerControllerUpdatePlayer</span>)</div>
     <div class="method-notes"></div>
 
@@ -1641,11 +1652,133 @@ font-style: italic;
         <a href="#ErrorDto">ErrorDto</a>
   </div> <!-- method -->
   <hr/>
+  <h1><a name="Sse">Sse</a></h1>
+  <div class="method"><a name="sseControllerMessages"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/messages</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">sseControllerMessages</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="sseControllerSse"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/sse</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">sseControllerSse</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="StreamableHttp">StreamableHttp</a></h1>
+  <div class="method"><a name="streamableHttpControllerHandleDeleteRequest"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /api/mcp</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">streamableHttpControllerHandleDeleteRequest</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="streamableHttpControllerHandleGetRequest"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/mcp</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">streamableHttpControllerHandleGetRequest</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="streamableHttpControllerHandlePostRequest"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/mcp</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">streamableHttpControllerHandlePostRequest</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
   <h1><a name="Teams">Teams</a></h1>
   <div class="method"><a name="teamsControllerFindAll"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /teams</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/teams</code></pre></div>
     <div class="method-summary">List teams (paginated, optional league/year filters) (<span class="nickname">teamsControllerFindAll</span>)</div>
     <div class="method-notes"></div>
 
@@ -1809,7 +1942,7 @@ font-style: italic;
   <div class="method"><a name="teamsControllerFindAllYears"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /teams/{id}</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/teams/{id}</code></pre></div>
     <div class="method-summary">List all years for a team (paginated) (<span class="nickname">teamsControllerFindAllYears</span>)</div>
     <div class="method-notes">Returns team records for the given team ID across seasons. Use query param <code>year</code> to filter. The team ID here is the franchise/team identifier (e.g. BOS), not the numeric primary key.</div>
 
@@ -1979,7 +2112,7 @@ font-style: italic;
   <div class="method"><a name="teamsControllerFindOneTeam"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /teams/{id}/{year}</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/teams/{id}/{year}</code></pre></div>
     <div class="method-summary">Get team by ID and year (<span class="nickname">teamsControllerFindOneTeam</span>)</div>
     <div class="method-notes"></div>
 
@@ -2093,7 +2226,7 @@ font-style: italic;
   <div class="method"><a name="teamsControllerRemove"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /teams/{id}</code></pre></div>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /api/teams/{id}</code></pre></div>
     <div class="method-summary">Remove a single team record (<span class="nickname">teamsControllerRemove</span>)</div>
     <div class="method-notes">Deletes one team record by its numeric primary key (internal id). This removes a single season entry, not all years for a franchise. To delete by teamID and year, use the id of the corresponding record.</div>
 
