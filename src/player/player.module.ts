@@ -9,5 +9,6 @@ import { UsersModule } from 'src/users/users.module';
   controllers: [PlayerController],
   providers: [PlayerService],
   imports: [StatsModule, AuthModule, UsersModule],
+  exports: [PlayerService],
 })
 export class PlayerModule {}

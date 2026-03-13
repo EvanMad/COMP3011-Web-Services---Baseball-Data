@@ -7,5 +7,6 @@ import { StatsModule } from 'src/stats/stats.module';
   imports: [StatsModule],
   controllers: [AnalyticsController],
   providers: [AnalyticsService],
+  exports: [AnalyticsService],
 })
 export class AnalyticsModule {}

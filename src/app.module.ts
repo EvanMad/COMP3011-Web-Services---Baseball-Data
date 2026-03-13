@@ -1,8 +1,13 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { McpModule } from '@rekog/mcp-nest';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { HealthTool } from './mcp/hello.tool';
+import { AnalyticsTools } from './mcp/analytics.tools';
+import { PlayerTools } from './mcp/player.tools';
+import { TeamsTools } from './mcp/teams.tools';
 import { PlayerModule } from './player/player.module';
 import { PrismaModule } from './prisma.module';
 import { StatsModule } from './stats/stats.module';
@@ -15,6 +20,15 @@ import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
+    McpModule.forRoot({
+      name: 'webservices-mcp-server',
+      version: '1.0.0',
+      streamableHttp: {
+        enableJsonResponse: true,
+        sessionIdGenerator: undefined,
+        statelessMode: true,
+      },
+    }),
     ThrottlerModule.forRoot({
       throttlers: [
         { name: 'short', ttl: 1000, limit: 10 },
@@ -36,6 +50,10 @@ import { AnalyticsModule } from './analytics/analytics.module';
   controllers: [AppController],
   providers: [
     AppService,
+    HealthTool,
+    AnalyticsTools,
+    PlayerTools,
+    TeamsTools,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
